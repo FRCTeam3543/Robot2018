@@ -9,7 +9,7 @@
 // it from being updated in the future.
 
 
-package org.usfirst.frc3543.robot2017.subsystems;
+package org.usfirst.frc.team3543.robot.subsystems;
 
 import org.usfirst.frc3543.robot2017.OI;
 import org.usfirst.frc3543.robot2017.Robot;
