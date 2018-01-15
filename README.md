@@ -50,6 +50,7 @@ Next, find this text in the file and complete the following:
 
 ```
 (In the editor, everyone type their first name or initials below this line in the README as an exercise)
+Michael Was Here...
 ```
 
 Now, save the file using File > Save or Ctrl+S.  In Visual Studio Code, you will notice your changes are tracked with a little notification on the git icon in the left sidebar (3rd icon from the top).  Click it and you will get a git menu.  Hover over the README.md file and click the "+" button to tell git you want to commit your change.  Now type a short message about your changes (e.g: "added my name to the list") and click the _checkmark_ icon to commit your changes.  
