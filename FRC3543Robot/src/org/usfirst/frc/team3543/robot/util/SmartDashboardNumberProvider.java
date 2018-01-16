@@ -1,3 +1,5 @@
+package org.usfirst.frc.team3543.robot.util;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -6,8 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 */
-
-
 public class SmartDashboardNumberProvider implements NumberProvider {
 		private String key;
 		private double defaultValue;

@@ -1,4 +1,13 @@
 package org.usfirst.frc.team3543.robot.commands;
+
+import org.usfirst.frc.team3543.robot.OI;
+import org.usfirst.frc.team3543.robot.Robot;
+import org.usfirst.frc.team3543.robot.RobotMap;
+import org.usfirst.frc.team3543.robot.util.NumberProvider;
+import org.usfirst.frc.team3543.robot.util.SmartDashboardNumberProvider;
+
+import edu.wpi.first.wpilibj.command.Command;
+
 public class DriveForwardByDistanceCommand extends Command {
 	protected double targetDistance = 0;
 	protected double startingEncoderValue = 0;
