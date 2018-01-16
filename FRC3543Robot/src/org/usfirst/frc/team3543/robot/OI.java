@@ -9,6 +9,8 @@ package org.usfirst.frc.team3543.robot;
 
 
 import org.usfirst.frc.team3543.robot.commands.ArcadeDriveWithJoystick;
+import org.usfirst.frc.team3543.robot.commands.ClawCloseCommand;
+import org.usfirst.frc.team3543.robot.commands.ClawOpenCommand;
 import org.usfirst.frc.team3543.robot.commands.TankDriveWithJoystick;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -69,6 +71,10 @@ public class OI {
 	         
 	         resumeArcadeDriveButton.whenPressed(arcade);
 	         resumeTankDriveButton.whenPressed(tank);
+	         
+	         JoystickButton closeClawButton = new JoystickButton(rightJoystick, 2);
+	         closeClawButton.whenPressed(new ClawCloseCommand());
+	         closeClawButton.whenReleased(new ClawOpenCommand());
 	         
 	      }
 	    
