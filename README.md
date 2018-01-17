@@ -2,7 +2,7 @@
 
 This README is written in [Markdown](https://daringfireball.net/projects/markdown/syntax)
 
-*FIRST FIRST FIRST*!!!  READ THIS!!
+*FIRST FIRST FIRST*!!!  READ THIS!
 
 If you do not read this and follow the steps in detail, the computer genie will not grant *any* of your wishes.  Read it *carefully*!
 
