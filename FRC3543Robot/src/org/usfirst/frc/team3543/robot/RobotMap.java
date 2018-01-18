@@ -143,13 +143,13 @@ public class RobotMap {
         LiveWindow.addSensor("DriveLine", "AnalogGyro 1", driveLineAnalogGyro1);
         driveLineAnalogGyro1.setSensitivity(0.007);
 //        driveLineQuadratureEncoderLeft = new Encoder(0, 1, false, EncodingType.k4X);
-        driveLineQuadratureEncoderLeft = new Encoder(2, 3, false, EncodingType.k2X);
+        driveLineQuadratureEncoderLeft = new Encoder(0, 1, false, EncodingType.k2X);
         
         LiveWindow.addSensor("DriveLine", "QuadratureEncoderLeft", driveLineQuadratureEncoderLeft);
-        driveLineQuadratureEncoderLeft.setDistancePerPulse(-0.05);
+        driveLineQuadratureEncoderLeft.setDistancePerPulse(0.05);
         driveLineQuadratureEncoderLeft.setPIDSourceType(PIDSourceType.kRate);
 //        driveLineQuadratureEncoderRight = new Encoder(2, 3, false, EncodingType.k4X);
-        driveLineQuadratureEncoderRight = new Encoder(0, 1, false, EncodingType.k2X);
+        driveLineQuadratureEncoderRight = new Encoder(2, 3, false, EncodingType.k2X);
         
         LiveWindow.addSensor("DriveLine", "QuadratureEncoderRight", driveLineQuadratureEncoderRight);
         driveLineQuadratureEncoderRight.setDistancePerPulse(0.05);
