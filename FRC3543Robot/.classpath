@@ -3,8 +3,11 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 <<<<<<< HEAD
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/WPILib"/>
 <<<<<<< HEAD
+=======
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/CTRE"/>
+>>>>>>> parent of d314ca9... I did not fuck up lol XD
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/WPILib"/>
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -32,6 +35,7 @@
 >>>>>>> parent of 3bfa991... Merge branch 'master' of https://github.com/FRCTeam3543/Robot2018
 =======
 >>>>>>> parent of 3bfa991... Merge branch 'master' of https://github.com/FRCTeam3543/Robot2018
+<<<<<<< HEAD
 =======
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/CTRE"/>
 >>>>>>> d26f6602a135ae70be02a6e31adc475227651841
@@ -46,5 +50,7 @@
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRE_Phoenix-sources.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRE_Phoenix.jar"/>
 >>>>>>> parent of c2125b4... Merge pull request #12 from FRCTeam3543/master
+=======
+>>>>>>> parent of d314ca9... I did not fuck up lol XD
 	<classpathentry kind="output" path="bin"/>
 </classpath>
