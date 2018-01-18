@@ -9,11 +9,16 @@ package org.usfirst.frc.team3543.robot;
 
 
 import org.usfirst.frc.team3543.robot.commands.ArcadeDriveWithJoystick;
+import org.usfirst.frc.team3543.robot.commands.CircleCommandGroup;
 import org.usfirst.frc.team3543.robot.commands.ClawCloseCommand;
 import org.usfirst.frc.team3543.robot.commands.ClawOpenCommand;
+import org.usfirst.frc.team3543.robot.commands.DriveForwardByDistanceCommand;
+import org.usfirst.frc.team3543.robot.commands.RotateByAngleCommand;
 import org.usfirst.frc.team3543.robot.commands.TankDriveWithJoystick;
+import org.usfirst.frc.team3543.robot.util.SmartDashboardNumberProvider;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -67,6 +72,7 @@ public class OI {
 		
 		public static final String AUTONOMOUS_MODE = "Autonomous Mode";
 	    
+	    public static final double WHEEL_DISTANCE_PER_PULSE = (6 * Math.PI) / (360 * 0.4615);
 	    
 	    public OI () {
 	    	
@@ -86,16 +92,23 @@ public class OI {
 	         ////////////////////////////////////////////////////////////////
 	         /////////// Manually added items for the smart dashboard
 	         
-//	         SmartDashboard.putData("Rotate 90 degrees", (Sendable) new RotateByAngleCommand(Math.toRadians(90), 0.3));       
+	         SmartDashboard.putNumber(OI.DEFAULT_LINEAR_GAIN, RobotMap.DEFAULT_LINEAR_GAIN);
+	         
+	         SmartDashboard.putData("Rotate 90 degrees", new RotateByAngleCommand(Math.toRadians(90), 0.3));       
 //	         SmartDashboard.putData("Zig Zag", new ZigZagCommand(Math.toRadians(15), 24));   
 	         
-//	         SmartDashboard.putNumber("Drive Forward Distance", 12);   
-//	         SmartDashboard.putData("Drive Forward", new DriveForwardByDistanceCommand(new SmartDashboardNumberProvider("Drive Forward Distance", 12)));       
+	         SmartDashboard.putNumber("Drive Forward Distance", 12);   
+	         SmartDashboard.putData("Drive Forward", new DriveForwardByDistanceCommand(new SmartDashboardNumberProvider("Drive Forward Distance", 12)));
+
+	         SmartDashboard.putData("Circle Test", new CircleCommandGroup(new SmartDashboardNumberProvider("Drive Forward Distance", 12)));
 	         
 	         JoystickButton closeClawButton = new JoystickButton(rightJoystick, 2);
 	         closeClawButton.whenPressed(new ClawCloseCommand());
 	         closeClawButton.whenReleased(new ClawOpenCommand());
-	         	         
+	         	       
+	         // See RobotGeometry
+	         SmartDashboard.putNumber(OI.WHEEL_ENCODER_DISTANCE_PER_PULSE, WHEEL_DISTANCE_PER_PULSE );
+	         dashboard.putDistanceRemaining(0);
 	      }
 	    
 	    
@@ -123,9 +136,7 @@ public class OI {
 			}
 
 			public double getWheelEncoderDistancePerPulse() {
-				// FIXME 
-				return 0;
-//				return SmartDashboard.getNumber(OI.WHEEL_ENCODER_DISTANCE_PER_PULSE, Robot.geometry.encoderDistancePerPulse);
+				return SmartDashboard.getNumber(OI.WHEEL_ENCODER_DISTANCE_PER_PULSE, WHEEL_DISTANCE_PER_PULSE);
 			}
 			
 			private double round(double num, int decimals) {
@@ -134,6 +145,10 @@ public class OI {
 				else if (decimals == 1) p = 10;
 				else p = Math.pow(10, decimals);
 				return Math.round(num * p) / p;
+			}
+
+			public void putDistanceRemaining(double d) {
+				SmartDashboard.putNumber("Drive distance remaining", d);				
 			}
 	    }
 	    
