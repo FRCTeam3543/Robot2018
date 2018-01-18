@@ -50,6 +50,7 @@ public class DriveForwardByDistanceCommand extends Command {
 	@Override 
 	protected void initialize() {
 		// read the starting encoder values
+		OI.dashboard.putDistanceRemaining(0);
 		Robot.driveLine.resetAll();	
 		this.setTargetDistance(distanceProvider.getValue());
 		this.setPowerGain(gainProvider.getValue());
