@@ -4,6 +4,7 @@ package org.usfirst.frc.team3543.robot.commands;
 import org.usfirst.frc.team3543.robot.OI;
 import org.usfirst.frc.team3543.robot.Robot;
 import org.usfirst.frc.team3543.robot.RobotMap;
+import org.usfirst.frc.team3543.robot.util.DegreesToRadiansNumberProvider;
 import org.usfirst.frc.team3543.robot.util.NumberProvider;
 
 import edu.wpi.first.wpilibj.command.Command;
