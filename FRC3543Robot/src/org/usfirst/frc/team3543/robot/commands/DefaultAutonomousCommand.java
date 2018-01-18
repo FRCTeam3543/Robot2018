@@ -1,6 +1,4 @@
-package org.usfirst.frc.team3543.robot;
-
-import edu.wpi.first.wpilibj.command.Command;
+package src.org.usfirst.frc.team3543.robot.commands;
 
 public class DefaultAutonomousCommand extends Command {
 
