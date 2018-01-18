@@ -9,18 +9,12 @@ package org.usfirst.frc.team3543.robot;
 
 
 import org.usfirst.frc.team3543.robot.commands.ArcadeDriveWithJoystick;
-import org.usfirst.frc.team3543.robot.commands.CircleCommandGroup;
-import org.usfirst.frc.team3543.robot.commands.ClawCloseCommand;
-import org.usfirst.frc.team3543.robot.commands.ClawOpenCommand;
-import org.usfirst.frc.team3543.robot.commands.DriveForwardByDistanceCommand;
-import org.usfirst.frc.team3543.robot.commands.RotateByAngleCommand;
 import org.usfirst.frc.team3543.robot.commands.TankDriveWithJoystick;
-import org.usfirst.frc.team3543.robot.util.SmartDashboardNumberProvider;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -61,19 +55,6 @@ public class OI {
 	    public Joystick rightJoystick;
 	    
 	    
-	    public static final String DEFAULT_LINEAR_GAIN = "Default Linear Gain";
-		public static final String DEFAULT_ROTATION_GAIN = "Default Rotation Gain";
-		public static final String DRIVELINE_GYRO = "Gyro";
-		public static final String LIFT_GAIN = "Lift Gain";
-		public static final String DRIVELINE_ENCODER_LEFT = "Left Encoder";
-		public static final String DRIVELINE_ENCODER_RIGHT = "Right Encoder";
-		public static final String DISTANCE_REMAINING = "Distance Remaining";
-		public static final String WHEEL_ENCODER_DISTANCE_PER_PULSE = "Wheel encoder distance per pulse";
-		
-		public static final String AUTONOMOUS_MODE = "Autonomous Mode";
-	    
-	    public static final double WHEEL_DISTANCE_PER_PULSE = (6 * Math.PI) / (360 * 0.4615);
-	    
 	    public OI () {
 	    	
 
@@ -88,27 +69,7 @@ public class OI {
 	         
 	         resumeArcadeDriveButton.whenPressed(arcade);
 	         resumeTankDriveButton.whenPressed(tank);
-
-	         ////////////////////////////////////////////////////////////////
-	         /////////// Manually added items for the smart dashboard
 	         
-	         SmartDashboard.putNumber(OI.DEFAULT_LINEAR_GAIN, RobotMap.DEFAULT_LINEAR_GAIN);
-	         
-	         SmartDashboard.putData("Rotate 90 degrees", new RotateByAngleCommand(Math.toRadians(90), 0.3));       
-//	         SmartDashboard.putData("Zig Zag", new ZigZagCommand(Math.toRadians(15), 24));   
-	         
-	         SmartDashboard.putNumber("Drive Forward Distance", 12);   
-	         SmartDashboard.putData("Drive Forward", new DriveForwardByDistanceCommand(new SmartDashboardNumberProvider("Drive Forward Distance", 12)));
-
-	         SmartDashboard.putData("Circle Test", new CircleCommandGroup(new SmartDashboardNumberProvider("Drive Forward Distance", 12)));
-	         
-	         JoystickButton closeClawButton = new JoystickButton(rightJoystick, 2);
-	         closeClawButton.whenPressed(new ClawCloseCommand());
-	         closeClawButton.whenReleased(new ClawOpenCommand());
-	         	       
-	         // See RobotGeometry
-	         SmartDashboard.putNumber(OI.WHEEL_ENCODER_DISTANCE_PER_PULSE, WHEEL_DISTANCE_PER_PULSE );
-	         dashboard.putDistanceRemaining(0);
 	      }
 	    
 	    
@@ -120,37 +81,6 @@ public class OI {
 	        return rightJoystick;
 	    }
 	    
-	    
-	    public static final Dashboard dashboard = new Dashboard();
-	    
-	    public static class Dashboard {
-	    	
-	   
-			public void putDrivelineEncoders(double left, double right) {
-		        SmartDashboard.putNumber(OI.DRIVELINE_ENCODER_LEFT, round(left,1));
-		        SmartDashboard.putNumber(OI.DRIVELINE_ENCODER_RIGHT, round(right,1));
-			}
-			
-			public void putDrivelineGyro(double angleInDegrees) {
-		        SmartDashboard.putNumber(OI.DRIVELINE_GYRO, round(angleInDegrees,1));
-			}
-
-			public double getWheelEncoderDistancePerPulse() {
-				return SmartDashboard.getNumber(OI.WHEEL_ENCODER_DISTANCE_PER_PULSE, WHEEL_DISTANCE_PER_PULSE);
-			}
-			
-			private double round(double num, int decimals) {
-				double p = 10;
-				if (decimals == 0) p = 1;
-				else if (decimals == 1) p = 10;
-				else p = Math.pow(10, decimals);
-				return Math.round(num * p) / p;
-			}
-
-			public void putDistanceRemaining(double d) {
-				SmartDashboard.putNumber("Drive distance remaining", d);				
-			}
-	    }
 	    
 	    
 }
