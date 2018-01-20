@@ -5,9 +5,11 @@ import org.usfirst.frc.team3543.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ClawOpenCommand extends Command {
-
-	public ClawOpenCommand() {
-		requires(Robot.claw);
+	Robot robot;
+	
+	public ClawOpenCommand(Robot robot) {
+		this.robot = robot;
+		requires(robot.getClaw());
 	}
 	
 	@Override
@@ -16,6 +18,6 @@ public class ClawOpenCommand extends Command {
 	}
 	
 	public void execute() {
-		Robot.claw.open();
+		robot.getClaw().open();
 	}
 }

@@ -1,0 +1,17 @@
+package org.usfirst.frc.team3543.robot.commands;
+
+import edu.wpi.first.wpilibj.command.Command;
+
+/**
+ * This command does nothing.
+ * 
+ * @author mk
+ */
+public class DuhCommand extends Command {
+
+	@Override
+	protected boolean isFinished() {
+		return false;
+	}
+
+}
