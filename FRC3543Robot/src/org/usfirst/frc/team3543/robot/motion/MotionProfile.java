@@ -30,9 +30,9 @@ public class MotionProfile {
 	}
 	
 	public void add(TrajectoryPoint point) {
-		if (this.size() >= MAX_POINTS) {
-			throw new IllegalStateException("Maximum size reached");
-		}
+//		if (this.size() >= MAX_POINTS) {
+//			throw new IllegalStateException("Maximum size reached");
+//		}
 		// fix the point
 		if (this.size() == 0) {
 			point.zeroPos = true;
@@ -48,7 +48,7 @@ public class MotionProfile {
 	public void add(double position, double velocity) {
 		TrajectoryPoint point = new TrajectoryPoint();		
 		point.position = position;
-		point.velocity = velocity;
+		point.velocity = velocity;		
 		this.add(point);
 	}	
 	
@@ -60,16 +60,18 @@ public class MotionProfile {
 	
 	public void dump() {
 		int i = 0;
-		System.out.println("num, pos, vel");
+		System.out.println("num, vel, pos");
 		for (TrajectoryPoint point : this.points) {
-			System.out.println(String.format("%d, %.3f, %.3f", (i+1), point.position, point.velocity));
+			System.out.println(String.format("%d, %.3f, %.3f", (i+1), point.velocity, point.position));
 			i++;
 		} 
 	}
 	
 	public static void main(String [] args) {
 		MotionProfileGenerator gen = new MotionProfileGenerator();
-		MotionProfile profile = gen.generate(1.276595745);
+		double distance = 48 / 18.8;	//inches per rotation
+		
+		MotionProfile profile = gen.generate(distance);
 		profile.dump();
 	}
 }

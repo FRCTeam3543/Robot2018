@@ -14,6 +14,7 @@ package org.usfirst.frc.team3543.robot.subsystems;
 import org.usfirst.frc.team3543.robot.OI;
 import org.usfirst.frc.team3543.robot.RobotMap;
 import org.usfirst.frc.team3543.robot.commands.ArcadeDriveWithJoystick;
+import org.usfirst.frc.team3543.robot.motion.MotionProfile;
 import org.usfirst.frc.team3543.robot.util.RobotConfig;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -264,9 +265,9 @@ public class DriveLine extends BaseSubsystem {
 	public void resetAll() {
 		resetEncoders();
 		resetGyro();		
-		updateOperatorInterface();
+		updateOperatorInterface();		
 	}
-
+	
 	@Override
 	public void updateOperatorInterface() {		
 		SmartDashboard.putNumber(DASHBOARD_LEFT_ENCODER_DPP,this.quadratureEncoderLeft.getDistancePerPulse());
@@ -278,6 +279,33 @@ public class DriveLine extends BaseSubsystem {
 
 	public double getGyroSensitivity() {
 		return this.gyroSensitivity;
+	}
+
+	public MotionProfileRunner initMotionProfile(MotionProfile profile) {
+		return new MotionProfileRunner(this, profile);		
+	}
+	
+	public static class MotionProfileRunner {
+		MotionProfile profile;
+		DriveLine driveLine;
+		public static final int BUFSIZE = 128;
+		
+		public MotionProfileRunner(DriveLine driveLine, MotionProfile profile) {
+			this.profile = profile;		
+			this.driveLine = driveLine;
+		}
+		
+		public boolean isActive() {
+			return false;
+		}
+		
+		public void start() {
+			
+		}
+		
+		public void stop() {
+			
+		}
 	}
 }
 

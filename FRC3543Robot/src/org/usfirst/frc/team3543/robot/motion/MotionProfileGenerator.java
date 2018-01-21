@@ -33,7 +33,7 @@ public class MotionProfileGenerator {
 		this(DEFAULT_MAX_RPS, DEFAULT_T1, DEFAULT_T2, DEFAULT_ITP);
 	}
 		
-	public MotionProfile generate(double distanceInRotations, int points) {
+	public MotionProfile oldGenerate(double distanceInRotations, int points) {
 		MotionProfile profile = new MotionProfile(0);
 		double t4 = distanceInRotations / this.maxRPS * 1000;
 		double fl1 = Math.round(this.t1 / this.itp);
@@ -41,7 +41,7 @@ public class MotionProfileGenerator {
 		double n = t4 / this.itp;
 		// this matches the spreadsheet
 		int step = 0;
-		double f1_sum = 0, f2_sum = 0, time = 0;
+		double f1_sum = 0, f2_sum = 0, time = 0, dt = (double) this.itp / 1000;
 		boolean input = false;
 		double p = 0, v = 0, a = 0, lastV = 0;	
 		// write the first point
@@ -72,6 +72,52 @@ public class MotionProfileGenerator {
 				LOGGER.warning("Maxmimum points reached");
 				break;
 			}
+		}
+		return profile;
+	}
+	
+	public MotionProfile generate(double distanceInRotations, int points) {
+		MotionProfile profile = new MotionProfile(0);
+		
+		// Ramp time 
+		double p = 0, v = 0, lastV = 0, t = 0, step = 0, Vmax = this.maxRPS, dt = (double)this.itp / 1000;
+		
+		// write the first point
+		profile.add(p,v);
+		
+		double rampTime = 0.5;	// TODO - set me in constructor
+		double freq = Math.PI / rampTime;
+		// −(C19÷2)×SIN(C18×C23)÷C23+POWER(C19÷4,2)
+		double rampDistance = -Vmax/2 * Math.sin(rampTime * freq) / freq + Math.pow(Vmax / 4, 2);
+		
+		double maxVdistance = Math.max(0, distanceInRotations - (2 * rampDistance));
+		double totalTime = Math.max(0, 2 * rampTime + (maxVdistance / Vmax));
+		double rampUpEnds = rampTime;
+		double rampDownStarts = totalTime - rampTime;
+		
+		while (t < totalTime) {
+			lastV = v;
+			
+			// IF(D26=1,−$C$19÷2×COS(C26×$C$23)+$C$19÷2,IF(E26=1,−$C$19÷2×COS((C26− $C$15)×$C$23)+$C$19÷2,$C$19))
+			if (t < rampUpEnds) {
+				v = -Vmax/2 * Math.cos(t * freq) + Vmax/2;
+			}
+			else if (t > rampDownStarts) {
+				v = -Vmax/2 * Math.cos((t - totalTime) * freq) + Vmax/2;				
+			}
+			else {
+				v = Vmax;
+			}
+			
+			p = (lastV + v) / 2 * dt + p;
+			
+			profile.add(p, v); 
+			step++;			
+			if (step >= MAX_POINTS) {
+//				LOGGER.warning("Maxmimum points reached");
+//				break;
+			}
+			t += dt;			
 		}
 		return profile;
 	}
