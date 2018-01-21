@@ -24,6 +24,8 @@ import org.usfirst.frc.team3543.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team3543.robot.commands.TestAutonomousCommand;
 import org.usfirst.frc.team3543.robot.subsystems.Claw;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
+import org.usfirst.frc.team3543.robot.util.Config;
+import org.usfirst.frc.team3543.robot.util.RobotConfig;
 
 
 /**
@@ -33,7 +35,7 @@ import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends TimedRobot {
+public class Robot extends TimedRobot implements RobotConfig {
 
 	// to be compatible with the old, dangerous idiom, a static
 	private static Robot _instance = null;
@@ -177,6 +179,19 @@ public class Robot extends TimedRobot {
 	protected void updateDashboard() {
 		// put any extra dashboard update code here
 	}
+
+	// These are delegate methods to the config, but they encapsulate an indirection in
+	// method calls from commands and subsystems that reference the robot
+	@Override
+	public Config<Integer> getWiringConfig() {
+		return this.getConfig().getWiringConfig();
+	}
+
+	@Override
+	public Config<Double> getCalibrationConfig() {
+		return this.getConfig().getCalibrationConfig();
+	}
+
 }
 
 

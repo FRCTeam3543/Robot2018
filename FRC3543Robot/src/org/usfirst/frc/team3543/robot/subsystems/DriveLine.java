@@ -59,7 +59,7 @@ public class DriveLine extends BaseSubsystem {
 	public static final String RIGHT_ENCODER_PORT_2 = "driveline.right_encoder.port_2";
 
 	// Configuration defaults
-	public static final double DEFAULT_ENCODER_DISTANCE_PER_PULSE = 0.0284;
+	public static final double DEFAULT_ENCODER_DISTANCE_PER_PULSE = 0.0131;
 	public static final double DEFAULT_GYRO_SENSITIVITY = 0.007;
 	public static final double DEFAULT_DRIVE_SENSITIVITY = 0.5;
 	public static final double DEFAULT_EXPIRATION = 0.1;

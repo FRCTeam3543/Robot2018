@@ -12,7 +12,7 @@ public interface RobotConfig {
 
 	public Config<Integer> getWiringConfig();
 	public Config<Double> getCalibrationConfig();
-	public Config<Boolean> getFlagConfig();
+//	public Config<Boolean> getFlagConfig();
 	
 	public default int getWiring(String key, int defaultValue) {
 		if (!this.getWiringConfig().containsKey(key)) {
@@ -28,9 +28,9 @@ public interface RobotConfig {
 		return this.getCalibrationConfig().lookup(key, defaultValue);
 	}
 
-	public default boolean getFlag(String key, boolean defaultValue) {
-		return this.getFlagConfig().lookup(key, defaultValue);
-	}	
+//	public default boolean getFlag(String key, boolean defaultValue) {
+//		return this.getFlagConfig().lookup(key, defaultValue);
+//	}	
 
 	/**
 	 * Flags return false by default, but  issues a warning as well
@@ -38,12 +38,12 @@ public interface RobotConfig {
 	 * @param key
 	 * @return
 	 */
-	public default boolean getFlag(String key) {
-		if (!this.getFlagConfig().containsKey(key)) {
-			Robot.LOGGER.warning(String.format("Flag %s not set, assume false", key));
-		}
-		return this.getFlagConfig().lookup(key, false);
-	}
+//	public default boolean getFlag(String key) {
+//		if (!this.getFlagConfig().containsKey(key)) {
+//			Robot.LOGGER.warning(String.format("Flag %s not set, assume false", key));
+//		}
+//		return this.getFlagConfig().lookup(key, false);
+//	}
 	
 	/**
 	 * Get a wiring value, and throw exception if none is provided

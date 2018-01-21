@@ -47,7 +47,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class RobotMap implements RobotConfig {
 	private Config<Double> calibration = new Config<>();
 	private Config<Integer> wiring = new Config<>();
-	private Config<Boolean> flags = new Config<>();
+//	private Config<Boolean> flags = new Config<>();
 		
 	// This holds a singleton instance
 	private static RobotMap _instance = new RobotMap();
@@ -196,9 +196,9 @@ public class RobotMap implements RobotConfig {
 		return this.calibration;
 	}
 
-	@Override
-	public Config<Boolean> getFlagConfig() {
-		return this.flags;
-	}
+//	@Override
+//	public Config<Boolean> getFlagConfig() {
+//		return this.flags;
+//	}
         
 }
