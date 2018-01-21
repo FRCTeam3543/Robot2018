@@ -44,7 +44,7 @@ public class ArcadeDriveWithJoystick extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		this.driveLine.arcadeDrive(this.joystick);
-		this.driveLine.doTimerDelay();
+//		this.driveLine.doTimerDelay();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

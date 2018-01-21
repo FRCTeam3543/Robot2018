@@ -11,12 +11,16 @@
 
 package org.usfirst.frc.team3543.robot.subsystems;
 
+import org.usfirst.frc.team3543.robot.Calibration;
 import org.usfirst.frc.team3543.robot.OI;
 import org.usfirst.frc.team3543.robot.RobotMap;
+import org.usfirst.frc.team3543.robot.Wiring;
 import org.usfirst.frc.team3543.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team3543.robot.motion.MotionProfile;
 import org.usfirst.frc.team3543.robot.util.RobotConfig;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -97,20 +101,31 @@ public class DriveLine extends BaseSubsystem {
 		super(config);
 
 		// Initialize the robot
-		int frontLeftMotor = config.getWiring(LEFT_FRONT_MOTOR_PORT, 1);
-		int backLeftMotor = config.getWiring(LEFT_BACK_MOTOR_PORT, 2);
-		int frontRightMotor = config.getWiring(RIGHT_FRONT_MOTOR_PORT, 3);
-		int backRightMotor = config.getWiring(RIGHT_BACK_MOTOR_PORT, 4);
-		int gyro = config.getWiring(GYRO_PORT, 1);		
-		int encoderLeft1 = config.getWiring(LEFT_ENCODER_PORT_1);
-		int encoderLeft2 = config.getWiring(LEFT_ENCODER_PORT_2);
-		int encoderRight1 = config.getWiring(RIGHT_ENCODER_PORT_1);
-		int encoderRight2 = config.getWiring(RIGHT_ENCODER_PORT_2);
+		int frontLeftMotor = Wiring.DRIVELINE_MOTOR_LEFT_FRONT;
+		int backLeftMotor = Wiring.DRIVELINE_MOTOR_LEFT_BACK;
+		int frontRightMotor = Wiring.DRIVELINE_MOTOR_RIGHT_FRONT;
+		int backRightMotor = Wiring.DRIVELINE_MOTOR_RIGHT_BACK;
+		int gyro = Wiring.DRIVELINE_GYRO_PORT;	
+		int encoderLeft1 = Wiring.DRIVELINE_LEFT_ENCODER_PORT_1;
+		int encoderLeft2 = Wiring.DRIVELINE_LEFT_ENCODER_PORT_2;
+		int encoderRight1 = Wiring.DRIVELINE_RIGHT_ENCODER_PORT_1;
+		int encoderRight2 = Wiring.DRIVELINE_RIGHT_ENCODER_PORT_2;
 
 		frontLeft = new WPI_TalonSRX(frontLeftMotor);       
-		backLeft = new WPI_TalonSRX(backLeftMotor);
+		backLeft = new WPI_TalonSRX(backLeftMotor);		
+		backLeft.follow(frontLeft);
+		
+		frontLeft.setNeutralMode(NeutralMode.Brake);
+		frontLeft.configOpenloopRamp(Calibration.DRIVELINE_OPEN_LOOP_RAMP, 0);
+		backLeft.configOpenloopRamp(0, 0);
+		
 		frontRight = new WPI_TalonSRX(frontRightMotor);
 		backRight = new WPI_TalonSRX(backRightMotor);
+		backRight.follow(frontRight);		
+		frontRight.setNeutralMode(NeutralMode.Brake);
+		frontRight.configOpenloopRamp(Calibration.DRIVELINE_OPEN_LOOP_RAMP, 0);
+		backRight.configOpenloopRamp(0, 0);
+				
 		robotDrive = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
 
 		String name = getName();
@@ -120,19 +135,19 @@ public class DriveLine extends BaseSubsystem {
 		LiveWindow.addActuator(name, "Back Right Motor", backRight);
 		
 		robotDrive.setSafetyEnabled(true);
-		robotDrive.setExpiration(config.getCalibration(EXPIRATION, DEFAULT_EXPIRATION));
-		robotDrive.setSensitivity(config.getCalibration(SENSITIVITY, DEFAULT_DRIVE_SENSITIVITY));
-		robotDrive.setMaxOutput(config.getCalibration(MAX_OUTPUT, DEFAULT_MAX_OUTPUT));
+		robotDrive.setExpiration(Calibration.DRIVELINE_EXPIRATION);
+		robotDrive.setSensitivity(Calibration.DRIVELINE_SENSITIVITY);
+		robotDrive.setMaxOutput(Calibration.DRIVELINE_MAX_OUTPUT);
 
-		timerDelay = config.getCalibration("driveline.timer_delay", DriveLine.DEFAULT_TIMER_DELAY);
+		timerDelay = Calibration.DRIVELINE_TIMER_DELAY;
 
 		analogGyro = new AnalogGyro(gyro);
-		analogGyro.setSensitivity(DEFAULT_GYRO_SENSITIVITY);
+		analogGyro.setSensitivity(Calibration.DRIVELINE_GYRO_SENSITIVTY);
 		
 		LiveWindow.addSensor(name, "Gyro", analogGyro);
 		
-		defaultLeftEncoderDPP = config.getCalibration(LEFT_ENCODER_DISTANCE_PER_PULSE, DEFAULT_ENCODER_DISTANCE_PER_PULSE);
-		defaultRightEncoderDPP = config.getCalibration(RIGHT_ENCODER_DISTANCE_PER_PULSE, DEFAULT_ENCODER_DISTANCE_PER_PULSE);
+		defaultLeftEncoderDPP = Calibration.DRIVELINE_LEFT_ENCODER_DPP;
+		defaultRightEncoderDPP = Calibration.DRIVELINE_RIGHT_ENCODER_DPP;
 		
 		quadratureEncoderLeft = new Encoder(encoderLeft1, encoderLeft2, false, EncodingType.k2X);	    	
 		quadratureEncoderLeft.setDistancePerPulse(defaultLeftEncoderDPP);
@@ -141,6 +156,8 @@ public class DriveLine extends BaseSubsystem {
 		quadratureEncoderRight = new Encoder(encoderRight1, encoderRight2, false, EncodingType.k2X);
 		quadratureEncoderRight.setDistancePerPulse(defaultRightEncoderDPP);
 		quadratureEncoderRight.setPIDSourceType(PIDSourceType.kRate);
+
+//		frontLeft.configSelectedFeedbackSensor(quadratureEncoderLeft, 0, WPI_TalonSRX.DEFAULT_SAFETY_EXPIRATION);
 
 		LiveWindow.addSensor(name, "Left Quad Encoder", quadratureEncoderLeft);
 		LiveWindow.addSensor(name, "Left Quad Encoder", quadratureEncoderRight);
