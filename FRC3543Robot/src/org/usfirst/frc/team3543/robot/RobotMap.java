@@ -11,10 +11,11 @@
 
 package org.usfirst.frc.team3543.robot;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.usfirst.frc.team3543.robot.util.Config;
-import org.usfirst.frc.team3543.robot.util.ConfigLoader;
 import org.usfirst.frc.team3543.robot.util.RobotConfig;
 
 import com.ctre.CANTalon;
@@ -66,13 +67,33 @@ public class RobotMap implements RobotConfig {
 		return _instance;
 	}
 	
-	public void initFromPropertyFiles() {
-		Properties wiringProps = ConfigLoader.loadFromFileOnClasspath("wiring.properties");
-		Properties calibrationProps = ConfigLoader.loadFromFileOnClasspath("calibration.properties");			
+	public RobotMap initFromPropertyFiles() {
+		Robot.LOGGER.info("Initialize RobotMap from property files");
+		Properties wiringProps = loadFromFileOnClasspath("wiring.properties");
+		Properties calibrationProps = loadFromFileOnClasspath("calibration.properties");			
 		this.initWiring(wiringProps);
-		this.initCalibration(calibrationProps);		
+		this.initCalibration(calibrationProps);	
+		return this;
 	}
 	
+	
+	private Properties loadFromStream(InputStream is) throws IOException {
+		if (is == null) {
+			throw new RuntimeException("Null InputStream");
+		}
+		Properties props = new Properties();
+		props.load(is);		
+		return props;		
+	}
+	
+	private Properties loadFromFileOnClasspath(String propsFile) {
+		try {
+			return loadFromStream(getClass().getResourceAsStream(propsFile));
+		} catch (IOException e) {
+			Robot.LOGGER.warning(String.format("Could not find %s on classpath", propsFile));
+			throw new IllegalArgumentException(e);
+		}
+	}	
 	protected void initWiring(Properties props) {
 		this.wiring = new Config<Integer>();
 		for (Object k : props.keySet()) {

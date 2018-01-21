@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3543.robot.subsystems;
 
 import org.usfirst.frc.team3543.robot.RobotMap;
+import org.usfirst.frc.team3543.robot.Wiring;
 import org.usfirst.frc.team3543.robot.commands.ClawOffCommand;
 import org.usfirst.frc.team3543.robot.commands.ClawOpenCommand;
 import org.usfirst.frc.team3543.robot.util.RobotConfig;
@@ -22,8 +23,8 @@ public class Claw extends BaseSubsystem {
 	
 	public Claw(RobotConfig config) {
 		super(config);
-		airpusher = new Compressor(config.getWiring(COMPRESSOR_PORT));
-		doubleSolenoid = new DoubleSolenoid(config.getWiring(SOLENOID_1_PORT), config.getWiring(SOLENOID_2_PORT));
+		airpusher = new Compressor(Wiring.CLAW_COMPRESSOR_PORT);
+		doubleSolenoid = new DoubleSolenoid(Wiring.CLAW_SOLENOID_1_PORT, Wiring.CLAW_SOLENOID_2_PORT);
 		updateOperatorInterface();
 	}
 
