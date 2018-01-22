@@ -1,24 +1,35 @@
 package org.usfirst.frc.team3543.robot.motion;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motion.*;
 
 @SuppressWarnings("deprecation")
 public class MotionProfile {
-
+	
 	public static final int MAX_POINTS = 128;	 // max for Talon SRX motion controller buffer
 
 	private ArrayList<TrajectoryPoint> points = new ArrayList<>();
 	private int profileSlot = 0;
+	private double period = 0; // ms
 	
-	public MotionProfile(int profileSlotSelect) {
+	public MotionProfile(int profileSlotSelect, double period) {
 		this.profileSlot = profileSlotSelect;
+		this.period = period;
 	}
 	
+	public MotionProfile(double period) {
+		this(0, period);
+	}
+
 	public MotionProfile() {
-		this(0);
+		this(MotionProfileGenerator.DEFAULT_ITP);
+	}
+	
+	public double getPeriod() {
+		return period;
 	}
 	
 	public void clear() {
@@ -73,5 +84,9 @@ public class MotionProfile {
 		
 		MotionProfile profile = gen.generate(distance);
 		profile.dump();
+	}
+
+	public List<TrajectoryPoint> getPoints() {
+		return this.points;
 	}
 }

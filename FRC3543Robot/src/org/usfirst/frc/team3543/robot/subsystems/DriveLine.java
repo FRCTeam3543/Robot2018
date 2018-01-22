@@ -12,24 +12,22 @@
 package org.usfirst.frc.team3543.robot.subsystems;
 
 import org.usfirst.frc.team3543.robot.Calibration;
-import org.usfirst.frc.team3543.robot.OI;
 import org.usfirst.frc.team3543.robot.RobotMap;
 import org.usfirst.frc.team3543.robot.Wiring;
-import org.usfirst.frc.team3543.robot.commands.ArcadeDriveWithJoystick;
-import org.usfirst.frc.team3543.robot.motion.MotionProfile;
 import org.usfirst.frc.team3543.robot.util.RobotConfig;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -157,16 +155,29 @@ public class DriveLine extends BaseSubsystem {
 		quadratureEncoderRight.setDistancePerPulse(defaultRightEncoderDPP);
 		quadratureEncoderRight.setPIDSourceType(PIDSourceType.kRate);
 
-//		frontLeft.configSelectedFeedbackSensor(quadratureEncoderLeft, 0, WPI_TalonSRX.DEFAULT_SAFETY_EXPIRATION);
+		// enable quad encoder feedback
+		// FIXME - we need to confirm we've connect the AM-E4T's to the Talons and not the Rio via a am-2633
+		// http://www.andymark.com/product-p/am-3
+		// from the manual - The Talon directly supports Quadrature Encoders. 
+		// If Quadrature is selected, the decoding is done in 4x mode. 
+		// This means that each pulse will correspond to four counts.
+		frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 
 		LiveWindow.addSensor(name, "Left Quad Encoder", quadratureEncoderLeft);
 		LiveWindow.addSensor(name, "Left Quad Encoder", quadratureEncoderRight);
-
 	}
 
+	public WPI_TalonSRX getLeftMotor() {
+		return this.frontLeft;
+	}
+	
+	public WPI_TalonSRX getRightMotor() {
+		return this.frontRight;
+	}
+		
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
-
 	public void initDefaultCommand() {
 		this.analogGyro.calibrate(); 	
 	}
@@ -280,6 +291,9 @@ public class DriveLine extends BaseSubsystem {
 	}
 
 	public void resetAll() {
+		// followers should follow
+		frontLeft.set(ControlMode.PercentOutput,0);
+		frontRight.set(ControlMode.PercentOutput,0);
 		resetEncoders();
 		resetGyro();		
 		updateOperatorInterface();		
@@ -298,32 +312,6 @@ public class DriveLine extends BaseSubsystem {
 		return this.gyroSensitivity;
 	}
 
-	public MotionProfileRunner initMotionProfile(MotionProfile profile) {
-		return new MotionProfileRunner(this, profile);		
-	}
-	
-	public static class MotionProfileRunner {
-		MotionProfile profile;
-		DriveLine driveLine;
-		public static final int BUFSIZE = 128;
-		
-		public MotionProfileRunner(DriveLine driveLine, MotionProfile profile) {
-			this.profile = profile;		
-			this.driveLine = driveLine;
-		}
-		
-		public boolean isActive() {
-			return false;
-		}
-		
-		public void start() {
-			
-		}
-		
-		public void stop() {
-			
-		}
-	}
 }
 
 

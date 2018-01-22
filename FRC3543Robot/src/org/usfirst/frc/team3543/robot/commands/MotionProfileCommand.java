@@ -1,54 +1,57 @@
 package org.usfirst.frc.team3543.robot.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.usfirst.frc.team3543.robot.Robot;
 import org.usfirst.frc.team3543.robot.motion.MotionProfile;
-import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
+import org.usfirst.frc.team3543.robot.motion.MotionProfileProvider;
+import org.usfirst.frc.team3543.robot.motion.MotionProfileRunner;
 import org.usfirst.frc.team3543.robot.util.NumberProvider;
+
+import com.ctre.phoenix.motion.SetValueMotionProfile;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class MotionProfileCommand extends Command {
-	public static final int LEFT = 1;
-	public static final int RIGHT = 2;
-	public static final int BOTH = LEFT | RIGHT;
 	
 	Robot robot;
+	WPI_TalonSRX talon;
 	NumberProvider distanceProvider;
-	int which;
-	DriveLine.MotionProfileRunner runner;
-	private MotionProfile profile;
+	MotionProfileRunner runner;
+	private MotionProfileProvider profileProvider;
 	boolean once = false;
 	
-	public MotionProfileCommand(Robot robot, MotionProfile profile, int which, NumberProvider distanceProvider) {
+	public MotionProfileCommand(Robot robot, MotionProfileProvider profileProvider, WPI_TalonSRX talon) {
 		super();
-		
+		requires(robot.getDriveLine());
 		this.robot = robot;
-		this.distanceProvider = distanceProvider;
-		this.which = which;
-		this.profile = profile;
+		this.talon = talon;
+		this.profileProvider = profileProvider;
+	}
+	
+	@Override
+	protected void initialize() {
+		runner = new MotionProfileRunner(robot.getDriveLine().getLeftMotor(), profileProvider.getMotionProfile().getPeriod() / 2);
 	}
 	
 	@Override	
 	public void execute() {
 		if (!once) {
-			runner.start();
+			// put the motors in control mode			
+			runner.getTalon().set(ControlMode.MotionProfile, 0);
+			runner.startMotionProfile(profileProvider.getMotionProfile());			
 			once = true;
 		}
+		runner.control();
 	}
-	
-	@Override
-	protected void initialize() {		
-//		super.initialize();
-//		robot.getDriveLine().
-//		runner = robot.getDriveLine().initMotionProfile(this.profile);
-	}
-	
+		
 	@Override
 	protected void interrupted() {
-		super.interrupted();
-		if (once) {
-			runner.stop();
-		}
+		runner.reset();
+		super.interrupted();		
 	}
 
 	@Override
@@ -58,7 +61,10 @@ public class MotionProfileCommand extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return runner.isActive();
+		return runner.getSetValue().equals(SetValueMotionProfile.Hold)
+			   ||
+			   runner.getSetValue().equals(SetValueMotionProfile.Invalid)					
+		;		
 	}
 	
 }
