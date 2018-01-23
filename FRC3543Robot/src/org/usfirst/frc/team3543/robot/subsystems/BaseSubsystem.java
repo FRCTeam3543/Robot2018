@@ -12,7 +12,7 @@ public abstract class BaseSubsystem extends Subsystem {
 	
 	public BaseSubsystem(RobotConfig config) {
 		this.operatorInterface = operatorInterface;
-		this.setName(getClass().getSimpleName());
+		this.setName(getClass().getSimpleName());		
 	}
 	
 	protected void updateOperatorInterface() {

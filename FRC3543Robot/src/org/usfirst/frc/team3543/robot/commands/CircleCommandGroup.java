@@ -10,19 +10,18 @@ public class CircleCommandGroup extends CommandGroup {
 	private Robot robot;
 	protected NumberProvider distanceProvider;
 
-	public CircleCommandGroup(Robot robot, NumberProvider distanceProvider, NumberProvider forwardGainProvider, NumberProvider rotationGainProvider) {
+	public CircleCommandGroup(Robot robot, NumberProvider distanceProvider) {
 		requires(robot.getDriveLine());
+		requires(robot.getDriveLineLinearPID());
+		requires(robot.getDriveLineRotationPID());
+		
 		this.distanceProvider = distanceProvider;
-		addSequential(new DriveForwardByDistanceCommand(robot, distanceProvider, forwardGainProvider));		
-        addSequential(new RotateByAngleCommand(robot, NumberProvider.fixedValue(Math.toRadians(180)), rotationGainProvider));		
-		addSequential(new DriveForwardByDistanceCommand(robot, distanceProvider, forwardGainProvider));		        
-        addSequential(new RotateByAngleCommand(robot, NumberProvider.fixedValue(Math.toRadians(-180)), rotationGainProvider));
+		addSequential(new DriveForwardByDistanceUsingPIDCommand(robot, distanceProvider));		
+        addSequential(new RotateByAngleUsingPIDCommand(robot, NumberProvider.fixedValue(Math.toRadians(180))));		
+		addSequential(new DriveForwardByDistanceUsingPIDCommand(robot, distanceProvider));		        
+        addSequential(new RotateByAngleUsingPIDCommand(robot, NumberProvider.fixedValue(Math.toRadians(-180))));
 	}
-	
-	public CircleCommandGroup(Robot robot, NumberProvider distanceProvider, NumberProvider gainProvider) {
-		this(robot, distanceProvider, gainProvider, gainProvider);
-	}
-	
+		
 	@Override
 	protected void initialize() {
 		robot.getDriveLine().resetAll();

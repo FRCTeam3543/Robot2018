@@ -118,6 +118,6 @@ public class RotateByAngleCommand extends Command {
 	@Override
 	protected void end() {
 		super.end();
-		Robot.driveLine.stop();
+		robot.getDriveLine().stop();
 	}
 }

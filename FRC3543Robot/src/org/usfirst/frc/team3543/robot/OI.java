@@ -8,13 +8,19 @@
 package org.usfirst.frc.team3543.robot;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.usfirst.frc.team3543.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team3543.robot.commands.CircleCommandGroup;
 import org.usfirst.frc.team3543.robot.commands.ClawCloseCommand;
 import org.usfirst.frc.team3543.robot.commands.ClawOpenCommand;
 import org.usfirst.frc.team3543.robot.commands.DriveForwardByDistanceCommand;
+import org.usfirst.frc.team3543.robot.commands.DriveForwardByDistanceUsingPIDCommand;
 import org.usfirst.frc.team3543.robot.commands.DuhCommand;
 import org.usfirst.frc.team3543.robot.commands.RotateByAngleCommand;
+import org.usfirst.frc.team3543.robot.commands.RotateByAngleUsingPIDCommand;
+import org.usfirst.frc.team3543.robot.commands.SmoothDriveForwardByDistanceCommand;
 import org.usfirst.frc.team3543.robot.commands.TankDriveWithJoystick;
 import org.usfirst.frc.team3543.robot.util.DegreesToRadiansNumberProvider;
 import org.usfirst.frc.team3543.robot.util.NumberProvider;
@@ -43,10 +49,14 @@ public class OI {
 	public Joystick leftJoystick;
 	public Joystick rightJoystick;
 	
+	List<String> log = new ArrayList<>();
+	
 	public static final int LEFT_JOYSTICK = 0;
 	public static final int RIGHT_JOYSTICK = 1;
 	public static final int TRIGGER_BUTTON = 1;
 	public static final int THUMB_BUTTON = 2;
+	public static final int LOG_BUTTON = 2; // thumb on left joystick logs
+	
 	public static final int CLOSE_CLAW_BUTTON = THUMB_BUTTON;
 
 	public static final String DEFAULT_LINEAR_GAIN = "Default Linear Gain";
@@ -90,9 +100,37 @@ public class OI {
 		);
 		NumberProvider forwardDistanceProvider = this.provideNumber("Drive Forward Distance", 12);
 		NumberProvider rotationAngleProvider = new DegreesToRadiansNumberProvider(this.provideNumber("Rotate by Angle", 90));
-		SmartDashboard.putData("Rotate robot degrees", new RotateByAngleCommand(robot, rotationAngleProvider, rotationGainProvider));			
-		SmartDashboard.putData("Drive Forward", new DriveForwardByDistanceCommand(robot, forwardDistanceProvider, linearGainProvider));
-		SmartDashboard.putData("Circle Test", new CircleCommandGroup(robot, forwardDistanceProvider, linearGainProvider, rotationGainProvider));
+		SmartDashboard.putData("Rotate robot degrees", new RotateByAngleUsingPIDCommand(robot, rotationAngleProvider));			
+		SmartDashboard.putData("Drive Forward", new DriveForwardByDistanceUsingPIDCommand(robot, forwardDistanceProvider));
+		SmartDashboard.putData("Circle Test", new CircleCommandGroup(robot, forwardDistanceProvider));
+
+		// this needs to be redone in order to feed setpoints from a recorded value
+//		SmartDashboard.putData("Motion Profile", new SmoothDriveForwardByDistanceCommand(robot, forwardDistanceProvider));
+		
+		JoystickButton logButton = new JoystickButton(leftJoystick, LOG_BUTTON);
+		Command toggleLoggingCommand = new Command() {
+			boolean once = false;
+			
+			public void execute() {
+				if (!once) {
+					once = true;					
+					robot.setRecording(!robot.isRecording());
+					SmartDashboard.putString("RECORDING", robot.isRecording() ? "ON" : "OFF");
+					if (robot.isRecording()) { // we must have just started, clear the log
+						log.clear();
+					}
+					else { // we just stopped, write the log to the dashboard
+						SmartDashboard.putStringArray("LOG", log.toArray(new String[] {}));
+					}
+				}
+			}
+
+			@Override
+			protected boolean isFinished() {
+				return once;
+			}			
+		};
+		logButton.whenPressed(toggleLoggingCommand);
 	}
 
 	protected SmartDashboardNumberProvider provideNumber(String forKey, double defaultValue) {
@@ -140,6 +178,12 @@ public class OI {
 	public Command getAutonomousCommand(Robot robot) {
 		// FIXME - need to set up the autonomous command here
 		return new DuhCommand();
+	}
+
+	public void record(Robot robot) {
+		// record the output
+		double[] rec = robot.getDriveLine().getPositionAndVelocity();
+		log.add(String.format("%.3f,%.3f,%.3f,%.3f\n", rec[0], rec[1], rec[2], rec[3]));
 	}
 
 }

@@ -24,6 +24,8 @@ import org.usfirst.frc.team3543.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team3543.robot.commands.TestAutonomousCommand;
 import org.usfirst.frc.team3543.robot.subsystems.Claw;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
+import org.usfirst.frc.team3543.robot.subsystems.DriveLineLinearPID;
+import org.usfirst.frc.team3543.robot.subsystems.DriveLineRotationPID;
 import org.usfirst.frc.team3543.robot.util.Config;
 import org.usfirst.frc.team3543.robot.util.RobotConfig;
 
@@ -45,9 +47,13 @@ public class Robot extends TimedRobot implements RobotConfig {
 	private RobotMap config;
 	
 	Command autonomousCommand;
-	public static DriveLine driveLine;
-	public static Claw claw;
+	public DriveLine driveLine;
+	public DriveLineLinearPID driveLineLinearPID;	
+	public DriveLineRotationPID driveLineRotationPID;		
+	public Claw claw;
 
+	private boolean recording = false;
+	
 	public OI operatorInterface; // operator interface
 
 	public Robot() {
@@ -68,6 +74,8 @@ public class Robot extends TimedRobot implements RobotConfig {
 		
 		// properties should be initialized in the constructor, not later
 		driveLine = new DriveLine(config);
+		driveLineRotationPID = new DriveLineRotationPID(driveLine);
+		driveLineLinearPID = new DriveLineLinearPID(driveLine);
 		claw = new Claw(config);
 	}
 
@@ -83,6 +91,14 @@ public class Robot extends TimedRobot implements RobotConfig {
 		return this.claw;
 	}
 	
+	public DriveLineLinearPID getDriveLineLinearPID() {
+		return driveLineLinearPID;
+	}
+
+	public DriveLineRotationPID getDriveLineRotationPID() {
+		return driveLineRotationPID;
+	}
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -157,8 +173,19 @@ public class Robot extends TimedRobot implements RobotConfig {
 	public void teleopPeriodic() {
 		updateDashboard();    	
 		Scheduler.getInstance().run();
+		if (recording) {
+			this.getOperatorInterface().record(this);
+		}
+	}
+	
+	public void setRecording(boolean b) {
+		this.recording = b;
 	}
 
+	public boolean isRecording() {
+		return recording;
+	}
+	
 	@Override
 	public void startCompetition() {
 		super.startCompetition();

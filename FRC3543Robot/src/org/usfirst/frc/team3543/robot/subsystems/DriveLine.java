@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Timer;
@@ -305,11 +306,21 @@ public class DriveLine extends BaseSubsystem {
 		SmartDashboard.putNumber(DASHBOARD_RIGHT_ENCODER_DPP,this.quadratureEncoderRight.getDistancePerPulse());
 		SmartDashboard.putNumber(DASHBOARD_LEFT_WHEEL_DISTANCE,this.getLeftEncoderValue());
 		SmartDashboard.putNumber(DASHBOARD_RIGHT_WHEEL_DISTANCE,this.getRightEncoderValue());
-		SmartDashboard.putNumber(DASHBOARD_GYRO_ANGLE, this.getGyroAngle());		
+		SmartDashboard.putNumber(DASHBOARD_GYRO_ANGLE, this.getGyroAngle());	
 	}
 
 	public double getGyroSensitivity() {
 		return this.gyroSensitivity;
+	}
+
+	public double[] getPositionAndVelocity() {
+		return new double[] {
+				getLeftMotor().getSelectedSensorPosition(0),				
+				getLeftMotor().getSelectedSensorVelocity(0),
+				getRightMotor().getSelectedSensorPosition(0),
+				getRightMotor().getSelectedSensorVelocity(0)
+		};
+		
 	}
 
 }

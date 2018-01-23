@@ -57,6 +57,7 @@ public class MotionProfileCommand extends Command {
 	@Override
 	public synchronized void cancel() {
 		super.cancel();
+		runner.reset();
 	}
 
 	@Override
@@ -66,5 +67,6 @@ public class MotionProfileCommand extends Command {
 			   runner.getSetValue().equals(SetValueMotionProfile.Invalid)					
 		;		
 	}
+	
 	
 }
