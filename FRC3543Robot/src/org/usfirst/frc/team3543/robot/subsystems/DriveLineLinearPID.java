@@ -3,6 +3,7 @@ package org.usfirst.frc.team3543.robot.subsystems;
 import org.usfirst.frc.team3543.robot.Calibration;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * PID Controller for linear motion.
@@ -21,13 +22,16 @@ public class DriveLineLinearPID extends PIDSubsystem {
 
 	@Override
 	protected double returnPIDInput() {
+		SmartDashboard.putNumber("Linear PID Input", driveLine.getLeftEncoderValue());
 		return driveLine.getLeftEncoderValue();
 	}
 
 	@Override
 	protected void usePIDOutput(double output) {
-		driveLine.getLeftMotor().pidWrite(output);	
-		driveLine.getRightMotor().pidWrite(output);		
+		SmartDashboard.putNumber("Linear PID out", output);
+//		driveLine.getLeftMotor().pidWrite(output);	
+		driveLine.drive(-output);
+//		driveLine.getRightMotor().pidWrite(output);		
 	}
 
 	@Override

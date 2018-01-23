@@ -9,6 +9,7 @@ import org.usfirst.frc.team3543.robot.util.NumberProvider;
 import org.usfirst.frc.team3543.robot.util.SmartDashboardNumberProvider;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveForwardByDistanceUsingPIDCommand extends Command {
 	protected double targetDistance = 0;
@@ -60,6 +61,9 @@ public class DriveForwardByDistanceUsingPIDCommand extends Command {
 	
 	protected void updateDistanceRemaining() {
 		double d = robot.getDriveLineLinearPID().getPosition();		
+		SmartDashboard.putNumber("Target Disance", d);
+		SmartDashboard.putNumber("Linear PID Setpoint", robot.getDriveLineLinearPID().getSetpoint());
+		SmartDashboard.putNumber("Linear PID Position", robot.getDriveLineLinearPID().getPosition());		
 		robot.getOperatorInterface().putNumber("Distance Remaining", d - this.targetDistance);
 	}
 	

@@ -92,12 +92,6 @@ public class OI {
 		closeClawButton.whenPressed(new ClawCloseCommand(robot));
 		closeClawButton.whenReleased(new ClawOpenCommand(robot));
 
-		NumberProvider linearGainProvider = this.provideNumber("Drive Forward Gain", 
-				robot.getConfig().getCalibration("default.linear_gain", RobotMap.DEFAULT_LINEAR_GAIN)
-		);
-		NumberProvider rotationGainProvider = this.provideNumber("Rotation gain", 
-				robot.getConfig().getCalibration("default.rotation_gain", RobotMap.DEFAULT_ROTATION_GAIN)
-		);
 		NumberProvider forwardDistanceProvider = this.provideNumber("Drive Forward Distance", 12);
 		NumberProvider rotationAngleProvider = new DegreesToRadiansNumberProvider(this.provideNumber("Rotate by Angle", 90));
 		SmartDashboard.putData("Rotate robot degrees", new RotateByAngleUsingPIDCommand(robot, rotationAngleProvider));			
@@ -153,10 +147,6 @@ public class OI {
 
 	public void putDrivelineGyro(double angleInDegrees) {
 		putNumber(OI.DRIVELINE_GYRO, round(angleInDegrees,1));
-	}
-
-	public double getWheelEncoderDistancePerPulse() {
-		return SmartDashboard.getNumber(OI.WHEEL_ENCODER_DISTANCE_PER_PULSE, WHEEL_DISTANCE_PER_PULSE);
 	}
 
 	private double round(double num, int decimals) {

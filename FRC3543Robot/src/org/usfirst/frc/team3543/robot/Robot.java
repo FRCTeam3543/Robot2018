@@ -176,6 +176,7 @@ public class Robot extends TimedRobot implements RobotConfig {
 		if (recording) {
 			this.getOperatorInterface().record(this);
 		}
+		updateDashboard();
 	}
 	
 	public void setRecording(boolean b) {
@@ -205,6 +206,7 @@ public class Robot extends TimedRobot implements RobotConfig {
 
 	protected void updateDashboard() {
 		// put any extra dashboard update code here
+		SmartDashboard.updateValues();
 	}
 
 	// These are delegate methods to the config, but they encapsulate an indirection in

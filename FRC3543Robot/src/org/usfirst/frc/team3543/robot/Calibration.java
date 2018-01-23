@@ -6,19 +6,22 @@ public class Calibration {
 	public static final double DRIVELINE_SENSITIVITY 		= 0.5;
 	public static final double DRIVELINE_EXPIRATION 		= 0.1;
 	public static final double DRIVELINE_MAX_OUTPUT 		= 1.0;	
-	public static final double DRIVELINE_ENCODER_DPP		= 0.0131;
+	public static final double DRIVELINE_ENCODER_DPP		= 0.0131 * 2.5 / 1.5;
 	public static final double DRIVELINE_LEFT_ENCODER_DPP		= DRIVELINE_ENCODER_DPP;
 	public static final double DRIVELINE_RIGHT_ENCODER_DPP	= DRIVELINE_ENCODER_DPP;
 	public static final double DRIVELINE_GYRO_SENSITIVTY	= 0.007;
 	public static final double DRIVELINE_TIMER_DELAY		= 0.01;
 	public static final double DRIVELINE_OPEN_LOOP_RAMP	= 1.0;
 	// FIXME PID Controllers need to be tuned
-	public static final double DRIVELINE_LINEAR_PID_P 	= 0.1;
-	public static final double DRIVELINE_LINEAR_PID_I 	= 0.0;
-	public static final double DRIVELINE_LINEAR_PID_D 	= 0.01;
+	public static final double DRIVELINE_LINEAR_PID_P 	= -0.02;
+	public static final double DRIVELINE_LINEAR_PID_I 	= -0.0025;
+	public static final double DRIVELINE_LINEAR_PID_D 	= 0.00;
 	public static final double DRIVELINE_ROTATION_PID_P 	= 0.1;
 	public static final double DRIVELINE_ROTATION_PID_I 	= 0.0;
 	public static final double DRIVELINE_ROTATION_PID_D 	= 0.01;
+	
+	public static final double MAX_SPEED	= 0.5;
+	public static final double MIN_SPEED	= -0.5;
 	
 	public static final double DEFAULT_LINEAR_GAIN		= 0.25;
 	public static final double DEFAULT_ROTATOIN_GAIN		= 0.27;

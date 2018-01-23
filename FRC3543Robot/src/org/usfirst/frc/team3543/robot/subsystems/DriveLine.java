@@ -162,8 +162,8 @@ public class DriveLine extends BaseSubsystem {
 		// from the manual - The Talon directly supports Quadrature Encoders. 
 		// If Quadrature is selected, the decoding is done in 4x mode. 
 		// This means that each pulse will correspond to four counts.
-		frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-		frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+//		frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+//		frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 
 		LiveWindow.addSensor(name, "Left Quad Encoder", quadratureEncoderLeft);
 		LiveWindow.addSensor(name, "Left Quad Encoder", quadratureEncoderRight);
@@ -194,7 +194,8 @@ public class DriveLine extends BaseSubsystem {
 
 	public void drive(double magnitude, double curve) {
 		// Here we reverse magnitude, because the motors are inverted on our bot
-		robotDrive.drive(-magnitude, curve);
+		double clipped = Math.max(Calibration.MIN_SPEED, Math.min(Calibration.MAX_SPEED, magnitude));
+		robotDrive.drive(-clipped, curve);
 		updateOperatorInterface();
 	}
 
@@ -257,13 +258,13 @@ public class DriveLine extends BaseSubsystem {
 	}
 
 	public void resetEncoders() {
-		double leftDpp = SmartDashboard.getNumber(DASHBOARD_LEFT_ENCODER_DPP, defaultLeftEncoderDPP);
-		double rightDpp = SmartDashboard.getNumber(DASHBOARD_RIGHT_ENCODER_DPP, defaultRightEncoderDPP);
+//		double leftDpp = SmartDashboard.getNumber(DASHBOARD_LEFT_ENCODER_DPP, defaultLeftEncoderDPP);
+//		double rightDpp = SmartDashboard.getNumber(DASHBOARD_RIGHT_ENCODER_DPP, defaultRightEncoderDPP);
 		
-		this.quadratureEncoderLeft.reset();
-		this.quadratureEncoderLeft.setDistancePerPulse(leftDpp);
+		this.quadratureEncoderLeft.reset();		
+//		this.quadratureEncoderLeft.setDistancePerPulse(leftDpp);
 		this.quadratureEncoderRight.reset();
-		this.quadratureEncoderRight.setDistancePerPulse(rightDpp);
+//		this.quadratureEncoderRight.setDistancePerPulse(rightDpp);
 		updateOperatorInterface();
 	}
 

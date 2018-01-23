@@ -31,6 +31,7 @@ public class Claw extends BaseSubsystem {
 	@Override
 	protected void initDefaultCommand() {
 		// none
+		reset();
 	}
 
 	public boolean isOpen() {
