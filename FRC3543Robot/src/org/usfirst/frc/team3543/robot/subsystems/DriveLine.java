@@ -193,14 +193,18 @@ public class DriveLine extends BaseSubsystem {
 		updateOperatorInterface();
 	}
 
+	void log(double magnitude, double curve) {
+		if (Robot.logging) {
+			Robot.log(String.format("DRIVELINE %d %.3f %.3f", System.currentTimeMillis(), magnitude, curve));
+		}
+	}
+	
 	public void drive(double magnitude, double curve) {
 		// Here we reverse magnitude, because the motors are inverted on our bot
 		double clipped = Math.max(Calibration.MIN_SPEED, Math.min(Calibration.MAX_SPEED, magnitude));
 		robotDrive.drive(-clipped, curve);		
 		updateOperatorInterface();
-		if (Robot.logging) {
-			Robot.log(String.format("DRIVELINE %d %.3f %.3f", System.currentTimeMillis(), magnitude, curve));
-		}
+		log(magnitude, curve);
 	}
 
 	public void drive(double speed) {
@@ -241,6 +245,7 @@ public class DriveLine extends BaseSubsystem {
 
 	public void arcadeDrive(Joystick stick) {
 		robotDrive.arcadeDrive(stick);
+		
 		updateOperatorInterface();		
 	}
 
