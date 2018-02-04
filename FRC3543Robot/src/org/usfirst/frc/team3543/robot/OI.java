@@ -20,6 +20,7 @@ import org.usfirst.frc.team3543.robot.commands.ControlWristCommand;
 import org.usfirst.frc.team3543.robot.commands.DriveForwardByDistanceCommand;
 import org.usfirst.frc.team3543.robot.commands.DriveForwardByDistanceUsingPIDCommand;
 import org.usfirst.frc.team3543.robot.commands.DuhCommand;
+import org.usfirst.frc.team3543.robot.commands.PlaybackCommand;
 import org.usfirst.frc.team3543.robot.commands.RotateByAngleCommand;
 import org.usfirst.frc.team3543.robot.commands.RotateByAngleUsingPIDCommand;
 import org.usfirst.frc.team3543.robot.commands.SmoothDriveForwardByDistanceCommand;
@@ -111,14 +112,11 @@ public class OI {
 
 		JoystickButton logButton = new JoystickButton(leftJoystick, LOG_BUTTON);
 		Command toggleLoggingCommand = new Command() {
-			boolean once = false;
 			
 			public void start() {				
 				super.start();				
-				log = new StringBuilder("LOG\r\n");
-				SmartDashboard.putString("LOG", log.toString());				
-				SmartDashboard.putString("RECORDING", "ON");	
-				robot.setRecording(true);
+				Robot.logging = true;
+				Robot.log("---- LOG START ----");
 			}
 						
 			public void execute() {
@@ -136,9 +134,9 @@ public class OI {
 			}
 		
 			void done() {
-				robot.setRecording(false);
+				Robot.logging = false;
+				Robot.log("---- LOG END ----");				
 				SmartDashboard.putString("RECORDING", "OFF");	
-				SmartDashboard.putString("LOG", log.toString());
 			}
 			@Override
 			protected boolean isFinished() {
@@ -152,6 +150,11 @@ public class OI {
 		
 		controlWrist = new ControlWristCommand(robot, leftJoystick);
 		wristButton.whileHeld(controlWrist);
+		
+		// test path playback
+		JoystickButton pathButton = new JoystickButton(leftJoystick, 10);
+		pathButton.whileHeld(new PlaybackCommand(robot, Path.test()));		
+		
 	}
 
 	protected SmartDashboardNumberProvider provideNumber(String forKey, double defaultValue) {

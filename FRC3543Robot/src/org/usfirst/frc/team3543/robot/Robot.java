@@ -42,6 +42,7 @@ public class Robot extends TimedRobot implements RobotConfig {
 
 	// to be compatible with the old, dangerous idiom, a static
 	private static Robot _instance = null;
+	public static boolean logging = false;
 	
 	public static final Logger LOGGER = Logger.getLogger(Robot.class.getSimpleName());
 

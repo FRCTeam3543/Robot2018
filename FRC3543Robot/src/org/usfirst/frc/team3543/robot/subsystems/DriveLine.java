@@ -12,6 +12,7 @@
 package org.usfirst.frc.team3543.robot.subsystems;
 
 import org.usfirst.frc.team3543.robot.Calibration;
+import org.usfirst.frc.team3543.robot.Robot;
 import org.usfirst.frc.team3543.robot.RobotMap;
 import org.usfirst.frc.team3543.robot.Wiring;
 import org.usfirst.frc.team3543.robot.util.RobotConfig;
@@ -195,8 +196,11 @@ public class DriveLine extends BaseSubsystem {
 	public void drive(double magnitude, double curve) {
 		// Here we reverse magnitude, because the motors are inverted on our bot
 		double clipped = Math.max(Calibration.MIN_SPEED, Math.min(Calibration.MAX_SPEED, magnitude));
-		robotDrive.drive(-clipped, curve);
+		robotDrive.drive(-clipped, curve);		
 		updateOperatorInterface();
+		if (Robot.logging) {
+			Robot.log(String.format("DRIVELINE %d %.3f %.3f", System.currentTimeMillis(), magnitude, curve));
+		}
 	}
 
 	public void drive(double speed) {
