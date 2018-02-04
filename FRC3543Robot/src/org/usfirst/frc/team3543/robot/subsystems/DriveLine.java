@@ -193,9 +193,12 @@ public class DriveLine extends BaseSubsystem {
 		updateOperatorInterface();
 	}
 
-	void log(double magnitude, double curve) {
-		if (Robot.logging) {
-			Robot.log(String.format("DRIVELINE %d %.3f %.3f", System.currentTimeMillis(), magnitude, curve));
+	void log() {
+		if (Robot.logging) {			
+			Robot.log(String.format("DRIVELINE %d %.3f %.3f", System.currentTimeMillis(), 
+					frontLeft.getMotorOutputPercent(),
+					frontRight.getMotorOutputPercent())					
+			);
 		}
 	}
 	
@@ -204,7 +207,7 @@ public class DriveLine extends BaseSubsystem {
 		double clipped = Math.max(Calibration.MIN_SPEED, Math.min(Calibration.MAX_SPEED, magnitude));
 		robotDrive.drive(-clipped, curve);		
 		updateOperatorInterface();
-		log(magnitude, curve);
+		log();
 	}
 
 	public void drive(double speed) {
@@ -237,6 +240,7 @@ public class DriveLine extends BaseSubsystem {
 
 	public void tankDrive(double lspeed, double rspeed) {
 		robotDrive.tankDrive(lspeed, rspeed);
+		log();
 	}
 
 	public void tankDrive(double speed) {

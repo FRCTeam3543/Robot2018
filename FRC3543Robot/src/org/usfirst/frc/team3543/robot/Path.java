@@ -26,18 +26,18 @@ public class Path {
 		return this;
 	}
 	
-	public Path add(double magnitude, double curve) {
-		this.points.add(new Point(magnitude, curve));
+	public Path add(double left, double right) {
+		this.points.add(new Point(left, right));
 		return this;
 	}
 	
 	public static class Point {
-		public double magnitude = 0;
-		public double curve = 0;	
+		public double left = 0;
+		public double right = 0;	
 		
-		Point(double magnitude, double curve) {
-			this.magnitude = magnitude;
-			this.curve = curve;
+		Point(double left, double right) {
+			this.left = left;
+			this.right = right;
 		}
 	}
 

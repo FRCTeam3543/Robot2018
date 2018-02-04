@@ -24,7 +24,7 @@ public class PlaybackCommand extends Command {
 	
 	public void execute() {
 		Path.Point point = path.shift();
-		robot.getDriveLine().drive(point.magnitude, point.curve);
+		robot.getDriveLine().tankDrive(point.left, point.right);
 	}
 	
 	@Override
