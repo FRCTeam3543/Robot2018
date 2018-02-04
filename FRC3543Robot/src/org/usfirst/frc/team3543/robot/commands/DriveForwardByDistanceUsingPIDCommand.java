@@ -57,11 +57,13 @@ public class DriveForwardByDistanceUsingPIDCommand extends Command {
 		this.setTargetDistance(distanceProvider.getValue());	
 		this.updateDistanceRemaining();
 		robot.getDriveLineLinearPID().enable();
+		robot.getDriveLineLinearPID().getPIDController().setAbsoluteTolerance(SENSITIVITY);
+		
 	}
 	
 	protected void updateDistanceRemaining() {
 		double d = robot.getDriveLineLinearPID().getPosition();		
-		SmartDashboard.putNumber("Target Disance", d);
+		SmartDashboard.putNumber("Target Disance", this.targetDistance);
 		SmartDashboard.putNumber("Linear PID Setpoint", robot.getDriveLineLinearPID().getSetpoint());
 		SmartDashboard.putNumber("Linear PID Position", robot.getDriveLineLinearPID().getPosition());		
 		robot.getOperatorInterface().putNumber("Distance Remaining", d - this.targetDistance);
@@ -75,8 +77,9 @@ public class DriveForwardByDistanceUsingPIDCommand extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		double err = robot.getDriveLineLinearPID().getPosition() - this.targetDistance;		
-		return (Math.abs(err)  < SENSITIVITY);
+		return robot.getDriveLineLinearPID().onTarget();
+//		double err = robot.getDriveLineLinearPID().getPosition() - this.targetDistance;		
+//		return (Math.abs(err)  < SENSITIVITY);
 	}
 	
 	
