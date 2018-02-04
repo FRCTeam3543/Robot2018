@@ -12,6 +12,7 @@
 package org.usfirst.frc.team3543.robot.subsystems;
 
 import org.usfirst.frc.team3543.robot.Calibration;
+import org.usfirst.frc.team3543.robot.Path;
 import org.usfirst.frc.team3543.robot.Robot;
 import org.usfirst.frc.team3543.robot.RobotMap;
 import org.usfirst.frc.team3543.robot.Wiring;
@@ -95,6 +96,8 @@ public class DriveLine extends BaseSubsystem {
 	private double gyroSensitivity = RobotMap.GYRO_SENSITIVITY;
 	private double gyroGain = RobotMap.GYRO_FEEDBACK_GAIN;
 
+	private Path path = null;
+	
 	private double timerDelay = DEFAULT_TIMER_DELAY;
 
 	public DriveLine(RobotConfig config) {
@@ -192,13 +195,18 @@ public class DriveLine extends BaseSubsystem {
 		robotDrive.tankDrive(left, right); // 
 		updateOperatorInterface();
 	}
+	
+	public void startRecording() {
+		path = Path.start();
+	}
+	
+	public Path stopRecording() {
+		return path;
+	}
 
 	void log() {
-		if (Robot.logging) {			
-			Robot.log(String.format("DRIVELINE %d %.3f %.3f", System.currentTimeMillis(), 
-					frontLeft.getMotorOutputPercent(),
-					frontRight.getMotorOutputPercent())					
-			);
+		if (path != null) {
+			path.add(frontLeft.getMotorOutputPercent(), frontRight.getMotorOutputPercent());
 		}
 	}
 	

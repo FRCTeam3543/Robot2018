@@ -3,14 +3,12 @@ package org.usfirst.frc.team3543.robot;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.usfirst.frc.team3543.robot.commands.PlaybackCommand;
-
 public class Path {
 	List<Point> points = new ArrayList<>();
 	
+	
 	public static Path test() {
-		return Path	.start()
-					.add(1, 0);
+		return Path.parse(PATH_TEST);
 	}
 	
 	public static Path start() {
@@ -31,6 +29,31 @@ public class Path {
 		return this;
 	}
 	
+	public String export() {
+		StringBuilder sb = new StringBuilder("PATH|");
+		for (Point p : this.points) {
+			sb.append(String.format("%.4f,%.4f|", p.left, p.right));
+		}
+		return sb.toString();
+	}
+	
+	public static Path parse(String s) {
+		String[] pairs = s.split("|");
+		String[] lr;
+		Path p = Path.start();
+		// from 1 to N-1 because of first and last delim
+		for (int i=1; i<pairs.length-1; i++) {
+			lr = pairs[i].split(",");
+			try {				
+				p.add(Double.parseDouble(lr[0]), Double.parseDouble(lr[1]));
+			}
+			catch (Exception ex) {
+				System.err.println(pairs[i] + ": " + ex.getMessage());
+			}
+		}
+		return p;
+	}
+	
 	public static class Point {
 		public double left = 0;
 		public double right = 0;	
@@ -48,4 +71,9 @@ public class Path {
 	public Point shift() {
 		return this.points.remove(0);
 	}
+	
+	///////////// Paths /////////////////
+	public static final String NONE = "PATH|0,0|";
+	public static final String PATH_TEST = "PATH|1,0|"; // FIXME, paste the path here
+
 }

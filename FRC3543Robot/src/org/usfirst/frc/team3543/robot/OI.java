@@ -77,6 +77,8 @@ public class OI {
 
 	public static final double WHEEL_DISTANCE_PER_PULSE = (6 * Math.PI) / (360 * 0.4615);
 
+	public String recordedPath = Path.NONE;
+	
 	ControlWristCommand controlWrist;
 	ArcadeDriveWithJoystick arcadeDrive;
 	
@@ -135,7 +137,11 @@ public class OI {
 		
 			void done() {
 				Robot.logging = false;
-				Robot.log("---- LOG END ----");				
+				recordedPath = robot.getDriveLine().stopRecording().export();
+				Robot.log(	"--- PATH START ---\n"
+							+recordedPath
+							+"\n---- PATH END ----");		
+				
 				SmartDashboard.putString("RECORDING", "OFF");	
 			}
 			@Override
@@ -153,8 +159,7 @@ public class OI {
 		
 		// test path playback
 		JoystickButton pathButton = new JoystickButton(leftJoystick, 10);
-		pathButton.whileHeld(new PlaybackCommand(robot, Path.test()));		
-		
+		pathButton.whileHeld(new PlaybackCommand(robot, Path.parse(recordedPath)));		
 	}
 
 	protected SmartDashboardNumberProvider provideNumber(String forKey, double defaultValue) {
