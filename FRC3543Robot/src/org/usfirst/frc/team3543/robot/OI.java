@@ -8,6 +8,7 @@
 package org.usfirst.frc.team3543.robot;
 
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.usfirst.frc.team3543.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team3543.robot.commands.CircleCommandGroup;
 import org.usfirst.frc.team3543.robot.commands.ClawCloseCommand;
 import org.usfirst.frc.team3543.robot.commands.ClawOpenCommand;
+import org.usfirst.frc.team3543.robot.commands.ControlWristCommand;
 import org.usfirst.frc.team3543.robot.commands.DriveForwardByDistanceCommand;
 import org.usfirst.frc.team3543.robot.commands.DriveForwardByDistanceUsingPIDCommand;
 import org.usfirst.frc.team3543.robot.commands.DuhCommand;
@@ -49,13 +51,15 @@ public class OI {
 	public Joystick leftJoystick;
 	public Joystick rightJoystick;
 	
-	List<String> log = new ArrayList<>();
+	StringBuilder log = new StringBuilder();
 	
 	public static final int LEFT_JOYSTICK = 0;
 	public static final int RIGHT_JOYSTICK = 1;
 	public static final int TRIGGER_BUTTON = 1;
 	public static final int THUMB_BUTTON = 2;
-	public static final int LOG_BUTTON = 2; // thumb on left joystick logs
+	public static final int LOG_BUTTON = 6; // thumb on left joystick logs
+	
+	public static final int WRIST_CONTROL_BUTTON = 2;
 	
 	public static final int CLOSE_CLAW_BUTTON = THUMB_BUTTON;
 
@@ -72,6 +76,9 @@ public class OI {
 
 	public static final double WHEEL_DISTANCE_PER_PULSE = (6 * Math.PI) / (360 * 0.4615);
 
+	ControlWristCommand controlWrist;
+	ArcadeDriveWithJoystick arcadeDrive;
+	
 	public OI () {
 		// Joysticks and buttons
 		rightJoystick = new Joystick(RIGHT_JOYSTICK);        
@@ -80,15 +87,15 @@ public class OI {
 
 	public void connectToRobot(Robot robot) {
 		
-		ArcadeDriveWithJoystick arcade = new ArcadeDriveWithJoystick(robot);
-		TankDriveWithJoystick tank = new TankDriveWithJoystick(robot);
+		arcadeDrive = new ArcadeDriveWithJoystick(robot);
+//		TankDriveWithJoystick tank = new TankDriveWithJoystick(robot);
 		JoystickButton resumeArcadeDriveButton = new JoystickButton(rightJoystick, TRIGGER_BUTTON);
-		JoystickButton resumeTankDriveButton = new JoystickButton(leftJoystick, TRIGGER_BUTTON);
+//		JoystickButton resumeTankDriveButton = new JoystickButton(leftJoystick, THUMB_BUTTON);
 
-		resumeArcadeDriveButton.whenPressed(arcade);
-		resumeTankDriveButton.whenPressed(tank);
+		resumeArcadeDriveButton.whenPressed(arcadeDrive);
+//		resumeTankDriveButton.whenPressed(tank);
 
-		JoystickButton closeClawButton = new JoystickButton(rightJoystick, CLOSE_CLAW_BUTTON);
+		JoystickButton closeClawButton = new JoystickButton(leftJoystick, TRIGGER_BUTTON);
 		closeClawButton.whenPressed(new ClawCloseCommand(robot));
 		closeClawButton.whenReleased(new ClawOpenCommand(robot));
 
@@ -100,31 +107,51 @@ public class OI {
 
 		// this needs to be redone in order to feed setpoints from a recorded value
 //		SmartDashboard.putData("Motion Profile", new SmoothDriveForwardByDistanceCommand(robot, forwardDistanceProvider));
-		
+		SmartDashboard.putString("LOG", "Log off");
+
 		JoystickButton logButton = new JoystickButton(leftJoystick, LOG_BUTTON);
 		Command toggleLoggingCommand = new Command() {
 			boolean once = false;
 			
+			public void start() {				
+				super.start();				
+				log = new StringBuilder("LOG\r\n");
+				SmartDashboard.putString("LOG", log.toString());				
+				SmartDashboard.putString("RECORDING", "ON");	
+				robot.setRecording(true);
+			}
+						
 			public void execute() {
-				if (!once) {
-					once = true;					
-					robot.setRecording(!robot.isRecording());
-					SmartDashboard.putString("RECORDING", robot.isRecording() ? "ON" : "OFF");
-					if (robot.isRecording()) { // we must have just started, clear the log
-						log.clear();
-					}
-					else { // we just stopped, write the log to the dashboard
-						SmartDashboard.putStringArray("LOG", log.toArray(new String[] {}));
-					}
-				}
+				record(robot);
 			}
 
+			public void cancel() {
+				super.cancel();
+				done();
+			}
+			
+			public void end() {
+				super.end();
+				done();
+			}
+		
+			void done() {
+				robot.setRecording(false);
+				SmartDashboard.putString("RECORDING", "OFF");	
+				SmartDashboard.putString("LOG", log.toString());
+			}
 			@Override
 			protected boolean isFinished() {
-				return once;
+				return false;
 			}			
 		};
-		logButton.whenPressed(toggleLoggingCommand);
+		logButton.whileHeld(toggleLoggingCommand);
+		
+		// wrist hookup
+		JoystickButton wristButton = new JoystickButton(leftJoystick, 2);
+		
+		controlWrist = new ControlWristCommand(robot, leftJoystick);
+		wristButton.whileHeld(controlWrist);
 	}
 
 	protected SmartDashboardNumberProvider provideNumber(String forKey, double defaultValue) {
@@ -173,7 +200,9 @@ public class OI {
 	public void record(Robot robot) {
 		// record the output
 		double[] rec = robot.getDriveLine().getPositionAndVelocity();
-		log.add(String.format("%.3f,%.3f,%.3f,%.3f\n", rec[0], rec[1], rec[2], rec[3]));
+		String msg = String.format("\r\nPOS %d,%.3f,%.3f,%.3f,%.3f,%.3f\r\n", System.currentTimeMillis(), rec[0], rec[1], rec[2], rec[3], rec[4]);
+		log.append(msg);
+		Robot.LOGGER.info(msg);
 	}
 
 }

@@ -18,4 +18,8 @@ public class Wiring {
 	public static final int CLAW_SOLENOID_1_PORT			= 0;
 	public static final int CLAW_SOLENOID_2_PORT			= 1;
 	
+	public static final int WRIST_MOTOR_PORT 				= 0;
+	public static final int WRIST_ENCODER_A 				= 4;
+	public static final int WRIST_ENCODER_B 				= 5;
+	
 }

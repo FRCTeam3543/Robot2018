@@ -26,6 +26,7 @@ import org.usfirst.frc.team3543.robot.subsystems.Claw;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLineLinearPID;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLineRotationPID;
+import org.usfirst.frc.team3543.robot.subsystems.Wrist;
 import org.usfirst.frc.team3543.robot.util.Config;
 import org.usfirst.frc.team3543.robot.util.RobotConfig;
 
@@ -51,6 +52,7 @@ public class Robot extends TimedRobot implements RobotConfig {
 	public DriveLineLinearPID driveLineLinearPID;	
 	public DriveLineRotationPID driveLineRotationPID;		
 	public Claw claw;
+	public Wrist wrist;
 
 	private boolean recording = false;
 	
@@ -77,6 +79,7 @@ public class Robot extends TimedRobot implements RobotConfig {
 		driveLineRotationPID = new DriveLineRotationPID(driveLine);
 		driveLineLinearPID = new DriveLineLinearPID(driveLine);
 		claw = new Claw(config);
+		wrist = new Wrist(config);
 	}
 
 	public RobotMap getConfig() {

@@ -265,6 +265,9 @@ public class DriveLine extends BaseSubsystem {
 //		this.quadratureEncoderLeft.setDistancePerPulse(leftDpp);
 		this.quadratureEncoderRight.reset();
 //		this.quadratureEncoderRight.setDistancePerPulse(rightDpp);
+//		this.getLeftMotor().set(ControlMode.PercentOutput, 0);
+//		this.getRightMotor().set(ControlMode.PercentOutput, 0);
+		
 		updateOperatorInterface();
 	}
 
@@ -316,10 +319,11 @@ public class DriveLine extends BaseSubsystem {
 
 	public double[] getPositionAndVelocity() {
 		return new double[] {
-				getLeftMotor().getSelectedSensorPosition(0),				
+				getLeftEncoderValue(),				
 				getLeftMotor().getSelectedSensorVelocity(0),
-				getRightMotor().getSelectedSensorPosition(0),
-				getRightMotor().getSelectedSensorVelocity(0)
+				getRightEncoderValue(),
+				getRightMotor().getSelectedSensorVelocity(0),
+				getGyroAngleRadians()
 		};
 		
 	}

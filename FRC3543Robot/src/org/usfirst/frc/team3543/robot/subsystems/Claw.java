@@ -79,7 +79,7 @@ public class Claw extends BaseSubsystem {
 	}
 
 	public void init() {
-		setClosedLoopControl(true);
+		setClosedLoopControl(true);	
 		startCompressor();
 		open();		
 	}

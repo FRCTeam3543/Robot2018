@@ -22,6 +22,15 @@ public class ControlWristCommand extends Command {
 		requires(robot.wrist);
 	}
 	
+	public void executeOld() {
+		if (joystick.getRawButtonPressed(2)) {
+			robot.wrist.go_up();
+		}
+		else if (joystick.getRawButton(3)) {
+			robot.wrist.go_down();			
+		}
+	}
+	
 	public void execute() {
 		// read joystick XY
 		double pos = joystick.getY();
