@@ -257,7 +257,7 @@ public class DriveLine extends BaseSubsystem {
 
 	public void arcadeDrive(Joystick stick) {
 		robotDrive.arcadeDrive(stick);
-		
+		log();
 		updateOperatorInterface();		
 	}
 

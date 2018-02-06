@@ -23,7 +23,6 @@ import org.usfirst.frc.team3543.robot.commands.DuhCommand;
 import org.usfirst.frc.team3543.robot.commands.PlaybackCommand;
 import org.usfirst.frc.team3543.robot.commands.RotateByAngleCommand;
 import org.usfirst.frc.team3543.robot.commands.RotateByAngleUsingPIDCommand;
-import org.usfirst.frc.team3543.robot.commands.SmoothDriveForwardByDistanceCommand;
 import org.usfirst.frc.team3543.robot.commands.TankDriveWithJoystick;
 import org.usfirst.frc.team3543.robot.util.DegreesToRadiansNumberProvider;
 import org.usfirst.frc.team3543.robot.util.NumberProvider;
