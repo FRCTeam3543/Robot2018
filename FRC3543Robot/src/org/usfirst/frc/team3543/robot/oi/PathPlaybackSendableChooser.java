@@ -2,6 +2,7 @@ package org.usfirst.frc.team3543.robot.oi;
 
 import org.usfirst.frc.team3543.robot.Path;
 import org.usfirst.frc.team3543.robot.PathProvider;
+import org.usfirst.frc.team3543.robot.RecordedPaths;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
@@ -11,8 +12,9 @@ public class PathPlaybackSendableChooser extends SendableChooser<Path> implement
 		super();
 		int i = 0;
 		Path p;
-		for (String path : Path.PATHS) {
-			p = Path.parse(Path.PATHS[i]);
+		// all the stored paths
+		for (String path : RecordedPaths.PATHS) {
+			p = Path.parse(RecordedPaths.PATHS[i]);
 			if (i++ == 0) {				
 				addDefault(p.getName(),p); // NONE path		
 			}

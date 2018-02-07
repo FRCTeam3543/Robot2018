@@ -83,7 +83,7 @@ public class OI {
 
 	public static final double WHEEL_DISTANCE_PER_PULSE = (6 * Math.PI) / (360 * 0.4615);
 
-	public String recordedPath = Path.NONE;
+	public String recordedPath = RecordedPaths.NONE; // The "None" path
 	
 	ControlWristCommand controlWrist;
 	ArcadeDriveWithJoystick arcadeDrive;
@@ -225,13 +225,15 @@ public class OI {
 			void done() {
 				Robot.logging = false;
 				Path p = robot.getDriveLine().stopRecording();
+				p.setName("LAST RECORDED");
 				if (p != null) {
 					recordedPath = p.export();
 					
 					Robot.log(	"--- PATH START ---\n"
 								+recordedPath
 								+"\n---- PATH END ----");	
-					SmartDashboard.putString("Recorded Path", recordedPath);										
+					RecordedPaths.PATHS[RecordedPaths.LAST] = recordedPath;
+					updatePlaybackChooser();
 				}
 				SmartDashboard.putString("RECORDING", "OFF");	
 			}
