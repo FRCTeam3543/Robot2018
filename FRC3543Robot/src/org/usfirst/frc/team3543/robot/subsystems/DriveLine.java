@@ -123,7 +123,7 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 		frontLeft.setNeutralMode(NeutralMode.Brake);
 		frontLeft.configOpenloopRamp(Calibration.DRIVELINE_OPEN_LOOP_RAMP, 0);
 		frontLeft.set(ControlMode.PercentOutput,0);
-		backLeft.configOpenloopRamp(0, 0);
+		backLeft.configOpenloopRamp(Calibration.DRIVELINE_OPEN_LOOP_RAMP, 0);
 		
 		frontRight = new WPI_TalonSRX(frontRightMotor);
 		frontRight.set(ControlMode.PercentOutput,0);
@@ -131,7 +131,7 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 		backRight.follow(frontRight);		
 		frontRight.setNeutralMode(NeutralMode.Brake);
 		frontRight.configOpenloopRamp(Calibration.DRIVELINE_OPEN_LOOP_RAMP, 0);
-		backRight.configOpenloopRamp(0, 0);
+		backRight.configOpenloopRamp(Calibration.DRIVELINE_OPEN_LOOP_RAMP, 0);
 						
 		robotDrive = new MyRobotDrive(this, frontLeft, backLeft, frontRight, backRight);
 

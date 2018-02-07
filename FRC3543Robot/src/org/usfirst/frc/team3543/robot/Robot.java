@@ -177,9 +177,6 @@ public class Robot extends TimedRobot implements RobotConfig {
 	public void teleopPeriodic() {
 		updateDashboard();    	
 		Scheduler.getInstance().run();
-		if (recording) {
-			this.getOperatorInterface().record(this);
-		}
 		updateDashboard();
 	}
 	
