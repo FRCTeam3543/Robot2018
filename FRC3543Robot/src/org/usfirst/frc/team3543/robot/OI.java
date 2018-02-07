@@ -112,16 +112,20 @@ public class OI {
 		SmartDashboard.putString("LOG", "Log off");
 
 		JoystickButton logButton = new JoystickButton(leftJoystick, LOG_BUTTON);
+		boolean logging = false;
 		Command toggleLoggingCommand = new Command() {
 			
 			public void start() {				
 				super.start();				
 				Robot.logging = true;
-				Robot.log("---- LOG START ----");
+				if (!robot.getDriveLine().isRecording()) {
+					Robot.log("---- LOG START ----");
+					robot.getDriveLine().startRecording();					
+				}
 			}
 						
 			public void execute() {
-				record(robot);
+//				record(robot);
 			}
 
 			public void cancel() {
@@ -136,11 +140,15 @@ public class OI {
 		
 			void done() {
 				Robot.logging = false;
-				recordedPath = robot.getDriveLine().stopRecording().export();
-				Robot.log(	"--- PATH START ---\n"
-							+recordedPath
-							+"\n---- PATH END ----");		
-				
+				Path p = robot.getDriveLine().stopRecording();
+				if (p != null) {
+					recordedPath = p.export();
+					
+					Robot.log(	"--- PATH START ---\n"
+								+recordedPath
+								+"\n---- PATH END ----");		
+										
+				}
 				SmartDashboard.putString("RECORDING", "OFF");	
 			}
 			@Override
@@ -157,8 +165,15 @@ public class OI {
 		wristButton.whileHeld(controlWrist);
 		
 		// test path playback
-		JoystickButton pathButton = new JoystickButton(leftJoystick, 10);
-		pathButton.whileHeld(new PlaybackCommand(robot, Path.parse(recordedPath)));		
+		JoystickButton pathButton = new JoystickButton(leftJoystick, 7);
+		pathButton.whenPressed(new PlaybackCommand(robot, new PathProvider() {
+
+			@Override
+			public Path getPath() {
+				return Path.parse(recordedPath);
+			}
+			
+		}));		
 	}
 
 	protected SmartDashboardNumberProvider provideNumber(String forKey, double defaultValue) {

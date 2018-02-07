@@ -30,9 +30,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 /**
  * Main DriveLine.  Packages the 4 drive CANTalons, left/right quadrature encoders and gyro
@@ -45,7 +47,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author MK
  *
  */
-public class DriveLine extends BaseSubsystem {
+public class DriveLine extends BaseSubsystem implements DriveLineLog {
 	// Configuration keys
 	public static final String SENSITIVITY = "driveline.sensitivity";	
 	public static final String EXPIRATION = "driveline.expiration";	
@@ -120,16 +122,18 @@ public class DriveLine extends BaseSubsystem {
 		
 		frontLeft.setNeutralMode(NeutralMode.Brake);
 		frontLeft.configOpenloopRamp(Calibration.DRIVELINE_OPEN_LOOP_RAMP, 0);
+		frontLeft.set(ControlMode.PercentOutput,0);
 		backLeft.configOpenloopRamp(0, 0);
 		
 		frontRight = new WPI_TalonSRX(frontRightMotor);
+		frontRight.set(ControlMode.PercentOutput,0);
 		backRight = new WPI_TalonSRX(backRightMotor);
 		backRight.follow(frontRight);		
 		frontRight.setNeutralMode(NeutralMode.Brake);
 		frontRight.configOpenloopRamp(Calibration.DRIVELINE_OPEN_LOOP_RAMP, 0);
 		backRight.configOpenloopRamp(0, 0);
-				
-		robotDrive = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
+						
+		robotDrive = new MyRobotDrive(this, frontLeft, backLeft, frontRight, backRight);
 
 		String name = getName();
 		LiveWindow.addActuator(name, "Front Left Motor", frontLeft);
@@ -201,12 +205,14 @@ public class DriveLine extends BaseSubsystem {
 	}
 	
 	public Path stopRecording() {
-		return path;
+		Path p = this.path;
+		this.path = null;
+		return p;
 	}
 
-	void log() {
-		if (path != null) {
-			path.add(frontLeft.getMotorOutputPercent(), frontRight.getMotorOutputPercent());
+	public void log(double left, double right) {
+		if (isRecording()) {
+			path.add(left, right);
 		}
 	}
 	
@@ -215,7 +221,6 @@ public class DriveLine extends BaseSubsystem {
 		double clipped = Math.max(Calibration.MIN_SPEED, Math.min(Calibration.MAX_SPEED, magnitude));
 		robotDrive.drive(-clipped, curve);		
 		updateOperatorInterface();
-		log();
 	}
 
 	public void drive(double speed) {
@@ -248,16 +253,19 @@ public class DriveLine extends BaseSubsystem {
 
 	public void tankDrive(double lspeed, double rspeed) {
 		robotDrive.tankDrive(lspeed, rspeed);
-		log();
 	}
 
 	public void tankDrive(double speed) {
 		tankDrive(speed, speed);
 	}
-
+	
+	
+	public void setLeftRightMotorOutputs(double leftOutput, double rightOutput) {
+		this.robotDrive.setLeftRightMotorOutputs(leftOutput, rightOutput);
+	}
+	
 	public void arcadeDrive(Joystick stick) {
 		robotDrive.arcadeDrive(stick);
-		log();
 		updateOperatorInterface();		
 	}
 
@@ -349,6 +357,35 @@ public class DriveLine extends BaseSubsystem {
 		
 	}
 
+	public boolean isRecording() {
+		return path != null;
+	}
+
+	interface Log {
+		void log(double left, double right);
+	}
+	
+	static class MyRobotDrive extends RobotDrive {
+		DriveLineLog log = null;
+		public MyRobotDrive(DriveLineLog log, SpeedController frontLeftMotor, SpeedController rearLeftMotor, SpeedController frontRightMotor,
+				SpeedController rearRightMotor) {
+			super(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
+			this.log = log;			
+		}
+
+		@Override
+		public void setLeftRightMotorOutputs(double leftOutput, double rightOutput) {
+			super.setLeftRightMotorOutputs(leftOutput, rightOutput);
+			if (log != null) {
+				log.log(leftOutput, rightOutput);				
+			}
+		}
+
+	}
+
 }
 
+interface DriveLineLog {
+	void log(double left, double right);
+}
 
