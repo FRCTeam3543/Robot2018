@@ -17,15 +17,15 @@ public class WristPID extends PIDSubsystem {
 	double max_speed = Calibration.WRIST_MAX_SPEED;
 	double SENSITIVITY = Math.toRadians(5);
 	
-	public WristPID(RobotConfig config) {
+	public WristPID(Victor motorController, Encoder encoder) {
 		super(Calibration.WRIST_PID_P, Calibration.WRIST_PID_I, Calibration.WRIST_PID_D);
-		motorController = new Victor(Wiring.WRIST_MOTOR_PORT);
-		encoder = new Encoder(Wiring.WRIST_ENCODER_A, Wiring.WRIST_ENCODER_B, false, EncodingType.k2X);
-		
+		this.motorController = motorController;
+		this.encoder = encoder;
 		encoder.setDistancePerPulse(Calibration.WRIST_DPP);	// radians
+		this.setAbsoluteTolerance(Calibration.WRIST_TOLERANCE);
 		encoder.reset();
-		LiveWindow.addSensor("Wrist", "Encoder", encoder);
-		LiveWindow.addActuator("Wrist", "Motor Controller", motorController);
+
+		LiveWindow.addActuator("Wrist","PID", this.getPIDController());
 	}
 
 	@Override

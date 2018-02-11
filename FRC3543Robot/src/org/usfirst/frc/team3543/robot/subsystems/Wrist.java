@@ -22,16 +22,23 @@ public class Wrist extends BaseSubsystem {
 	Encoder encoder;
 	double max_speed = Calibration.WRIST_MAX_SPEED;
 	double SENSITIVITY = Math.toRadians(5);
+	WristPID wristPID;
 	
 	public Wrist(RobotConfig config) {
 		super(config);
 		motorController = new Victor(Wiring.WRIST_MOTOR_PORT);
+		
 		encoder = new Encoder(Wiring.WRIST_ENCODER_A, Wiring.WRIST_ENCODER_B, false, EncodingType.k2X);
 		
 		encoder.setDistancePerPulse(Calibration.WRIST_DPP);
 		encoder.reset();
 		LiveWindow.addSensor("Wrist", "Encoder", encoder);
 		LiveWindow.addActuator("Wrist", "Motor Controller", motorController);
+		this.wristPID = new WristPID(this.motorController, this.encoder);
+	}
+	
+	public WristPID getPID() {
+		return this.wristPID;
 	}
 
 	@Override
@@ -94,6 +101,10 @@ public class Wrist extends BaseSubsystem {
 		else {
 			Robot.LOGGER.info("Wrist in down position");
 		}
+	}
+
+	public void resetEncoder() {
+		encoder.reset();
 	}
 
 }

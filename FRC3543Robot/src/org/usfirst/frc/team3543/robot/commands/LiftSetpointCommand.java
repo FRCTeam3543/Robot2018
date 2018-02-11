@@ -5,6 +5,11 @@ import org.usfirst.frc.team3543.robot.util.NumberProvider;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * 
+ * @author C4 Robotics
+ * @deprecated for SetLiftPositionCommand
+ */
 public class LiftSetpointCommand extends Command {
 	NumberProvider setpointProvider;
 	Robot robot;
@@ -16,7 +21,7 @@ public class LiftSetpointCommand extends Command {
 	
 	public void execute() {
 		double setpoint = this.setpointProvider.getValue();
-		this.robot.getLift().setSetpoint(setpoint);
+		this.robot.getLift().getPID().setSetpoint(setpoint);
 	}
 	
 	@Override
@@ -28,7 +33,7 @@ public class LiftSetpointCommand extends Command {
 	public synchronized void cancel() {
 		super.cancel();
 		// hold wherever we are currently set
-		this.robot.getLift().hold();
+		this.robot.getLift().getPID().hold();
 	}
 	
 	

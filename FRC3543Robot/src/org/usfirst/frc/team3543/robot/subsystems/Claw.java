@@ -39,12 +39,12 @@ public class Claw extends BaseSubsystem {
 	}
 	
 	public void open() {		
+		doubleSolenoid.set(DoubleSolenoid.Value.kForward);			
 		open = true;
-		this.doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
 	}
 	
 	public void close() {
-		doubleSolenoid.set(DoubleSolenoid.Value.kForward);	
+		this.doubleSolenoid.set(DoubleSolenoid.Value.kReverse);		
 		open = false;
 	}
 	
@@ -81,7 +81,7 @@ public class Claw extends BaseSubsystem {
 	public void init() {
 		setClosedLoopControl(true);	
 		startCompressor();
-		open();		
+		close();		
 	}
 	
 	@Override

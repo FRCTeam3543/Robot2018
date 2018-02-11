@@ -33,14 +33,16 @@ public class Calibration {
 
 	public static final double WRIST_MAX_SPEED			= 0.5; // 50%, for now
 	public static final double WRIST_UP_POS				= 0; // degrees
-	public static final double WRIST_DOWN_POS				= Math.toRadians(90); // degrees
-	public static final double WRIST_DPP					= 0.1;	// FIXME wrist DPP
-	public static final double WRIST_OPEN_LOOP_RAMP		= 1;	// second
+	public static final double WRIST_DOWN_POS				= 1.17; //1.745; //Math.toRadians(90); // degrees
+//	public static final double WRIST_DPP					= 0.0000681;	// wrist DPP
+	public static final double WRIST_DPP					= 0.007;	// wrist DPP
 	
-	public static final double WRIST_PID_P = 0.1;		// FIXME
-	public static final double WRIST_PID_I = 0;		// FIXME
+	public static final double WRIST_OPEN_LOOP_RAMP		= 0.5;	// second
+	
+	public static final double WRIST_PID_P = -0.6;		// FIXME
+	public static final double WRIST_PID_I = 0.00000001;		// FIXME
 	public static final double WRIST_PID_D = 0;		// FIXME
-
+	public static final double WRIST_TOLERANCE = 0.1;
 	public static final double LIFT_MAX_SPEED			= 0.5; // 50%, for now
 	public static final double LIFT_UP_POS			= 1; // inches
 	public static final double LIFT_DOWN_POS			= 0; // inches

@@ -35,7 +35,8 @@ public class Path {
 	}
 	
 	public Path addAll(Path p) {
-		this.points.addAll(p.getPoints());
+		if (p != null)
+			this.points.addAll(p.getPoints());
 		return this;
 	}
 	

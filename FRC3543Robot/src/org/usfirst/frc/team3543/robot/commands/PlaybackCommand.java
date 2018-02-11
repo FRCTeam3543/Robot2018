@@ -22,6 +22,7 @@ public class PlaybackCommand extends Command {
 	
 	@Override
 	protected void initialize() {
+		Robot.log("PATH IS: "+pathProvider.getPath().export());
 		this.path = Path.start().addAll(pathProvider.getPath());		
 		Robot.log("INITIALIZE PLAYBACK "+path.export());
 		Robot.log("Path has "+path.getPoints().size() + " points");
@@ -30,7 +31,7 @@ public class PlaybackCommand extends Command {
 
 	public void execute() {
 		if (!path.isDone()) {		
-			Robot.log("Path has "+path.getPoints().size() + " left");
+//			Robot.log("Path has "+path.getPoints().size() + " left");
 			Path.Point point = path.shift();
 			robot.getDriveLine().setLeftRightMotorOutputs(point.left, point.right);			
 		}

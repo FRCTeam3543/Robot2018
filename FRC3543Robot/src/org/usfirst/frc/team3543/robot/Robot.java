@@ -26,8 +26,10 @@ import org.usfirst.frc.team3543.robot.subsystems.Claw;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLineLinearPID;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLineRotationPID;
+import org.usfirst.frc.team3543.robot.subsystems.Lift;
 import org.usfirst.frc.team3543.robot.subsystems.LiftPID;
 import org.usfirst.frc.team3543.robot.subsystems.Wrist;
+import org.usfirst.frc.team3543.robot.subsystems.WristPID;
 import org.usfirst.frc.team3543.robot.util.Config;
 import org.usfirst.frc.team3543.robot.util.RobotConfig;
 
@@ -54,8 +56,8 @@ public class Robot extends TimedRobot implements RobotConfig {
 	public DriveLineLinearPID driveLineLinearPID;	
 	public DriveLineRotationPID driveLineRotationPID;		
 	public Claw claw;
+	public Lift lift;
 	public Wrist wrist;
-	public LiftPID lift;
 	
 	private boolean recording = false;
 	
@@ -83,7 +85,7 @@ public class Robot extends TimedRobot implements RobotConfig {
 		driveLineLinearPID = new DriveLineLinearPID(driveLine);
 		claw = new Claw(config);
 		wrist = new Wrist(config);
-		lift = new LiftPID(config);
+		lift = new Lift(config);
 	}
 
 	public RobotMap getConfig() {
@@ -94,11 +96,15 @@ public class Robot extends TimedRobot implements RobotConfig {
 		return this.driveLine;
 	}
 	
+	public Wrist getWrist() {
+		return this.wrist;
+	}
+		
 	public Claw getClaw() {
 		return this.claw;
 	}
 	
-	public LiftPID getLift() {
+	public Lift getLift() {
 		return this.lift;
 	}
 	

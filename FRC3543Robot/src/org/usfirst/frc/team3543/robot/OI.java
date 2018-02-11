@@ -25,13 +25,15 @@ import org.usfirst.frc.team3543.robot.commands.DriveForwardByDistanceUsingPIDCom
 import org.usfirst.frc.team3543.robot.commands.DuhCommand;
 import org.usfirst.frc.team3543.robot.commands.ExecOnceCommand;
 import org.usfirst.frc.team3543.robot.commands.LiftSetpointCommand;
-import org.usfirst.frc.team3543.robot.commands.PlaceEndAutonomousCommand;
+import org.usfirst.frc.team3543.robot.commands.PlaceAutonomousCommand;
 import org.usfirst.frc.team3543.robot.commands.PlaceMiddleAutonomousCommand;
 import org.usfirst.frc.team3543.robot.commands.PlaybackCommand;
 import org.usfirst.frc.team3543.robot.commands.RotateByAngleCommand;
 import org.usfirst.frc.team3543.robot.commands.RotateByAngleUsingPIDCommand;
+import org.usfirst.frc.team3543.robot.commands.SetWristPositionCommand;
 import org.usfirst.frc.team3543.robot.commands.TankDriveWithJoystick;
 import org.usfirst.frc.team3543.robot.oi.PathPlaybackSendableChooser;
+import org.usfirst.frc.team3543.robot.oi.StartingPositionSendableChooser;
 import org.usfirst.frc.team3543.robot.util.DegreesToRadiansNumberProvider;
 import org.usfirst.frc.team3543.robot.util.NumberProvider;
 import org.usfirst.frc.team3543.robot.util.SmartDashboardNumberProvider;
@@ -67,7 +69,8 @@ public class OI {
 	public static final int RIGHT_JOYSTICK = 1;
 	public static final int TRIGGER_BUTTON = 1;
 	public static final int THUMB_BUTTON = 2;
-	public static final int WRIST_BUTTON = 2;
+	public static final int WRIST_UP_BUTTON = 2;
+	public static final int WRIST_DOWN_BUTTON = 3;
 	
 	public static final int RECORD_BUTTON = 6; 
 	public static final int PLAYBACK_BUTTON = 7; 
@@ -114,8 +117,8 @@ public class OI {
 //		resumeTankDriveButton.whenPressed(tank);
 
 		JoystickButton closeClawButton = new JoystickButton(leftJoystick, TRIGGER_BUTTON);
-		closeClawButton.whenPressed(new ClawCloseCommand(robot));
-		closeClawButton.whenReleased(new ClawOpenCommand(robot));
+		closeClawButton.whenPressed(new ClawOpenCommand(robot));
+		closeClawButton.whenReleased(new ClawCloseCommand(robot));
 
 		NumberProvider forwardDistanceProvider = this.provideNumber("Drive Forward Distance", 12);
 		NumberProvider rotationAngleProvider = new DegreesToRadiansNumberProvider(this.provideNumber("Rotate by Angle", 90));
@@ -125,40 +128,50 @@ public class OI {
 
 		
 		// wrist hookup
-		JoystickButton wristButton = new JoystickButton(leftJoystick, WRIST_BUTTON);		
+		JoystickButton wristButton = new JoystickButton(leftJoystick, 5);		
 		controlWrist = new ControlWristCommand(robot, leftJoystick);
 		wristButton.whileHeld(controlWrist);
+		
+		JoystickButton wristUp = new JoystickButton(leftJoystick, 2);
+		JoystickButton wristDown = new JoystickButton(leftJoystick, 3);
+		
+		wristUp.whileHeld(new SetWristPositionCommand(robot, NumberProvider.fixedValue(Calibration.WRIST_UP_POS), NumberProvider.fixedValue(2000)));
+//		wristDown.whileHeld(new SetWristPositionCommand(robot, NumberProvider.fixedValue(Calibration.WRIST_DOWN_POS)));
+
+		wristDown.whileHeld(new SetWristPositionCommand(robot, NumberProvider.fixedValue((Calibration.WRIST_DOWN_POS + Calibration.WRIST_UP_POS)/2), NumberProvider.fixedValue(2000)));
 		
 		initRecordAndPlayback(robot);
 		initLift(robot);
 	}
 
 	PathPlaybackSendableChooser pathPlaybackChooser = new PathPlaybackSendableChooser();
+	StartingPositionSendableChooser startingPositionSendableChooser = new StartingPositionSendableChooser();
+	
 	String[] emptyPathList = {};
 	Map<String, String> pathMap = new HashMap<String, String>();
 	
 	protected void updatePlaybackChooser() {
-		pathPlaybackChooser = new PathPlaybackSendableChooser();
-		pathMap.clear();
-		String [] paths = SmartDashboard.getStringArray("Paths", emptyPathList);
-		Path p;
-		for (String path : paths) {
-			p = Path.parse(path);
-			pathMap.put(p.getName(), path);			
-		}
+//		pathPlaybackChooser = new PathPlaybackSendableChooser();
+//		pathMap.clear();
+//		String [] paths = SmartDashboard.getStringArray("Paths", emptyPathList);
+//		Path p;
+//		for (String path : paths) {
+//			p = Path.parse(path);
+//			pathMap.put(p.getName(), path);			
+//		}
 	}
 	
-	public void savePathMap() {
-		List<String> savedPaths = new ArrayList<>();		
-		String path;
-		for (String s : pathMap.keySet()) {
-			path = pathMap.get(s);
-			pathPlaybackChooser.addObject(s, Path.parse(path));
-			savedPaths.add(path);
-		}
-		SmartDashboard.putData("Path Playback", pathPlaybackChooser);
-		SmartDashboard.putStringArray("Paths", (String[])savedPaths.toArray());				
-	}
+//	public void savePathMap() {
+//		List<String> savedPaths = new ArrayList<>();		
+//		String path;
+//		for (String s : pathMap.keySet()) {
+//			path = pathMap.get(s);
+//			pathPlaybackChooser.addObject(s, Path.parse(path));
+//			savedPaths.add(path);
+//		}
+//		SmartDashboard.putData("Path Playback", pathPlaybackChooser);
+//		SmartDashboard.putStringArray("Paths", (String[])savedPaths.toArray());				
+//	}
 	
 	protected void initLift(Robot robot) {
 		LiftSetpointCommand liftUpCommand = new LiftSetpointCommand(robot, NumberProvider.fixedValue(Calibration.LIFT_UP_POS));
@@ -173,47 +186,52 @@ public class OI {
 	protected void initRecordAndPlayback(Robot robot) {
 		SmartDashboard.putString("LOG", "Log off");
 		SmartDashboard.putString("Recorded Path", "");
-		SmartDashboard.setPersistent("Paths");
-		SmartDashboard.putStringArray("Paths", emptyPathList);
+		SmartDashboard.setPersistent("Recorded Path");
+		
+		pathPlaybackChooser = new PathPlaybackSendableChooser();
+		SmartDashboard.putData("Playback", pathPlaybackChooser);
+		SmartDashboard.putData("Starting Position", startingPositionSendableChooser);
+		
+//		SmartDashboard.putStringArray("Paths", emptyPathList);
 		// a string field where we can put the name to save the last recorded path under
-		SmartDashboard.putString("Save Path As", "");
+//		SmartDashboard.putString("Save Path As", "");
 				
 		// Our button to save the path.  To overwrite the path enter the name here
-		SmartDashboard.putData("Save path", new ExecOnceCommand() {
-			
-			@Override
-			protected void executeOnce() {
-				// get the list of paths
-				String pathName = SmartDashboard.getString("Save Path As", String.format("New path %s", pathMap.size()+1));
-				String path = SmartDashboard.getString("Recorded Path", "");
-				if (!pathName.equals("") && !path.equals("") && !pathName.contains("::")) {
-					// apply the name
-					Path p = Path.parse(path);
-					p.setName(pathName);									
-					pathMap.put(p.getName(), p.export());
-					savePathMap();
-					updatePlaybackChooser();
-				}				
-			}			
-		});
-
-		// remove a selected path.  It is the one selected in the chooser
-		SmartDashboard.putData("Delete path", new ExecOnceCommand() {
-
-			@Override
-			protected void executeOnce() {
-				// get the list of paths
-				Path selected = pathPlaybackChooser.getSelected();
-				if (selected != null) {					
-					// do we have this in the hash?
-					if (pathMap.containsKey(selected.getName())) {
-						pathMap.remove(selected.getName());
-					}
-					savePathMap();
-					updatePlaybackChooser();					
-				}
-			}			
-		});		
+//		SmartDashboard.putData("Save path", new ExecOnceCommand() {
+//			
+//			@Override
+//			protected void executeOnce() {
+//				// get the list of paths
+//				String pathName = SmartDashboard.getString("Save Path As", String.format("New path %s", pathMap.size()+1));
+//				String path = SmartDashboard.getString("Recorded Path", "");
+//				if (!pathName.equals("") && !path.equals("") && !pathName.contains("::")) {
+//					// apply the name
+//					Path p = Path.parse(path);
+//					p.setName(pathName);									
+//					pathMap.put(p.getName(), p.export());
+//					savePathMap();
+//					updatePlaybackChooser();
+//				}				
+//			}			
+//		});
+//
+//		// remove a selected path.  It is the one selected in the chooser
+//		SmartDashboard.putData("Delete path", new ExecOnceCommand() {
+//
+//			@Override
+//			protected void executeOnce() {
+//				// get the list of paths
+//				Path selected = pathPlaybackChooser.getSelected();
+//				if (selected != null) {					
+//					// do we have this in the hash?
+//					if (pathMap.containsKey(selected.getName())) {
+//						pathMap.remove(selected.getName());
+//					}
+//					savePathMap();
+//					updatePlaybackChooser();					
+//				}
+//			}			
+//		});		
 		// record
 		JoystickButton logButton = new JoystickButton(leftJoystick, RECORD_BUTTON);
 		Command toggleLoggingCommand = new Command() {
@@ -245,6 +263,9 @@ public class OI {
 			void done() {
 				Robot.logging = false;
 				Path p = robot.getDriveLine().stopRecording();
+				if (p == null) {
+					return;
+				}
 				p.setName("LAST RECORDED");
 				if (p != null) {
 					recordedPath = p.export();
@@ -252,8 +273,10 @@ public class OI {
 					Robot.log(	"--- PATH START ---\n"
 								+recordedPath
 								+"\n---- PATH END ----");	
-					RecordedPaths.PATHS[RecordedPaths.LAST] = recordedPath;
-					updatePlaybackChooser();
+					getPathPlaybackChooser().addPath(p);
+					SmartDashboard.putString("Recorded Path", recordedPath);
+//					RecordedPaths.PATHS[RecordedPaths.LAST] = recordedPath;
+//					updatePlaybackChooser();
 				}
 				SmartDashboard.putString("RECORDING", "OFF");	
 			}
@@ -263,17 +286,28 @@ public class OI {
 			}			
 		};
 		logButton.whileHeld(toggleLoggingCommand);		
+
 		// playback
-		JoystickButton pathButton = new JoystickButton(leftJoystick, PLAYBACK_BUTTON);
+		JoystickButton pathButton = new JoystickButton(leftJoystick, 4);
 		pathButton.whenPressed(new PlaybackCommand(robot, new PathProvider() {
+
 			@Override
 			public Path getPath() {
-				return getPathPlaybackChooser().getPath();
+				return getPathPlaybackChooser().getSelected();
 			}
 			
 		}));
-		
-		updatePlaybackChooser();
+
+		JoystickButton lastPathButton = new JoystickButton(leftJoystick, PLAYBACK_BUTTON);
+		lastPathButton.whenPressed(new PlaybackCommand(robot, new PathProvider() {
+			@Override
+			public Path getPath() {
+				return Path.parse(recordedPath);
+			}
+			
+		}));		
+
+//		updatePlaybackChooser();
 	}
 	
 	protected PathPlaybackSendableChooser getPathPlaybackChooser() {
@@ -319,14 +353,9 @@ public class OI {
 	}
 
 	public Command getAutonomousCommand(Robot robot) {
-		AutonomousTarget target = RecordedPaths.chooseAutonomousTarget();
+		AutonomousTarget target = RecordedPaths.chooseAutonomousTarget(startingPositionSendableChooser.getSelected());
 		Robot.log("Target is "+target.path);
-		if (target.middle) {
-			return new PlaceMiddleAutonomousCommand(robot, PathProvider.forPath(target.path));
-		}
-		else {
-			return new PlaceEndAutonomousCommand(robot, PathProvider.forPath(target.path));			
-		}
+		return new PlaceAutonomousCommand(robot, PathProvider.forPath(target.path), target.middle);			
 	}
 
 }

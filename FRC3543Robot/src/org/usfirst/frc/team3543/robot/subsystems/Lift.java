@@ -19,20 +19,26 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Lift extends BaseSubsystem {
-	Talon motorController;
+	Victor motorController;
 	Encoder encoder;
 	double max_speed = Calibration.LIFT_MAX_SPEED;
 	double SENSITIVITY = Math.toRadians(5);
+	LiftPID liftPID;
 	
 	public Lift(RobotConfig config) {
 		super(config);
-		motorController = new Talon(Wiring.LIFT_MOTOR_PORT);
+		motorController = new Victor(Wiring.LIFT_MOTOR_PORT);
 		encoder = new Encoder(Wiring.LIFT_ENCODER_A, Wiring.LIFT_ENCODER_B, false, EncodingType.k2X);
 		
 		encoder.setDistancePerPulse(Calibration.LIFT_DPP);
 		encoder.reset();
 		LiveWindow.addSensor("Lift", "Encoder", encoder);
 		LiveWindow.addActuator("Lift", "Motor Controller", motorController);
+		liftPID = new LiftPID(this.motorController, this.encoder);
+	}
+
+	public LiftPID getPID() {
+		return liftPID;
 	}
 
 	@Override

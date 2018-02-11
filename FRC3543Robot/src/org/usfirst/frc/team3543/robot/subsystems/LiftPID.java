@@ -25,17 +25,16 @@ public class LiftPID extends PIDSubsystem {
 	double max_speed = Calibration.LIFT_MAX_SPEED;
 	double SENSITIVITY = 0.25;	// inches
 	
-	public LiftPID(RobotConfig config) {
+	public LiftPID(Victor motorController, Encoder encoder) {
 		super(Calibration.LIFT_PID_P, Calibration.LIFT_PID_I, Calibration.LIFT_PID_D);
-		motorController = new Victor(Wiring.LIFT_MOTOR_PORT);
-		encoder = new Encoder(Wiring.LIFT_ENCODER_A, Wiring.LIFT_ENCODER_B, false, EncodingType.k2X);
+		this.motorController = motorController;
+		this.encoder = encoder;		
 		this.setAbsoluteTolerance(SENSITIVITY);
 		encoder.setDistancePerPulse(Calibration.LIFT_DPP);
 		encoder.reset();
-		LiveWindow.addSensor("Lift", "Encoder", encoder);
-		LiveWindow.addActuator("Lift", "Motor Controller", motorController);
 	}
 
+	
 	@Override
 	protected void initDefaultCommand() {
 		encoder.reset();		
