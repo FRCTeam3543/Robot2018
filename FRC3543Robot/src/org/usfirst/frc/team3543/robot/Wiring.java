@@ -21,5 +21,9 @@ public class Wiring {
 	public static final int WRIST_MOTOR_PORT 				= 0;
 	public static final int WRIST_ENCODER_A 				= 4;
 	public static final int WRIST_ENCODER_B 				= 5;
+
+	public static final int LIFT_MOTOR_PORT 				= 1;
+	public static final int LIFT_ENCODER_A 				= 6;
+	public static final int LIFT_ENCODER_B 				= 7;
 	
 }

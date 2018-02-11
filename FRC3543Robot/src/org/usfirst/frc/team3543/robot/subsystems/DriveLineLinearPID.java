@@ -29,15 +29,11 @@ public class DriveLineLinearPID extends PIDSubsystem {
 	@Override
 	protected void usePIDOutput(double output) {
 		SmartDashboard.putNumber("Linear PID out", output);
-//		driveLine.getLeftMotor().pidWrite(output);	
-//		driveLine.getRightMotor().pidWrite(-output);				
-		driveLine.drive(-output);
-		
+		driveLine.drive(-output);	
 	}
 
 	@Override
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
-		
+		// intentionally blank
 	}
 }

@@ -12,26 +12,27 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Wrist extends BaseSubsystem {
-	Victor motorController;
+public class Lift extends BaseSubsystem {
+	Talon motorController;
 	Encoder encoder;
-	double max_speed = Calibration.WRIST_MAX_SPEED;
+	double max_speed = Calibration.LIFT_MAX_SPEED;
 	double SENSITIVITY = Math.toRadians(5);
 	
-	public Wrist(RobotConfig config) {
+	public Lift(RobotConfig config) {
 		super(config);
-		motorController = new Victor(Wiring.WRIST_MOTOR_PORT);
-		encoder = new Encoder(Wiring.WRIST_ENCODER_A, Wiring.WRIST_ENCODER_B, false, EncodingType.k2X);
+		motorController = new Talon(Wiring.LIFT_MOTOR_PORT);
+		encoder = new Encoder(Wiring.LIFT_ENCODER_A, Wiring.LIFT_ENCODER_B, false, EncodingType.k2X);
 		
-		encoder.setDistancePerPulse(Calibration.WRIST_DPP);
+		encoder.setDistancePerPulse(Calibration.LIFT_DPP);
 		encoder.reset();
-		LiveWindow.addSensor("Wrist", "Encoder", encoder);
-		LiveWindow.addActuator("Wrist", "Motor Controller", motorController);
+		LiveWindow.addSensor("Lift", "Encoder", encoder);
+		LiveWindow.addActuator("Lift", "Motor Controller", motorController);
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public class Wrist extends BaseSubsystem {
 	}
 	
 	public boolean isUp() {
-		if (false && encoder.getDistance() < (Calibration.WRIST_UP_POS + SENSITIVITY)) {
+		if (false && encoder.getDistance() < (Calibration.LIFT_UP_POS + SENSITIVITY)) {
 			return true;
 		}
 		else return false;
@@ -50,26 +51,26 @@ public class Wrist extends BaseSubsystem {
 
 	public boolean isDown() {
 		// down should be in positive direction
-		if (false && encoder.getDistance() > (Calibration.WRIST_DOWN_POS - SENSITIVITY)) {
+		if (false && encoder.getDistance() > (Calibration.LIFT_DOWN_POS - SENSITIVITY)) {
 			return true;
 		}
 		else return false;
 	}
 	
 	public void go_up() {
-		go_up(Calibration.WRIST_MAX_SPEED);
+		go_up(Calibration.LIFT_MAX_SPEED);
 	}
 
 	public void go_down() {
-		go_down(Calibration.WRIST_MAX_SPEED);
+		go_down(Calibration.LIFT_MAX_SPEED);
 	}
 	
 	public void setSpeed(double speed) {
-		speed = Math.min(Calibration.WRIST_MAX_SPEED, Math.max(speed, -Calibration.WRIST_MAX_SPEED));
+		speed = Math.min(Calibration.LIFT_MAX_SPEED, Math.max(speed, -Calibration.LIFT_MAX_SPEED));
 		Robot.LOGGER.info("SET SPEED " + speed);
-		SmartDashboard.putNumber("Wrist Motor Speed", speed);
+		SmartDashboard.putNumber("Lift Motor Speed", speed);
 		motorController.set(speed);
-		SmartDashboard.putNumber("Wrist position", encoder.get());
+		SmartDashboard.putNumber("Lift position", encoder.get());
 	}
 	
 	public void off() {
@@ -83,7 +84,7 @@ public class Wrist extends BaseSubsystem {
 			setSpeed(-speed);
 		}
 		else {
-			Robot.LOGGER.info("Wrist in up position");
+			Robot.LOGGER.info("Lift in up position");
 		}		
 	}
 	
@@ -92,7 +93,7 @@ public class Wrist extends BaseSubsystem {
 			setSpeed(speed);
 		}
 		else {
-			Robot.LOGGER.info("Wrist in down position");
+			Robot.LOGGER.info("Lift in down position");
 		}
 	}
 

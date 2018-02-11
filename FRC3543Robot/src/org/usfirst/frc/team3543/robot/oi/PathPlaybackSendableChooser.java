@@ -6,6 +6,12 @@ import org.usfirst.frc.team3543.robot.RecordedPaths;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
+/**
+ * This powers the pick list for recorded paths
+ * 
+ * @see org.usfirst.frc.team3543.robot.RecordedPaths
+ * @see org.usfirst.frc.team3543.robot.Path
+ */
 public class PathPlaybackSendableChooser extends SendableChooser<Path> implements PathProvider {
 
 	public PathPlaybackSendableChooser() {

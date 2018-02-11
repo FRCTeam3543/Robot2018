@@ -24,6 +24,9 @@ import org.usfirst.frc.team3543.robot.commands.DriveForwardByDistanceCommand;
 import org.usfirst.frc.team3543.robot.commands.DriveForwardByDistanceUsingPIDCommand;
 import org.usfirst.frc.team3543.robot.commands.DuhCommand;
 import org.usfirst.frc.team3543.robot.commands.ExecOnceCommand;
+import org.usfirst.frc.team3543.robot.commands.LiftSetpointCommand;
+import org.usfirst.frc.team3543.robot.commands.PlaceEndAutonomousCommand;
+import org.usfirst.frc.team3543.robot.commands.PlaceMiddleAutonomousCommand;
 import org.usfirst.frc.team3543.robot.commands.PlaybackCommand;
 import org.usfirst.frc.team3543.robot.commands.RotateByAngleCommand;
 import org.usfirst.frc.team3543.robot.commands.RotateByAngleUsingPIDCommand;
@@ -64,7 +67,13 @@ public class OI {
 	public static final int RIGHT_JOYSTICK = 1;
 	public static final int TRIGGER_BUTTON = 1;
 	public static final int THUMB_BUTTON = 2;
-	public static final int LOG_BUTTON = 6; // thumb on left joystick logs
+	public static final int WRIST_BUTTON = 2;
+	
+	public static final int RECORD_BUTTON = 6; 
+	public static final int PLAYBACK_BUTTON = 7; 
+	
+	public static final int LIFT_UP_BUTTON = 8; 
+	public static final int LIFT_DOWN_BUTTON = 9; 
 	
 	public static final int WRIST_CONTROL_BUTTON = 2;
 	
@@ -116,11 +125,12 @@ public class OI {
 
 		
 		// wrist hookup
-		JoystickButton wristButton = new JoystickButton(leftJoystick, 2);		
+		JoystickButton wristButton = new JoystickButton(leftJoystick, WRIST_BUTTON);		
 		controlWrist = new ControlWristCommand(robot, leftJoystick);
 		wristButton.whileHeld(controlWrist);
 		
 		initRecordAndPlayback(robot);
+		initLift(robot);
 	}
 
 	PathPlaybackSendableChooser pathPlaybackChooser = new PathPlaybackSendableChooser();
@@ -150,6 +160,16 @@ public class OI {
 		SmartDashboard.putStringArray("Paths", (String[])savedPaths.toArray());				
 	}
 	
+	protected void initLift(Robot robot) {
+		LiftSetpointCommand liftUpCommand = new LiftSetpointCommand(robot, NumberProvider.fixedValue(Calibration.LIFT_UP_POS));
+		LiftSetpointCommand liftDownCommand = new LiftSetpointCommand(robot, NumberProvider.fixedValue(Calibration.LIFT_DOWN_POS));
+		
+		JoystickButton liftUp = new JoystickButton(leftJoystick, LIFT_UP_BUTTON);
+		JoystickButton liftDown = new JoystickButton(leftJoystick, LIFT_DOWN_BUTTON);
+		liftUp.whenPressed(liftUpCommand);
+		liftDown.whenPressed(liftDownCommand);
+	}
+	
 	protected void initRecordAndPlayback(Robot robot) {
 		SmartDashboard.putString("LOG", "Log off");
 		SmartDashboard.putString("Recorded Path", "");
@@ -157,7 +177,7 @@ public class OI {
 		SmartDashboard.putStringArray("Paths", emptyPathList);
 		// a string field where we can put the name to save the last recorded path under
 		SmartDashboard.putString("Save Path As", "");
-		
+				
 		// Our button to save the path.  To overwrite the path enter the name here
 		SmartDashboard.putData("Save path", new ExecOnceCommand() {
 			
@@ -195,7 +215,7 @@ public class OI {
 			}			
 		});		
 		// record
-		JoystickButton logButton = new JoystickButton(leftJoystick, LOG_BUTTON);
+		JoystickButton logButton = new JoystickButton(leftJoystick, RECORD_BUTTON);
 		Command toggleLoggingCommand = new Command() {
 			
 			public void start() {				
@@ -244,7 +264,7 @@ public class OI {
 		};
 		logButton.whileHeld(toggleLoggingCommand);		
 		// playback
-		JoystickButton pathButton = new JoystickButton(leftJoystick, 7);
+		JoystickButton pathButton = new JoystickButton(leftJoystick, PLAYBACK_BUTTON);
 		pathButton.whenPressed(new PlaybackCommand(robot, new PathProvider() {
 			@Override
 			public Path getPath() {
@@ -299,8 +319,14 @@ public class OI {
 	}
 
 	public Command getAutonomousCommand(Robot robot) {
-		// FIXME - need to set up the autonomous command here
-		return new DuhCommand();
+		AutonomousTarget target = RecordedPaths.chooseAutonomousTarget();
+		Robot.log("Target is "+target.path);
+		if (target.middle) {
+			return new PlaceMiddleAutonomousCommand(robot, PathProvider.forPath(target.path));
+		}
+		else {
+			return new PlaceEndAutonomousCommand(robot, PathProvider.forPath(target.path));			
+		}
 	}
 
 }
