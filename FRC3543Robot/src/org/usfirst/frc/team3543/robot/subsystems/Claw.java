@@ -1,25 +1,37 @@
 package org.usfirst.frc.team3543.robot.subsystems;
 
 import org.usfirst.frc.team3543.robot.RobotMap;
+import org.usfirst.frc.team3543.robot.Wiring;
 import org.usfirst.frc.team3543.robot.commands.ClawOffCommand;
 import org.usfirst.frc.team3543.robot.commands.ClawOpenCommand;
+import org.usfirst.frc.team3543.robot.util.RobotConfig;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class Claw extends Subsystem {
-
-	private DoubleSolenoid doubleSolenoid = RobotMap.clawDoubleSolenoid;
-	public Compressor airpusher = new Compressor(RobotMap.COMPRESSOR_PORT);
+public class Claw extends BaseSubsystem {
+	// configuration keys
+	public static final String COMPRESSOR_PORT = "claw.compressor_port";
+	public static final String SOLENOID_1_PORT = "claw.solenoid_1_port";
+	public static final String SOLENOID_2_PORT = "claw.solenoid_2_port";
+	
+	private DoubleSolenoid doubleSolenoid;
+	public Compressor airpusher;
 				
 	private boolean open = false;
 	
-	
+	public Claw(RobotConfig config) {
+		super(config);
+		airpusher = new Compressor(Wiring.CLAW_COMPRESSOR_PORT);
+		doubleSolenoid = new DoubleSolenoid(Wiring.CLAW_SOLENOID_1_PORT, Wiring.CLAW_SOLENOID_2_PORT);
+		updateOperatorInterface();
+	}
+
 	@Override
-	protected void initDefaultCommand() {		
-		// leave for now
-		setDefaultCommand(new ClawOpenCommand());
+	protected void initDefaultCommand() {
+		// none
+		reset();
 	}
 
 	public boolean isOpen() {
@@ -27,12 +39,12 @@ public class Claw extends Subsystem {
 	}
 	
 	public void open() {		
+		doubleSolenoid.set(DoubleSolenoid.Value.kForward);			
 		open = true;
-		this.doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
 	}
 	
 	public void close() {
-		doubleSolenoid.set(DoubleSolenoid.Value.kForward);	
+		this.doubleSolenoid.set(DoubleSolenoid.Value.kReverse);		
 		open = false;
 	}
 	
@@ -62,10 +74,18 @@ public class Claw extends Subsystem {
 		airpusher.stop();
 	}
 	
+	public void reset() {
+		this.init();
+	}
+
 	public void init() {
-		setClosedLoopControl(true);
+		setClosedLoopControl(true);	
 		startCompressor();
-		open();		
+		close();		
 	}
 	
+	@Override
+	public void updateOperatorInterface() {
+		
+	}
 }

@@ -5,16 +5,16 @@ import org.usfirst.frc.team3543.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class TestAutonomousCommand extends Command {
-
-	public TestAutonomousCommand() {
-		requires(Robot.driveLine);
-	}
+	private Robot robot;
 	
+	public TestAutonomousCommand(Robot robot) {
+		requires(robot.getDriveLine());
+	}
 	
 	@Override
 	protected void initialize() {
 		super.initialize();
-		Robot.driveLine.stop();
+		robot.getDriveLine().stop();
 	}
 
 
@@ -25,12 +25,12 @@ public class TestAutonomousCommand extends Command {
 
 	@Override
 	protected void execute() {
-		Robot.driveLine.driveStraight(0.5);
+		robot.getDriveLine().driveStraight(0.5);
 	}
 
 	@Override
 	public void cancel() {
-		Robot.driveLine.stop();		
+		robot.getDriveLine().stop();		
 		super.cancel();
 	}
 }
