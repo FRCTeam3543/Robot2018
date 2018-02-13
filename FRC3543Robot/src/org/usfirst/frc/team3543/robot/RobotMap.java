@@ -112,7 +112,7 @@ public class RobotMap implements RobotConfig {
     public static final double DEFAULT_ROTATION_GAIN = 0.27;
     
     public void init() {
-    	 
+
     }
 
 	@Override
