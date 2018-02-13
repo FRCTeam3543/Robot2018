@@ -353,8 +353,9 @@ public class OI {
 	}
 
 	public Command getAutonomousCommand(Robot robot) {
-		AutonomousTarget target = RecordedPaths.chooseAutonomousTarget(startingPositionSendableChooser.getSelected());
-		Robot.log("Target is "+target.path);
+		int pos = startingPositionSendableChooser.getSelected().intValue();
+		AutonomousTarget target = PathChooser.chooseAutonomousTarget(pos);
+		Robot.log("Target is "+target.path+" and position is "+pos);
 		return new PlaceAutonomousCommand(robot, PathProvider.forPath(target.path), target.middle);			
 	}
 
