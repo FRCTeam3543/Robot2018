@@ -1,3 +1,6 @@
 /bin/
 /build/
 /dist/
+/.settings/
+.project
+.DS_Store
