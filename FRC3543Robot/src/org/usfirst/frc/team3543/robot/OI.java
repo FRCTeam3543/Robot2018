@@ -19,7 +19,10 @@ import org.usfirst.frc.team3543.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team3543.robot.commands.ClawCloseCommand;
 import org.usfirst.frc.team3543.robot.commands.ClawOpenCommand;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> branch 'mk-recording' of https://github.com/FRCTeam3543/Robot2018.git
 import org.usfirst.frc.team3543.robot.commands.ControlWristCommand;
 import org.usfirst.frc.team3543.robot.commands.DriveForwardByDistanceCommand;
 import org.usfirst.frc.team3543.robot.commands.DriveForwardByDistanceUsingPIDCommand;
@@ -32,10 +35,16 @@ import org.usfirst.frc.team3543.robot.commands.PlaybackCommand;
 import org.usfirst.frc.team3543.robot.commands.RotateByAngleCommand;
 import org.usfirst.frc.team3543.robot.commands.RotateByAngleUsingPIDCommand;
 import org.usfirst.frc.team3543.robot.commands.SetWristPositionCommand;
+<<<<<<< HEAD
 >>>>>>> branch 'master' of https://github.com/FRCTeam3543/Robot2018.git
+=======
+>>>>>>> branch 'mk-recording' of https://github.com/FRCTeam3543/Robot2018.git
 import org.usfirst.frc.team3543.robot.commands.TankDriveWithJoystick;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> branch 'mk-recording' of https://github.com/FRCTeam3543/Robot2018.git
 import org.usfirst.frc.team3543.robot.oi.PathPlaybackSendableChooser;
 import org.usfirst.frc.team3543.robot.oi.StartingPositionSendableChooser;
 import org.usfirst.frc.team3543.robot.util.DegreesToRadiansNumberProvider;
@@ -67,6 +76,7 @@ public class OI {
 	public Joystick leftJoystick;
 	public Joystick rightJoystick;
 	
+<<<<<<< HEAD
 <<<<<<< HEAD
 	    public Joystick leftJoystick;
 	    public Joystick rightJoystick;
@@ -126,7 +136,54 @@ public class OI {
 
 	public void connectToRobot(Robot robot) {
 >>>>>>> branch 'master' of https://github.com/FRCTeam3543/Robot2018.git
+=======
+	StringBuilder log = new StringBuilder();
+	
+	public static final int LEFT_JOYSTICK = 0;
+	public static final int RIGHT_JOYSTICK = 1;
+	public static final int TRIGGER_BUTTON = 1;
+	public static final int THUMB_BUTTON = 2;
+	public static final int WRIST_UP_BUTTON = 2;
+	public static final int WRIST_DOWN_BUTTON = 3;
+	
+	public static final int RECORD_BUTTON = 6; 
+	public static final int PLAYBACK_BUTTON = 7; 
+	
+	public static final int LIFT_UP_BUTTON = 8; 
+	public static final int LIFT_DOWN_BUTTON = 9; 
+	
+	public static final int WRIST_CONTROL_BUTTON = 2;
+	
+	public static final int CLOSE_CLAW_BUTTON = THUMB_BUTTON;
+
+	public static final String DEFAULT_LINEAR_GAIN = "Default Linear Gain";
+	public static final String DEFAULT_ROTATION_GAIN = "Default Rotation Gain";
+	public static final String DRIVELINE_GYRO = "Gyro";
+	public static final String LIFT_GAIN = "Lift Gain";
+	public static final String DRIVELINE_ENCODER_LEFT = "Left Encoder";
+	public static final String DRIVELINE_ENCODER_RIGHT = "Right Encoder";
+	public static final String DISTANCE_REMAINING = "Distance Remaining";
+	public static final String WHEEL_ENCODER_DISTANCE_PER_PULSE = "Wheel encoder distance per pulse";
+
+	public static final String AUTONOMOUS_MODE = "Autonomous Mode";
+
+	public static final double WHEEL_DISTANCE_PER_PULSE = (6 * Math.PI) / (360 * 0.4615);
+
+	public String recordedPath = RecordedPaths.NONE; // The "None" path
+	
+	ControlWristCommand controlWrist;
+	ArcadeDriveWithJoystick arcadeDrive;
+	
+	public OI () {
+		// Joysticks and buttons
+		rightJoystick = new Joystick(RIGHT_JOYSTICK);        
+		leftJoystick = new Joystick(LEFT_JOYSTICK);
+	}
+
+	public void connectToRobot(Robot robot) {
+>>>>>>> branch 'mk-recording' of https://github.com/FRCTeam3543/Robot2018.git
 		
+<<<<<<< HEAD
 <<<<<<< HEAD
 		public static final String AUTONOMOUS_MODE = "Autonomous Mode";
 	    
@@ -139,10 +196,17 @@ public class OI {
 		JoystickButton resumeArcadeDriveButton = new JoystickButton(rightJoystick, TRIGGER_BUTTON);
 //		JoystickButton resumeTankDriveButton = new JoystickButton(leftJoystick, THUMB_BUTTON);
 >>>>>>> branch 'master' of https://github.com/FRCTeam3543/Robot2018.git
+=======
+		arcadeDrive = new ArcadeDriveWithJoystick(robot);
+//		TankDriveWithJoystick tank = new TankDriveWithJoystick(robot);
+		JoystickButton resumeArcadeDriveButton = new JoystickButton(rightJoystick, TRIGGER_BUTTON);
+//		JoystickButton resumeTankDriveButton = new JoystickButton(leftJoystick, THUMB_BUTTON);
+>>>>>>> branch 'mk-recording' of https://github.com/FRCTeam3543/Robot2018.git
 
 		resumeArcadeDriveButton.whenPressed(arcadeDrive);
 //		resumeTankDriveButton.whenPressed(tank);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	         ////////////////////////////////////////////////////////////////
 	         /////////// Manually added items for the smart dashboard
@@ -167,7 +231,19 @@ public class OI {
 		JoystickButton closeClawButton = new JoystickButton(leftJoystick, TRIGGER_BUTTON);
 		closeClawButton.whenPressed(new ClawOpenCommand(robot));
 		closeClawButton.whenReleased(new ClawCloseCommand(robot));
+=======
+		JoystickButton closeClawButton = new JoystickButton(leftJoystick, TRIGGER_BUTTON);
+		closeClawButton.whenPressed(new ClawOpenCommand(robot));
+		closeClawButton.whenReleased(new ClawCloseCommand(robot));
 
+		NumberProvider forwardDistanceProvider = this.provideNumber("Drive Forward Distance", 12);
+		NumberProvider rotationAngleProvider = new DegreesToRadiansNumberProvider(this.provideNumber("Rotate by Angle", 90));
+		SmartDashboard.putData("Rotate robot degrees", new RotateByAngleUsingPIDCommand(robot, rotationAngleProvider));			
+		SmartDashboard.putData("Drive Forward", new DriveForwardByDistanceUsingPIDCommand(robot, forwardDistanceProvider));
+		SmartDashboard.putData("Circle Test", new CircleCommandGroup(robot, forwardDistanceProvider));
+>>>>>>> branch 'mk-recording' of https://github.com/FRCTeam3543/Robot2018.git
+
+<<<<<<< HEAD
 		NumberProvider forwardDistanceProvider = this.provideNumber("Drive Forward Distance", 12);
 		NumberProvider rotationAngleProvider = new DegreesToRadiansNumberProvider(this.provideNumber("Rotate by Angle", 90));
 		SmartDashboard.putData("Rotate robot degrees", new RotateByAngleUsingPIDCommand(robot, rotationAngleProvider));			
@@ -175,6 +251,8 @@ public class OI {
 		SmartDashboard.putData("Circle Test", new CircleCommandGroup(robot, forwardDistanceProvider));
 >>>>>>> branch 'master' of https://github.com/FRCTeam3543/Robot2018.git
 
+=======
+>>>>>>> branch 'mk-recording' of https://github.com/FRCTeam3543/Robot2018.git
 		
 		// wrist hookup
 		JoystickButton wristButton = new JoystickButton(leftJoystick, 5);		
@@ -337,6 +415,7 @@ public class OI {
 		logButton.whileHeld(toggleLoggingCommand);		
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 			public double getWheelEncoderDistancePerPulse() {
 				// FIXME 
 				return 0;
@@ -350,8 +429,18 @@ public class OI {
 			public Path getPath() {
 				return getPathPlaybackChooser().getSelected();
 >>>>>>> branch 'master' of https://github.com/FRCTeam3543/Robot2018.git
+=======
+		// playback
+		JoystickButton pathButton = new JoystickButton(leftJoystick, 4);
+		pathButton.whenPressed(new PlaybackCommand(robot, new PathProvider() {
+
+			@Override
+			public Path getPath() {
+				return getPathPlaybackChooser().getSelected();
+>>>>>>> branch 'mk-recording' of https://github.com/FRCTeam3543/Robot2018.git
 			}
 			
+<<<<<<< HEAD
 <<<<<<< HEAD
 			private double round(double num, int decimals) {
 				double p = 10;
@@ -365,7 +454,74 @@ public class OI {
 	    
 =======
 		}));
+=======
+		}));
 
+		JoystickButton lastPathButton = new JoystickButton(leftJoystick, PLAYBACK_BUTTON);
+		lastPathButton.whenPressed(new PlaybackCommand(robot, new PathProvider() {
+			@Override
+			public Path getPath() {
+				return Path.parse(recordedPath);
+			}
+			
+		}));		
+
+//		updatePlaybackChooser();
+	}
+	
+	protected PathPlaybackSendableChooser getPathPlaybackChooser() {
+		return pathPlaybackChooser;
+	}
+	
+	protected SmartDashboardNumberProvider provideNumber(String forKey, double defaultValue) {
+		putNumber(forKey, defaultValue);
+		return new SmartDashboardNumberProvider(forKey, defaultValue);
+	}
+	
+	public Joystick getLeftJoystick() {
+		return leftJoystick;
+	}
+
+	public Joystick getRightJoystick() {
+		return rightJoystick;
+	}
+
+	public void putDrivelineEncoders(double left, double right) {
+		putNumber(OI.DRIVELINE_ENCODER_LEFT, round(left,1));
+		putNumber(OI.DRIVELINE_ENCODER_RIGHT, round(right,1));
+	}
+
+	public void putDrivelineGyro(double angleInDegrees) {
+		putNumber(OI.DRIVELINE_GYRO, round(angleInDegrees,1));
+	}
+
+	private double round(double num, int decimals) {
+		double p = 10;
+		if (decimals == 0) p = 1;
+		else if (decimals == 1) p = 10;
+		else p = Math.pow(10, decimals);
+		return Math.round(num * p) / p;
+	}
+
+	public void putNumber(String key, double value) {
+		SmartDashboard.putNumber(key,value);
+	}
+
+	public void putBoolean(String key, boolean value) {
+		SmartDashboard.putBoolean(key,value);
+	}
+
+	public Command getAutonomousCommand(Robot robot) {
+		int pos = startingPositionSendableChooser.getSelected().intValue();
+		AutonomousTarget target = PathChooser.chooseAutonomousTarget(pos);
+		Robot.log("Target is "+target.path+" and position is "+pos);
+		return new PlaceAutonomousCommand(robot, PathProvider.forPath(target.path), target.middle);			
+	}
+
+}
+>>>>>>> branch 'mk-recording' of https://github.com/FRCTeam3543/Robot2018.git
+
+<<<<<<< HEAD
 		JoystickButton lastPathButton = new JoystickButton(leftJoystick, PLAYBACK_BUTTON);
 		lastPathButton.whenPressed(new PlaybackCommand(robot, new PathProvider() {
 			@Override
@@ -428,3 +584,14 @@ public class OI {
 
 >>>>>>> branch 'master' of https://github.com/FRCTeam3543/Robot2018.git
 }
+=======
+
+
+
+
+
+
+
+
+
+>>>>>>> branch 'mk-recording' of https://github.com/FRCTeam3543/Robot2018.git

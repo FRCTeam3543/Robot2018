@@ -60,11 +60,16 @@ public class DriveForwardByDistanceCommand extends Command {
 	protected void initialize() {
 		// read the starting encoder values
 <<<<<<< HEAD
+<<<<<<< HEAD
 		Robot.driveLine.resetAll();	
 =======
 		updateDistanceRemaining(0);
 		robot.getDriveLine().resetAll();	
 >>>>>>> branch 'master' of https://github.com/FRCTeam3543/Robot2018.git
+=======
+		updateDistanceRemaining(0);
+		robot.getDriveLine().resetAll();	
+>>>>>>> branch 'mk-recording' of https://github.com/FRCTeam3543/Robot2018.git
 		this.setTargetDistance(distanceProvider.getValue());
 		this.setPowerGain(gainProvider.getValue());
 	}

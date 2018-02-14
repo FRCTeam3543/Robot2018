@@ -288,12 +288,18 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 
 	public void resetEncoders() {
 <<<<<<< HEAD
+<<<<<<< HEAD
 //		double dpp = OI.dashboard.getWheelEncoderDistancePerPulse();	
 =======
 //		double leftDpp = SmartDashboard.getNumber(DASHBOARD_LEFT_ENCODER_DPP, defaultLeftEncoderDPP);
 //		double rightDpp = SmartDashboard.getNumber(DASHBOARD_RIGHT_ENCODER_DPP, defaultRightEncoderDPP);
 >>>>>>> branch 'master' of https://github.com/FRCTeam3543/Robot2018.git
+=======
+//		double leftDpp = SmartDashboard.getNumber(DASHBOARD_LEFT_ENCODER_DPP, defaultLeftEncoderDPP);
+//		double rightDpp = SmartDashboard.getNumber(DASHBOARD_RIGHT_ENCODER_DPP, defaultRightEncoderDPP);
+>>>>>>> branch 'mk-recording' of https://github.com/FRCTeam3543/Robot2018.git
 		
+<<<<<<< HEAD
 <<<<<<< HEAD
 		// hack
 //		double leftdpp = dpp * (1-0.028);
@@ -310,6 +316,8 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 //		this.quadratureEncoderRight.setDistancePerPulse(dpp);
 //		this.updateDashboard();
 =======
+=======
+>>>>>>> branch 'mk-recording' of https://github.com/FRCTeam3543/Robot2018.git
 		this.quadratureEncoderLeft.reset();		
 //		this.quadratureEncoderLeft.setDistancePerPulse(leftDpp);
 		this.quadratureEncoderRight.reset();
@@ -319,7 +327,10 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 		
 		updateOperatorInterface();
 	}
+<<<<<<< HEAD
 >>>>>>> branch 'master' of https://github.com/FRCTeam3543/Robot2018.git
+=======
+>>>>>>> branch 'mk-recording' of https://github.com/FRCTeam3543/Robot2018.git
 
 	public void doTimerDelay() {
 		Timer.delay(this.getTimerDelay());
