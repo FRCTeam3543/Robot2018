@@ -161,6 +161,7 @@ public class Robot extends TimedRobot implements RobotConfig {
 	}
 
 	public void autonomousInit() {
+		GameData.getInstance().init();
 		// schedule the autonomous command (example)
 		Command autonomousCommand = this.getOperatorInterface().getAutonomousCommand(this);		
 		if (autonomousCommand != null) autonomousCommand.start();

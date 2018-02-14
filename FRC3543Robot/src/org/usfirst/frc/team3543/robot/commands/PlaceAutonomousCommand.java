@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class PlaceAutonomousCommand extends CommandGroup {
 	Robot robot;
 	
-	public PlaceAutonomousCommand(Robot robot, PathProvider pathProvider, boolean middle) {
+	public PlaceAutonomousCommand(Robot robot, PathProvider pathProvider, boolean middle, boolean dropBlock) {
 		super();
 		requires(robot.getDriveLine());
 		requires(robot.getClaw());
@@ -23,8 +23,10 @@ public class PlaceAutonomousCommand extends CommandGroup {
 		if (middle) {
 			addSequential(new SetLiftPositionCommand(robot, NumberProvider.fixedValue(Calibration.LIFT_UP_POS)));
 		}
-		addSequential(new SetWristPositionCommand(robot, NumberProvider.fixedValue(Calibration.WRIST_DOWN_POS), NumberProvider.fixedValue(2000)));
-		addSequential(new ClawOpenCommand(robot));
+		if (dropBlock) {
+			addSequential(new SetWristPositionCommand(robot, NumberProvider.fixedValue(Calibration.WRIST_DOWN_POS), NumberProvider.fixedValue(2000)));
+			addSequential(new ClawOpenCommand(robot));
+		}
 	}
 
 	@Override

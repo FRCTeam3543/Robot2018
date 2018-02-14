@@ -174,13 +174,49 @@ public class OI {
 //	}
 	
 	protected void initLift(Robot robot) {
-		LiftSetpointCommand liftUpCommand = new LiftSetpointCommand(robot, NumberProvider.fixedValue(Calibration.LIFT_UP_POS));
-		LiftSetpointCommand liftDownCommand = new LiftSetpointCommand(robot, NumberProvider.fixedValue(Calibration.LIFT_DOWN_POS));
+//		LiftSetpointCommand liftUpCommand = new LiftSetpointCommand(robot, NumberProvider.fixedValue(Calibration.LIFT_UP_POS));
+//		LiftSetpointCommand liftDownCommand = new LiftSetpointCommand(robot, NumberProvider.fixedValue(Calibration.LIFT_DOWN_POS));
+
+
+		Command liftUpCommand = new Command() {
+			public void execute() {
+				robot.getLift().go_up();
+			}
+			
+			@Override
+			protected boolean isFinished() {
+				return false;
+			}			
+			@Override
+			protected void end() {
+				super.end();
+				robot.getLift().stop();
+			}			
+			
+		};
+		Command liftDownCommand = new Command() {
+			public void execute() {
+				robot.getLift().go_down();
+			}
+			
+			@Override
+			protected boolean isFinished() {
+				return false;
+			}
+
+			@Override
+			protected void end() {
+				super.end();
+				robot.getLift().stop();
+			}			
+			
+			
+		};
 		
 		JoystickButton liftUp = new JoystickButton(leftJoystick, LIFT_UP_BUTTON);
 		JoystickButton liftDown = new JoystickButton(leftJoystick, LIFT_DOWN_BUTTON);
-		liftUp.whenPressed(liftUpCommand);
-		liftDown.whenPressed(liftDownCommand);
+		liftUp.whileHeld(liftUpCommand);
+		liftDown.whileHeld(liftDownCommand);
 	}
 	
 	protected void initRecordAndPlayback(Robot robot) {
@@ -234,6 +270,9 @@ public class OI {
 //		});		
 		// record
 		JoystickButton logButton = new JoystickButton(leftJoystick, RECORD_BUTTON);
+		SmartDashboard.putNumber("Motor trim", 1.0);
+		SmartDashboard.setPersistent("Motor trim");
+		
 		Command toggleLoggingCommand = new Command() {
 			
 			public void start() {				
@@ -242,7 +281,8 @@ public class OI {
 				if (!robot.getDriveLine().isRecording()) {
 					Robot.log("---- LOG START ----");
 					robot.getDriveLine().startRecording();		
-					SmartDashboard.putString("Recorded Path", "");					
+					robot.getDriveLine().setTrim(SmartDashboard.getNumber("Motor trim", 1.0));
+					SmartDashboard.putString("Recorded Path", "");
 				}
 			}
 						
@@ -279,6 +319,7 @@ public class OI {
 //					updatePlaybackChooser();
 				}
 				SmartDashboard.putString("RECORDING", "OFF");	
+				robot.getDriveLine().setTrim(1.0);
 			}
 			@Override
 			protected boolean isFinished() {
@@ -309,7 +350,7 @@ public class OI {
 
 //		updatePlaybackChooser();
 	}
-	
+		
 	protected PathPlaybackSendableChooser getPathPlaybackChooser() {
 		return pathPlaybackChooser;
 	}
@@ -353,9 +394,10 @@ public class OI {
 	}
 
 	public Command getAutonomousCommand(Robot robot) {
-		AutonomousTarget target = RecordedPaths.chooseAutonomousTarget(startingPositionSendableChooser.getSelected());
-		Robot.log("Target is "+target.path);
-		return new PlaceAutonomousCommand(robot, PathProvider.forPath(target.path), target.middle);			
+		int pos = startingPositionSendableChooser.getSelected().intValue();
+		AutonomousTarget target = PathChooser.chooseAutonomousTarget(pos);
+		Robot.log("Target is "+target.path+" and position is "+pos);
+		return new PlaceAutonomousCommand(robot, PathProvider.forPath(target.path), target.middle, target.dropBlock);			
 	}
 
 }

@@ -10,8 +10,13 @@ public class GameData {
 	public static final int ROBOT_MIDDLE = 1;
 	public static final int ROBOT_RIGHT = 2;
 
+	public static final int NEAR_SWITCH = 0;
+	public static final int MIDDLE_SCALE = 1;
+	public static final int FAR_SWITCH = 2;
+	
 	public static final int PLACE_LEFT = 0;
 	public static final int PLACE_RIGHT = 1;
+	
 		
 	private int alliancePosition = ROBOT_MIDDLE;
 	private int[] gameData = { PLACE_LEFT, PLACE_LEFT, PLACE_LEFT };

@@ -64,11 +64,15 @@ public class Lift extends BaseSubsystem {
 	}
 	
 	public void go_up() {
-		go_up(Calibration.LIFT_MAX_SPEED);
+		go_up(Calibration.LIFT_MAX_SPEED_UP);
 	}
 
 	public void go_down() {
-		go_down(Calibration.LIFT_MAX_SPEED);
+		go_down(Calibration.LIFT_MAX_SPEED_DOWN);
+	}
+	
+	public void stop() {
+		setSpeed(0);
 	}
 	
 	public void setSpeed(double speed) {
