@@ -39,15 +39,5 @@ public class RecordedPaths {
 				DRIVE_OVER_LINE				
 			}
 	};
-	
-	/**
-	 * @deprecated
-	 * @see PathChooser
-	 * @param startingPosition
-	 * @return
-	 */
-	public static AutonomousTarget chooseAutonomousTarget(Integer startingPosition) {
-		return PathChooser.chooseAutonomousTarget(startingPosition);
-	}
-		
+			
 }
