@@ -11,6 +11,7 @@ class PathChooser {
 		int middleScale = GameData.getInstance().getPosition(GameData.MIDDLE_SCALE);
 		int farSwitch = GameData.getInstance().getPosition(GameData.FAR_SWITCH);		
 		boolean middle = robotLocation == GameData.ROBOT_MIDDLE; 
+		boolean dropBlock = true;
 		
 		if (robotLocation == GameData.ROBOT_LEFT) {
 			if (middleScale == GameData.PLACE_LEFT) {
@@ -20,7 +21,9 @@ class PathChooser {
 				path = paths[0];
 			}
 			else {
-				path = RecordedPaths.DRIVE_OVER_LINE_LEFT;
+				path = RecordedPaths.DRIVE_OVER_LINE_LEFT;				
+				dropBlock = false;
+				
 			}
 		}
 		else if (robotLocation == GameData.ROBOT_MIDDLE) {
@@ -37,9 +40,11 @@ class PathChooser {
 			// passive from middle
 			if (nearSwitch == GameData.PLACE_LEFT) {
 				path = RecordedPaths.DRIVE_OVER_LINE_MIDDLE_RIGHT;
+				dropBlock = false;				
 			}
 			else if (nearSwitch == GameData.PLACE_RIGHT) {
 				path = RecordedPaths.DRIVE_OVER_LINE_MIDDLE_LEFT;
+				dropBlock = false;								
 			}
 			else {
 				throw new RuntimeException("Weird, should not happen");
@@ -56,11 +61,12 @@ class PathChooser {
 			
 			else {
 				path = RecordedPaths.DRIVE_OVER_LINE_RIGHT;
+				dropBlock = false;
 			}
 		}
 		else {
 			throw new RuntimeException("Weird robotLocation: "+robotLocation);
 		}
-		return AutonomousTarget.create(path, middle);
+		return AutonomousTarget.create(path, middle, dropBlock);
 	}
 }

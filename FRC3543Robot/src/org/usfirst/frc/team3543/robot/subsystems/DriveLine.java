@@ -94,6 +94,8 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 	private AnalogGyro analogGyro;
 	private Encoder quadratureEncoderLeft;
 	private Encoder quadratureEncoderRight;
+	
+	private double trim = 1.0;
 
 	private double gyroSensitivity = RobotMap.GYRO_SENSITIVITY;
 	private double gyroGain = RobotMap.GYRO_FEEDBACK_GAIN;
@@ -119,7 +121,7 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 		frontLeft = new WPI_TalonSRX(frontLeftMotor);       
 		backLeft = new WPI_TalonSRX(backLeftMotor);		
 		backLeft.follow(frontLeft);
-		
+				
 		frontLeft.setNeutralMode(NeutralMode.Brake);
 		frontLeft.configOpenloopRamp(Calibration.DRIVELINE_OPEN_LOOP_RAMP, 0);
 		frontLeft.set(ControlMode.PercentOutput,0);
@@ -286,6 +288,14 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 		robotDrive.setSafetyEnabled(false);
 	}
 
+	public void setTrim(double d) {
+		this.trim = Math.min(1, Math.abs(d));
+	}
+	
+	public double getTrim() {
+		return this.trim;
+	}
+	
 	public void resetEncoders() {
 //		double leftDpp = SmartDashboard.getNumber(DASHBOARD_LEFT_ENCODER_DPP, defaultLeftEncoderDPP);
 //		double rightDpp = SmartDashboard.getNumber(DASHBOARD_RIGHT_ENCODER_DPP, defaultRightEncoderDPP);
@@ -330,6 +340,7 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 		frontRight.set(ControlMode.PercentOutput,0);
 		resetEncoders();
 		resetGyro();		
+		setTrim(1);
 		updateOperatorInterface();		
 	}
 	
@@ -375,6 +386,11 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 
 		@Override
 		public void setLeftRightMotorOutputs(double leftOutput, double rightOutput) {
+			if (log != null) {
+			double trim = log.getTrim();
+				leftOutput *= trim;
+				rightOutput *= trim;
+			}
 			super.setLeftRightMotorOutputs(leftOutput, rightOutput);
 			if (log != null) {
 				log.log(leftOutput, rightOutput);				
@@ -387,5 +403,6 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 
 interface DriveLineLog {
 	void log(double left, double right);
+	double getTrim();
 }
 

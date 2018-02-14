@@ -31,7 +31,6 @@ public class PlaybackCommand extends Command {
 
 	public void execute() {
 		if (!path.isDone()) {		
-//			Robot.log("Path has "+path.getPoints().size() + " left");
 			Path.Point point = path.shift();
 			robot.getDriveLine().setLeftRightMotorOutputs(point.left, point.right);			
 		}
