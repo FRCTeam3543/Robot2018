@@ -107,4 +107,8 @@ public class Lift extends BaseSubsystem {
 		}
 	}
 
+	public void go_down_fast() {
+		go_down(Calibration.LIFT_CLIMB_SPEED);
+	}
+
 }

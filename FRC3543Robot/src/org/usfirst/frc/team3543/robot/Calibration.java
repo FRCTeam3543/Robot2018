@@ -46,6 +46,7 @@ public class Calibration {
 	public static final double LIFT_MAX_SPEED			= 1; // 50%, for now
 	public static final double LIFT_MAX_SPEED_UP		= LIFT_MAX_SPEED; // 50%, for now
 	public static final double LIFT_MAX_SPEED_DOWN		= LIFT_MAX_SPEED * 0.35; // 50%, for now
+	public static final double LIFT_CLIMB_SPEED		= LIFT_MAX_SPEED; // 50%, for now
 	
 	public static final double LIFT_UP_POS			= 1; // inches
 	public static final double LIFT_DOWN_POS			= 0; // inches

@@ -75,10 +75,11 @@ public class OI {
 	public static final int RECORD_BUTTON = 6; 
 	public static final int PLAYBACK_BUTTON = 7; 
 	
-	public static final int LIFT_UP_BUTTON = 8; 
-	public static final int LIFT_DOWN_BUTTON = 9; 
+	public static final int LIFT_UP_BUTTON = 3; 
+	public static final int LIFT_DOWN_BUTTON = 2; 
+	public static final int LIFT_CLIMB_BUTTON = 8;
 	
-	public static final int WRIST_CONTROL_BUTTON = 2;
+	public static final int WRIST_CONTROL_BUTTON = 5;
 	
 	public static final int CLOSE_CLAW_BUTTON = THUMB_BUTTON;
 
@@ -109,12 +110,9 @@ public class OI {
 	public void connectToRobot(Robot robot) {
 		
 		arcadeDrive = new ArcadeDriveWithJoystick(robot);
-//		TankDriveWithJoystick tank = new TankDriveWithJoystick(robot);
 		JoystickButton resumeArcadeDriveButton = new JoystickButton(rightJoystick, TRIGGER_BUTTON);
-//		JoystickButton resumeTankDriveButton = new JoystickButton(leftJoystick, THUMB_BUTTON);
 
 		resumeArcadeDriveButton.whenPressed(arcadeDrive);
-//		resumeTankDriveButton.whenPressed(tank);
 
 		JoystickButton closeClawButton = new JoystickButton(leftJoystick, TRIGGER_BUTTON);
 		closeClawButton.whenPressed(new ClawOpenCommand(robot));
@@ -125,23 +123,26 @@ public class OI {
 		SmartDashboard.putData("Rotate robot degrees", new RotateByAngleUsingPIDCommand(robot, rotationAngleProvider));			
 		SmartDashboard.putData("Drive Forward", new DriveForwardByDistanceUsingPIDCommand(robot, forwardDistanceProvider));
 		SmartDashboard.putData("Circle Test", new CircleCommandGroup(robot, forwardDistanceProvider));
-
-		
+				
+		initWrist(robot);
+		initRecordAndPlayback(robot);
+		initLift(robot);
+	}
+	
+	protected void initWrist(Robot robot) {
 		// wrist hookup
-		JoystickButton wristButton = new JoystickButton(leftJoystick, 5);		
+		JoystickButton wristButton = new JoystickButton(leftJoystick, WRIST_CONTROL_BUTTON);		
 		controlWrist = new ControlWristCommand(robot, leftJoystick);
 		wristButton.whileHeld(controlWrist);
 		
-		JoystickButton wristUp = new JoystickButton(leftJoystick, 2);
-		JoystickButton wristDown = new JoystickButton(leftJoystick, 3);
+//		JoystickButton wristUp = new JoystickButton(leftJoystick, 2);
+//		JoystickButton wristDown = new JoystickButton(leftJoystick, 3);
+//		
+//		wristUp.whileHeld(new SetWristPositionCommand(robot, NumberProvider.fixedValue(Calibration.WRIST_UP_POS), NumberProvider.fixedValue(2000)));
+////		wristDown.whileHeld(new SetWristPositionCommand(robot, NumberProvider.fixedValue(Calibration.WRIST_DOWN_POS)));
+//
+//		wristDown.whileHeld(new SetWristPositionCommand(robot, NumberProvider.fixedValue((Calibration.WRIST_DOWN_POS + Calibration.WRIST_UP_POS)/2), NumberProvider.fixedValue(2000)));
 		
-		wristUp.whileHeld(new SetWristPositionCommand(robot, NumberProvider.fixedValue(Calibration.WRIST_UP_POS), NumberProvider.fixedValue(2000)));
-//		wristDown.whileHeld(new SetWristPositionCommand(robot, NumberProvider.fixedValue(Calibration.WRIST_DOWN_POS)));
-
-		wristDown.whileHeld(new SetWristPositionCommand(robot, NumberProvider.fixedValue((Calibration.WRIST_DOWN_POS + Calibration.WRIST_UP_POS)/2), NumberProvider.fixedValue(2000)));
-		
-		initRecordAndPlayback(robot);
-		initLift(robot);
 	}
 
 	PathPlaybackSendableChooser pathPlaybackChooser = new PathPlaybackSendableChooser();
@@ -151,32 +152,12 @@ public class OI {
 	Map<String, String> pathMap = new HashMap<String, String>();
 	
 	protected void updatePlaybackChooser() {
-//		pathPlaybackChooser = new PathPlaybackSendableChooser();
-//		pathMap.clear();
-//		String [] paths = SmartDashboard.getStringArray("Paths", emptyPathList);
-//		Path p;
-//		for (String path : paths) {
-//			p = Path.parse(path);
-//			pathMap.put(p.getName(), path);			
-//		}
+		// empty deprecated
 	}
-	
-//	public void savePathMap() {
-//		List<String> savedPaths = new ArrayList<>();		
-//		String path;
-//		for (String s : pathMap.keySet()) {
-//			path = pathMap.get(s);
-//			pathPlaybackChooser.addObject(s, Path.parse(path));
-//			savedPaths.add(path);
-//		}
-//		SmartDashboard.putData("Path Playback", pathPlaybackChooser);
-//		SmartDashboard.putStringArray("Paths", (String[])savedPaths.toArray());				
-//	}
-	
+		
 	protected void initLift(Robot robot) {
 //		LiftSetpointCommand liftUpCommand = new LiftSetpointCommand(robot, NumberProvider.fixedValue(Calibration.LIFT_UP_POS));
 //		LiftSetpointCommand liftDownCommand = new LiftSetpointCommand(robot, NumberProvider.fixedValue(Calibration.LIFT_DOWN_POS));
-
 
 		Command liftUpCommand = new Command() {
 			public void execute() {
@@ -212,11 +193,32 @@ public class OI {
 			
 			
 		};
+		Command liftClimbCommand = new Command() {
+			public void execute() {
+				robot.getLift().go_down_fast();
+			}
+			
+			@Override
+			protected boolean isFinished() {
+				return false;
+			}
+
+			@Override
+			protected void end() {
+				super.end();
+				robot.getLift().stop();
+			}			
+			
+			
+		};
 		
 		JoystickButton liftUp = new JoystickButton(leftJoystick, LIFT_UP_BUTTON);
 		JoystickButton liftDown = new JoystickButton(leftJoystick, LIFT_DOWN_BUTTON);
+		JoystickButton liftClimb = new JoystickButton(leftJoystick, LIFT_CLIMB_BUTTON);		
 		liftUp.whileHeld(liftUpCommand);
 		liftDown.whileHeld(liftDownCommand);
+		liftClimb.whileHeld(liftClimbCommand);
+		
 	}
 	
 	protected void initRecordAndPlayback(Robot robot) {
