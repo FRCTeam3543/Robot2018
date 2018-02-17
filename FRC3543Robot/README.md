@@ -11,8 +11,8 @@ Here's how it works:
 3. Drive carefully and reproduce the path you want.  Drive slowly and carefully as jerky motions don't reproduce as reliably.
 4. When you reach your destination, release the joystick button.  In the log output you will see the path written (select and copy it to the clipboard).  It will also get stored in the OI.
 5. Reset the robot to the starting position, and select "RECORDED PATH" in the "Recorded paths" widget
-6. Test the path you recorded by holding down the 7 button. The robot will replay the same path you just drove.
+6. Test the path you recorded by pressing the 7 button. The robot will replay the same path you just drove.
 
 Storing the path:
 
-In the RecordedPaths class, add an entry to the PATHS array containing the path you copied to the clipboard in step 4 above.  Change the name at the start of the string to something descriptive.  Build and redeploy the robot code.  The new path should be available in the recorded paths pick list in the operator interface, so you can re-use it anytime.
+In the RecordedPaths class, add an entry to the RecordedPaths class containing the path you copied to the clipboard in step 4 above.  Change the name at the start of the string to something descriptive.  Build and redeploy the robot code.  The new path should be available in the recorded paths pick list in the operator interface, so you can re-use it anytime.
