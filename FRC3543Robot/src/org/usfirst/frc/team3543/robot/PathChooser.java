@@ -9,7 +9,7 @@ class PathChooser {
 		String path;
 		int nearSwitch = GameData.getInstance().getPosition(GameData.NEAR_SWITCH);
 		int middleScale = GameData.getInstance().getPosition(GameData.MIDDLE_SCALE);
-		int farSwitch = GameData.getInstance().getPosition(GameData.FAR_SWITCH);		
+		
 		boolean middle = robotLocation == GameData.ROBOT_MIDDLE; 
 		boolean dropBlock = true;
 		

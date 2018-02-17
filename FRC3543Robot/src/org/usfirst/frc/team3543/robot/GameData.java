@@ -16,9 +16,7 @@ public class GameData {
 	
 	public static final int PLACE_LEFT = 0;
 	public static final int PLACE_RIGHT = 1;
-	
-		
-	private int alliancePosition = ROBOT_MIDDLE;
+			
 	private int[] gameData = { PLACE_LEFT, PLACE_LEFT, PLACE_LEFT };
 	
 	private static GameData _instance = null;		// singleton	

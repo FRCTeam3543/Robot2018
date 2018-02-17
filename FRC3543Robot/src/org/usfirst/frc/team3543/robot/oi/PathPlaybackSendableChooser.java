@@ -4,7 +4,6 @@ import org.usfirst.frc.team3543.robot.Path;
 import org.usfirst.frc.team3543.robot.PathProvider;
 import org.usfirst.frc.team3543.robot.RecordedPaths;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 /**

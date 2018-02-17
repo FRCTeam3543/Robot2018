@@ -38,11 +38,6 @@ public class SetWristPositionCommand extends Command {
 		boolean onTarget = robot.getWrist().getPID().onTarget();
 		boolean done = onTarget || 
 				((System.currentTimeMillis() - startTime) > maxTimeProvider.getValue());
-		robot.log(String.format("%.3f, %.3f, %s, %s", 
-				robot.getWrist().getPID().getPosition(),
-				robot.getWrist().getPID().getSetpoint(),
-				onTarget, done
-				));
 		return done;
 	}
 

@@ -3,13 +3,14 @@ package org.usfirst.frc.team3543.robot;
 public class Calibration {
 	
 	// Driveline
-	public static final double DRIVELINE_SENSITIVITY 		= 0.5;	// inches (target tolerance for PID control)
-	public static final double DRIVELINE_EXPIRATION 		= 0.1;	// dunno
-	public static final double DRIVELINE_MAX_OUTPUT 		= 1.0;	// maxmimum output - trim this to trim max speed
-	public static final double DRIVELINE_ENCODER_DPP		= 0.0284 * 24/17;	// this is what we hand-calibrated
+	public static final double DRIVELINE_SENSITIVITY 			= 0.5;	// inches (target tolerance for PID control)
+	public static final double DRIVELINE_EXPIRATION 			= 0.1;	// dunno
+	public static final double DRIVELINE_MAX_OUTPUT 			= 1.0;	// maxmimum output - trim this to trim max speed
+	public static final double DRIVELINE_ENCODER_DPP			= 0.0284 * 24/17;	// this is what we hand-calibrated
 	public static final double DRIVELINE_LEFT_ENCODER_DPP		= DRIVELINE_ENCODER_DPP;
 	public static final double DRIVELINE_RIGHT_ENCODER_DPP	= DRIVELINE_ENCODER_DPP;
-	public static final double DRIVELINE_GYRO_SENSITIVTY	= 0.007;	 // volts/degree/second
+	public static final double DRIVELINE_GYRO_SENSITIVTY		= 0.007;	 // volts/degree/second
+	public static final double DRIVELINE_GYRO_GAIN			= 35;	// volts per degree per second based on full turn at 15 degrees off	
 	public static final double DRIVELINE_TIMER_DELAY		= 0.01;  // for using the timer delay. Not sure if actually used.
 	public static final double DRIVELINE_OPEN_LOOP_RAMP	= 1.0;	 // seconds.  This is the speed ramp rate. 
 	// FIXME PID Controllers need to be tuned
@@ -26,7 +27,7 @@ public class Calibration {
 	public static final double MIN_SPEED	= -0.5;
 	
 	public static final double DEFAULT_LINEAR_GAIN		= 0.25;
-	public static final double DEFAULT_ROTATOIN_GAIN		= 0.27;
+	public static final double DEFAULT_ROTATION_GAIN		= 0.27;
 
 	public static final double INCHES_PER_ROTATION		= 18.8;
 

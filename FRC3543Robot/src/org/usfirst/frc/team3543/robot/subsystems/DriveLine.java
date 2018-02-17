@@ -13,13 +13,9 @@ package org.usfirst.frc.team3543.robot.subsystems;
 
 import org.usfirst.frc.team3543.robot.Calibration;
 import org.usfirst.frc.team3543.robot.Path;
-import org.usfirst.frc.team3543.robot.Robot;
-import org.usfirst.frc.team3543.robot.RobotMap;
 import org.usfirst.frc.team3543.robot.Wiring;
-import org.usfirst.frc.team3543.robot.util.RobotConfig;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -27,7 +23,6 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -47,6 +42,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author MK
  *
  */
+@SuppressWarnings("deprecation")
 public class DriveLine extends BaseSubsystem implements DriveLineLog {
 	// Configuration keys
 	public static final String SENSITIVITY = "driveline.sensitivity";	
@@ -97,15 +93,15 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 	
 	private double trim = 1.0;
 
-	private double gyroSensitivity = RobotMap.GYRO_SENSITIVITY;
-	private double gyroGain = RobotMap.GYRO_FEEDBACK_GAIN;
+	private double gyroSensitivity;
+	private double gyroGain;
 
 	private Path path = null;
 	
 	private double timerDelay = DEFAULT_TIMER_DELAY;
 
-	public DriveLine(RobotConfig config) {
-		super(config);
+	public DriveLine() {
+		super();
 
 		// Initialize the robot
 		int frontLeftMotor = Wiring.DRIVELINE_MOTOR_LEFT_FRONT;
@@ -152,8 +148,7 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 
 		analogGyro = new AnalogGyro(gyro);
 		analogGyro.setSensitivity(Calibration.DRIVELINE_GYRO_SENSITIVTY);
-		
-		LiveWindow.addSensor(name, "Gyro", analogGyro);
+		gyroGain = Calibration.DRIVELINE_GYRO_GAIN;		
 		
 		defaultLeftEncoderDPP = Calibration.DRIVELINE_LEFT_ENCODER_DPP;
 		defaultRightEncoderDPP = Calibration.DRIVELINE_RIGHT_ENCODER_DPP;
@@ -166,17 +161,9 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 		quadratureEncoderRight.setDistancePerPulse(defaultRightEncoderDPP);
 		quadratureEncoderRight.setPIDSourceType(PIDSourceType.kRate);
 
-		// enable quad encoder feedback
-		// FIXME - we need to confirm we've connect the AM-E4T's to the Talons and not the Rio via a am-2633
-		// http://www.andymark.com/product-p/am-3
-		// from the manual - The Talon directly supports Quadrature Encoders. 
-		// If Quadrature is selected, the decoding is done in 4x mode. 
-		// This means that each pulse will correspond to four counts.
-//		frontLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-//		frontRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-
 		LiveWindow.addSensor(name, "Left Quad Encoder", quadratureEncoderLeft);
 		LiveWindow.addSensor(name, "Left Quad Encoder", quadratureEncoderRight);
+		LiveWindow.addSensor(name, "Gyro", analogGyro);		
 	}
 
 	public WPI_TalonSRX getLeftMotor() {
@@ -298,20 +285,18 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 		this.trim = Math.min(1, Math.abs(d));
 	}
 	
+	/**
+	 * Trims motor speed output by this factor. 
+	 * 
+	 * @see setTrim()
+	 */
 	public double getTrim() {
 		return this.trim;
 	}
 	
-	public void resetEncoders() {
-//		double leftDpp = SmartDashboard.getNumber(DASHBOARD_LEFT_ENCODER_DPP, defaultLeftEncoderDPP);
-//		double rightDpp = SmartDashboard.getNumber(DASHBOARD_RIGHT_ENCODER_DPP, defaultRightEncoderDPP);
-		
+	public void resetEncoders() {		
 		this.quadratureEncoderLeft.reset();		
-//		this.quadratureEncoderLeft.setDistancePerPulse(leftDpp);
 		this.quadratureEncoderRight.reset();
-//		this.quadratureEncoderRight.setDistancePerPulse(rightDpp);
-//		this.getLeftMotor().set(ControlMode.PercentOutput, 0);
-//		this.getRightMotor().set(ControlMode.PercentOutput, 0);
 		
 		updateOperatorInterface();
 	}

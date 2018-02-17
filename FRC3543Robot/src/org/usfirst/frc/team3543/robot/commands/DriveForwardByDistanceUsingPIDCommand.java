@@ -1,12 +1,8 @@
 package org.usfirst.frc.team3543.robot.commands;
 
 import org.usfirst.frc.team3543.robot.Calibration;
-import org.usfirst.frc.team3543.robot.OI;
 import org.usfirst.frc.team3543.robot.Robot;
-import org.usfirst.frc.team3543.robot.RobotMap;
-import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
 import org.usfirst.frc.team3543.robot.util.NumberProvider;
-import org.usfirst.frc.team3543.robot.util.SmartDashboardNumberProvider;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,7 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveForwardByDistanceUsingPIDCommand extends Command {
 	protected double targetDistance = 0;
 	protected double distanceRemaining = 0;
-	private boolean goingBackwards = false;
 	
 	protected double startingEncoderValue = 0;
 	protected double powerGain = 1;
@@ -28,8 +23,6 @@ public class DriveForwardByDistanceUsingPIDCommand extends Command {
 	public static final double MIN_MAGNITUDE = 0.12;
 	
 	public static final double SENSITIVITY = Calibration.LINEAR_SENSITIVITY; //inches
-
-	private boolean once = false;
 	
 	public DriveForwardByDistanceUsingPIDCommand(Robot robot, double distanceInInches) {
 		this(robot, NumberProvider.fixedValue(distanceInInches));

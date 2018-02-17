@@ -1,15 +1,12 @@
 package org.usfirst.frc.team3543.robot.commands;
 //* Rotate the robot by a given angle
 
-import org.usfirst.frc.team3543.robot.OI;
+import org.usfirst.frc.team3543.robot.Calibration;
 import org.usfirst.frc.team3543.robot.Robot;
-import org.usfirst.frc.team3543.robot.RobotMap;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
-import org.usfirst.frc.team3543.robot.util.DegreesToRadiansNumberProvider;
 import org.usfirst.frc.team3543.robot.util.NumberProvider;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class RotateByAngleCommand extends Command {
@@ -20,7 +17,7 @@ public class RotateByAngleCommand extends Command {
 	protected double sensitivity = 0.01;
 	protected double targetRotation = 0;
 	public static final double SENSITIVITY = 0.01;// Radians
-	protected double gain = RobotMap.DEFAULT_ROTATION_GAIN;
+	protected double gain = 1;
 	
 	private Robot robot;
 	
@@ -31,7 +28,7 @@ public class RotateByAngleCommand extends Command {
 	NumberProvider sensitivityProvider;
 	
 	public RotateByAngleCommand(Robot robot, double angleInRadians) {
-		this(robot, angleInRadians, RobotMap.DEFAULT_ROTATION_GAIN);
+		this(robot, angleInRadians, Calibration.DEFAULT_ROTATION_GAIN);
 	}
 	
 	public RotateByAngleCommand(Robot robot, NumberProvider angleInRadiansProvider, NumberProvider gainProvider, NumberProvider sensitivityProvider) {
@@ -51,7 +48,7 @@ public class RotateByAngleCommand extends Command {
 	}
 	
 	public RotateByAngleCommand(Robot robot, NumberProvider angleInRadiansProvider) {
-		this(robot, angleInRadiansProvider, NumberProvider.fixedValue(RobotMap.DEFAULT_ROTATION_GAIN));
+		this(robot, angleInRadiansProvider, NumberProvider.fixedValue(Calibration.DEFAULT_ROTATION_GAIN));
 	}
 
 	public void setRotationAngle(double angleInRadians) {
@@ -88,11 +85,6 @@ public class RotateByAngleCommand extends Command {
 		double diff = driveLine.getGyroAngleRadians() - targetAngle;		
 		// if diff > 0, rotate CW.  Two magnitudes, depending on abs angle
 		double mag = 1;
-		double absdiff = Math.abs(diff);
-		// ease in
-//		if (absdiff < Math.toRadians(5)) {
-//			mag = mag * absdiff / 5;
-//		}		
 		// set a minimum, so we get there
 		mag = Math.max(mag, 0.12);
 		

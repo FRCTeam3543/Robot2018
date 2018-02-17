@@ -1,7 +1,5 @@
 package org.usfirst.frc.team3543.robot.commands;
 
-import java.util.List;
-
 import org.usfirst.frc.team3543.robot.Path;
 import org.usfirst.frc.team3543.robot.PathProvider;
 import org.usfirst.frc.team3543.robot.Robot;

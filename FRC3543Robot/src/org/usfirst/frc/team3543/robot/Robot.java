@@ -11,27 +11,20 @@
 
 package org.usfirst.frc.team3543.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import java.util.logging.Logger;
 
-import org.usfirst.frc.team3543.robot.commands.ArcadeDriveWithJoystick;
-import org.usfirst.frc.team3543.robot.commands.TestAutonomousCommand;
 import org.usfirst.frc.team3543.robot.subsystems.Claw;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLineLinearPID;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLineRotationPID;
 import org.usfirst.frc.team3543.robot.subsystems.Lift;
-import org.usfirst.frc.team3543.robot.subsystems.LiftPID;
 import org.usfirst.frc.team3543.robot.subsystems.Wrist;
-import org.usfirst.frc.team3543.robot.subsystems.WristPID;
-import org.usfirst.frc.team3543.robot.util.Config;
-import org.usfirst.frc.team3543.robot.util.RobotConfig;
+
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
@@ -41,7 +34,7 @@ import org.usfirst.frc.team3543.robot.util.RobotConfig;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends TimedRobot implements RobotConfig {
+public class Robot extends TimedRobot {
 
 	// to be compatible with the old, dangerous idiom, a static
 	private static Robot _instance = null;
@@ -49,8 +42,6 @@ public class Robot extends TimedRobot implements RobotConfig {
 	
 	public static final Logger LOGGER = Logger.getLogger(Robot.class.getSimpleName());
 
-	private RobotMap config;
-	
 	Command autonomousCommand;
 	public DriveLine driveLine;
 	public DriveLineLinearPID driveLineLinearPID;	
@@ -64,7 +55,7 @@ public class Robot extends TimedRobot implements RobotConfig {
 	public OI operatorInterface; // operator interface
 
 	public Robot() {
-		this(RobotMap.getInstance(), OI.getInstance());
+		this(new OI());
 	}
 	
 	public static Robot getInstance() {
@@ -74,22 +65,17 @@ public class Robot extends TimedRobot implements RobotConfig {
 		return _instance;
 	}
 	
-	public Robot(RobotMap config, OI operatorInterface) {
+	public Robot(OI operatorInterface) {
 		super();
-		this.config = config;
 		this.operatorInterface = operatorInterface;
 		
 		// properties should be initialized in the constructor, not later
-		driveLine = new DriveLine(config);
+		driveLine = new DriveLine();
 		driveLineRotationPID = new DriveLineRotationPID(driveLine);
 		driveLineLinearPID = new DriveLineLinearPID(driveLine);
-		claw = new Claw(config);
-		wrist = new Wrist(config);
-		lift = new Lift(config);
-	}
-
-	public RobotMap getConfig() {
-		return this.config;
+		claw = new Claw();
+		wrist = new Wrist();
+		lift = new Lift();
 	}
 	
 	public DriveLine getDriveLine() {
@@ -127,11 +113,11 @@ public class Robot extends TimedRobot implements RobotConfig {
 		// and NOT create commands in the operator interface before the subsystems
 		// are ready. This statement exists because of the use of static singleton
 		// classes, which is an anti-pattern (bad practice) in Java.  If you
-		// are *properly* using object-oriented design you should not have
+		// are properly using object-oriented design you should not have
 		// "null pointers" in Java.
 		
 		// OI must be constructed after subsystems. If the OI creates Commands
-		//(which it very likely will), subsystems are not guaranteed to be
+		// (which it very likely will), subsystems are not guaranteed to be
 		// constructed yet. Thus, their requires() statements may grab null
 		// pointers. Bad news. Don't move it.
 		// oi = new OI();
@@ -141,7 +127,6 @@ public class Robot extends TimedRobot implements RobotConfig {
 		getOperatorInterface().connectToRobot(this);
 		driveLine.updateOperatorInterface();
 		claw.updateOperatorInterface();		
-//		autonomousCommand = new TestAutonomousCommand(this);		
 	}
 
 	public OI getOperatorInterface() {
@@ -211,6 +196,7 @@ public class Robot extends TimedRobot implements RobotConfig {
 	/**
 	 * This function is called periodically during test mode
 	 */
+	@SuppressWarnings("deprecation")
 	public void testPeriodic() {
 		LiveWindow.run();
 	}
@@ -222,18 +208,6 @@ public class Robot extends TimedRobot implements RobotConfig {
 	protected void updateDashboard() {
 		// put any extra dashboard update code here
 		SmartDashboard.updateValues();
-	}
-
-	// These are delegate methods to the config, but they encapsulate an indirection in
-	// method calls from commands and subsystems that reference the robot
-	@Override
-	public Config<Integer> getWiringConfig() {
-		return this.getConfig().getWiringConfig();
-	}
-
-	@Override
-	public Config<Double> getCalibrationConfig() {
-		return this.getConfig().getCalibrationConfig();
 	}
 
 }

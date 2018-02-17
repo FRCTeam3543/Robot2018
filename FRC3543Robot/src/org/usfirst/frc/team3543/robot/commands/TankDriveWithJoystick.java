@@ -12,11 +12,9 @@
 package org.usfirst.frc.team3543.robot.commands;
 
 import org.usfirst.frc.team3543.robot.Robot;
-import org.usfirst.frc.team3543.robot.RobotMap;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**

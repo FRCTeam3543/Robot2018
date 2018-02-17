@@ -1,10 +1,7 @@
 package org.usfirst.frc.team3543.robot.subsystems;
 
 import org.usfirst.frc.team3543.robot.Calibration;
-import org.usfirst.frc.team3543.robot.Wiring;
-import org.usfirst.frc.team3543.robot.util.RobotConfig;
 
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -17,6 +14,7 @@ public class WristPID extends PIDSubsystem {
 	double max_speed = Calibration.WRIST_MAX_SPEED;
 	double SENSITIVITY = Math.toRadians(5);
 	
+	@SuppressWarnings("deprecation")
 	public WristPID(Victor motorController, Encoder encoder) {
 		super(Calibration.WRIST_PID_P, Calibration.WRIST_PID_I, Calibration.WRIST_PID_D);
 		this.motorController = motorController;
