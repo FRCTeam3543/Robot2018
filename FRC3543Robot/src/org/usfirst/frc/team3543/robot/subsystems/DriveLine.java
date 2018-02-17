@@ -271,6 +271,12 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 		updateOperatorInterface();		
 	}
 
+	public void arcadeDrive(double y, double x) {
+		// TODO Auto-generated method stub
+		robotDrive.arcadeDrive(y, x, true);
+		updateOperatorInterface();		
+	}
+	
 	public void stop() {
 		robotDrive.stopMotor();
 		updateOperatorInterface();		
@@ -398,6 +404,7 @@ public class DriveLine extends BaseSubsystem implements DriveLineLog {
 		}
 
 	}
+
 
 }
 

@@ -11,6 +11,7 @@
 
 package org.usfirst.frc.team3543.robot.commands;
 
+import org.usfirst.frc.team3543.robot.Calibration;
 import org.usfirst.frc.team3543.robot.Robot;
 import org.usfirst.frc.team3543.robot.RobotMap;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
@@ -43,7 +44,9 @@ public class ArcadeDriveWithJoystick extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {		
-		this.driveLine.arcadeDrive(this.joystick);
+//		this.driveLine.arcadeDrive(this.joystick);
+		this.driveLine.arcadeDrive(this.joystick.getY(), this.joystick.getX() * Calibration.ARCADE_ROTATION_TRIM);
+		
 //		this.driveLine.doTimerDelay();
 	}
 

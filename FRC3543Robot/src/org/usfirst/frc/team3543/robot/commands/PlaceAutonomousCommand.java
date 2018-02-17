@@ -21,7 +21,7 @@ public class PlaceAutonomousCommand extends CommandGroup {
 		addSequential(new PlaybackCommand(robot, pathProvider));
 		// if we're middle we have to raise the lift first
 		if (middle) {
-			addSequential(new SetLiftPositionCommand(robot, NumberProvider.fixedValue(Calibration.LIFT_UP_POS)));
+			addSequential(new LiftUpCommand(robot));
 		}
 		if (dropBlock) {
 			addSequential(new SetWristPositionCommand(robot, NumberProvider.fixedValue(Calibration.WRIST_DOWN_POS), NumberProvider.fixedValue(2000)));

@@ -24,7 +24,9 @@ import org.usfirst.frc.team3543.robot.commands.DriveForwardByDistanceCommand;
 import org.usfirst.frc.team3543.robot.commands.DriveForwardByDistanceUsingPIDCommand;
 import org.usfirst.frc.team3543.robot.commands.DuhCommand;
 import org.usfirst.frc.team3543.robot.commands.ExecOnceCommand;
+import org.usfirst.frc.team3543.robot.commands.LiftDownCommand;
 import org.usfirst.frc.team3543.robot.commands.LiftSetpointCommand;
+import org.usfirst.frc.team3543.robot.commands.LiftUpCommand;
 import org.usfirst.frc.team3543.robot.commands.PlaceAutonomousCommand;
 import org.usfirst.frc.team3543.robot.commands.PlaceMiddleAutonomousCommand;
 import org.usfirst.frc.team3543.robot.commands.PlaybackCommand;
@@ -159,40 +161,8 @@ public class OI {
 //		LiftSetpointCommand liftUpCommand = new LiftSetpointCommand(robot, NumberProvider.fixedValue(Calibration.LIFT_UP_POS));
 //		LiftSetpointCommand liftDownCommand = new LiftSetpointCommand(robot, NumberProvider.fixedValue(Calibration.LIFT_DOWN_POS));
 
-		Command liftUpCommand = new Command() {
-			public void execute() {
-				robot.getLift().go_up();
-			}
-			
-			@Override
-			protected boolean isFinished() {
-				return false;
-			}			
-			@Override
-			protected void end() {
-				super.end();
-				robot.getLift().stop();
-			}			
-			
-		};
-		Command liftDownCommand = new Command() {
-			public void execute() {
-				robot.getLift().go_down();
-			}
-			
-			@Override
-			protected boolean isFinished() {
-				return false;
-			}
-
-			@Override
-			protected void end() {
-				super.end();
-				robot.getLift().stop();
-			}			
-			
-			
-		};
+		Command liftUpCommand = new LiftUpCommand(robot);
+		Command liftDownCommand = new LiftDownCommand(robot);
 		Command liftClimbCommand = new Command() {
 			public void execute() {
 				robot.getLift().go_down_fast();
@@ -200,7 +170,7 @@ public class OI {
 			
 			@Override
 			protected boolean isFinished() {
-				return false;
+				return robot.getLift().isDown();
 			}
 
 			@Override
@@ -208,8 +178,7 @@ public class OI {
 				super.end();
 				robot.getLift().stop();
 			}			
-			
-			
+						
 		};
 		
 		JoystickButton liftUp = new JoystickButton(leftJoystick, LIFT_UP_BUTTON);
@@ -272,7 +241,7 @@ public class OI {
 //		});		
 		// record
 		JoystickButton logButton = new JoystickButton(leftJoystick, RECORD_BUTTON);
-		SmartDashboard.putNumber("Motor trim", 1.0);
+//		SmartDashboard.putNumber("Motor trim", Calibration.RECORD_MODE_TRIM);
 		SmartDashboard.setPersistent("Motor trim");
 		
 		Command toggleLoggingCommand = new Command() {
@@ -283,7 +252,7 @@ public class OI {
 				if (!robot.getDriveLine().isRecording()) {
 					Robot.log("---- LOG START ----");
 					robot.getDriveLine().startRecording();		
-					robot.getDriveLine().setTrim(SmartDashboard.getNumber("Motor trim", 1.0));
+					robot.getDriveLine().setTrim(SmartDashboard.getNumber("Motor trim",  Calibration.RECORD_MODE_TRIM));
 					SmartDashboard.putString("Recorded Path", "");
 				}
 			}

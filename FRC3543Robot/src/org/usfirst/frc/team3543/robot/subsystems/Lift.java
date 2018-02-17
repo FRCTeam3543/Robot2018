@@ -15,12 +15,15 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Lift extends BaseSubsystem {
 	Victor motorController;
 	Encoder encoder;
+	DigitalInput lowSwitch, highSwitch;
+	
 	double max_speed = Calibration.LIFT_MAX_SPEED;
 	double SENSITIVITY = Math.toRadians(5);
 	LiftPID liftPID;
@@ -32,8 +35,15 @@ public class Lift extends BaseSubsystem {
 		
 		encoder.setDistancePerPulse(Calibration.LIFT_DPP);
 		encoder.reset();
+		
+		lowSwitch = new DigitalInput(Wiring.LIFT_LOW_SWITCH);
+		highSwitch = new DigitalInput(Wiring.LIFT_HIGH_SWITCH);
+		
 		LiveWindow.addSensor("Lift", "Encoder", encoder);
 		LiveWindow.addActuator("Lift", "Motor Controller", motorController);
+		LiveWindow.addSensor("Lift", "High Switch", highSwitch);
+		LiveWindow.addSensor("Lift", "Low Switch", lowSwitch);
+		
 		liftPID = new LiftPID(this.motorController, this.encoder);
 	}
 
@@ -49,18 +59,27 @@ public class Lift extends BaseSubsystem {
 	}
 	
 	public boolean isUp() {
-		if (false && encoder.getDistance() < (Calibration.LIFT_UP_POS + SENSITIVITY)) {
-			return true;
-		}
-		else return false;
+//		if (false && encoder.getDistance() < (Calibration.LIFT_UP_POS + SENSITIVITY)) {
+//			return true;
+//		}
+		// digital switch
+		return !highSwitch.get();
+//		if (highSwitch.get()) {
+//			return true;
+//		}
+//		else return false;
 	}
 
 	public boolean isDown() {
 		// down should be in positive direction
-		if (false && encoder.getDistance() > (Calibration.LIFT_DOWN_POS - SENSITIVITY)) {
-			return true;
-		}
-		else return false;
+//		if (false && encoder.getDistance() > (Calibration.LIFT_DOWN_POS - SENSITIVITY)) {
+//			return true;
+//		}
+		return !lowSwitch.get();
+//		if (lowSwitch.get()) {
+//			return true;
+//		}		
+//		else return false;
 	}
 	
 	public void go_up() {

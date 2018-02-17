@@ -20,6 +20,8 @@ public class Calibration {
 	public static final double DRIVELINE_ROTATION_PID_I 	= 0.0;
 	public static final double DRIVELINE_ROTATION_PID_D 	= 0.01;
 	
+	public static final double RECORD_MODE_TRIM				= 0.45;
+	public static final double ARCADE_ROTATION_TRIM		= 0.85; //scale the rotation axis in the arcade stick, makes it less twitchy
 	public static final double MAX_SPEED	= 0.5;
 	public static final double MIN_SPEED	= -0.5;
 	

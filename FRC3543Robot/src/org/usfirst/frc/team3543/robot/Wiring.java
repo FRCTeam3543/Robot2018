@@ -25,5 +25,7 @@ public class Wiring {
 	public static final int LIFT_MOTOR_PORT 				= 1;
 	public static final int LIFT_ENCODER_A 					= 6;
 	public static final int LIFT_ENCODER_B 					= 7;
+	public static final int LIFT_LOW_SWITCH 				= 8;
+	public static final int LIFT_HIGH_SWITCH				= 9;
 	
 }
