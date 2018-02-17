@@ -1,7 +1,6 @@
 package org.usfirst.frc.team3543.robot;
 
 import org.usfirst.frc.team3543.robot.commands.ArcadeDriveWithJoystick;
-import org.usfirst.frc.team3543.robot.commands.CircleCommandGroup;
 import org.usfirst.frc.team3543.robot.commands.ClawCloseCommand;
 import org.usfirst.frc.team3543.robot.commands.ClawOpenCommand;
 import org.usfirst.frc.team3543.robot.commands.ControlWristCommand;
@@ -10,7 +9,6 @@ import org.usfirst.frc.team3543.robot.commands.LiftDownCommand;
 import org.usfirst.frc.team3543.robot.commands.LiftUpCommand;
 import org.usfirst.frc.team3543.robot.commands.PlaceAutonomousCommand;
 import org.usfirst.frc.team3543.robot.commands.PlaybackCommand;
-import org.usfirst.frc.team3543.robot.commands.RotateByAngleUsingPIDCommand;
 import org.usfirst.frc.team3543.robot.oi.PathPlaybackSendableChooser;
 import org.usfirst.frc.team3543.robot.oi.StartingPositionSendableChooser;
 import org.usfirst.frc.team3543.robot.util.DegreesToRadiansNumberProvider;
@@ -37,17 +35,17 @@ public class OI {
 	public static final int LEFT_JOYSTICK 		= 0;
 	public static final int RIGHT_JOYSTICK 		= 1;
 	
-	public static final int TRIGGER_BUTTON 			= 1;
-	public static final int THUMB_LOWER_BUTTON 		= 3;
-	public static final int THUMB_UPPER_BUTTON 		= 2;
-	public static final int THUMB_LEFT_BUTTON 		= 4;
-	public static final int THUMB_RIGHT_BUTTON 		= 5;
-	public static final int SIDE_LEFT_UPPER_BUTTON 	= 6;
-	public static final int SIDE_LEFT_LOWER_BUTTON 	= 7;
+	public static final int TRIGGER_BUTTON 				= 1;
+	public static final int THUMB_LOWER_BUTTON 			= 2;
+	public static final int THUMB_UPPER_BUTTON 			= 3;
+	public static final int THUMB_LEFT_BUTTON 			= 4;
+	public static final int THUMB_RIGHT_BUTTON 			= 5;
+	public static final int SIDE_LEFT_UPPER_BUTTON 		= 6;
+	public static final int SIDE_LEFT_LOWER_BUTTON 		= 7;
 	public static final int SIDE_RIGHT_UPPER_BUTTON 	= 10;
 	public static final int SIDE_RIGHT_LOWER_BUTTON 	= 11;
-	public static final int BOTTOM_LEFT_BUTTON 		= 8;
-	public static final int BOTTOM_RIGHT_BUTTON		= 9;
+	public static final int BOTTOM_LEFT_BUTTON 			= 8;
+	public static final int BOTTOM_RIGHT_BUTTON			= 9;
 	
 	// Assigned
 	public static final int RECORD_BUTTON 		= SIDE_LEFT_UPPER_BUTTON; 
@@ -99,10 +97,8 @@ public class OI {
 		resumeArcadeDriveButton.whenPressed(arcadeDrive);
 
 		NumberProvider forwardDistanceProvider = this.provideNumber("Drive Forward Distance", 12);
-		NumberProvider rotationAngleProvider = new DegreesToRadiansNumberProvider(this.provideNumber("Rotate by Angle", 90));
-		SmartDashboard.putData("Rotate robot degrees", new RotateByAngleUsingPIDCommand(robot, rotationAngleProvider));			
+//		NumberProvider rotationAngleProvider = new DegreesToRadiansNumberProvider(this.provideNumber("Rotate by Angle", 90));
 		SmartDashboard.putData("Drive Forward", new DriveForwardByDistanceUsingPIDCommand(robot, forwardDistanceProvider));
-		SmartDashboard.putData("Circle Test", new CircleCommandGroup(robot, forwardDistanceProvider));
 	}
 
 	protected void initClaw(Robot robot) {

@@ -59,7 +59,7 @@ public class Path {
 	}
 	
 	public static Path parse(String s) {
-		Robot.log("PARSE "+s);
+//		Robot.log("PARSE "+s);
 		
 		String[] pairs = s.split(";");
 		String[] lr;

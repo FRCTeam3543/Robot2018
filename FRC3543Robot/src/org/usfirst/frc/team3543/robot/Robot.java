@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import org.usfirst.frc.team3543.robot.subsystems.Claw;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLineLinearPID;
-import org.usfirst.frc.team3543.robot.subsystems.DriveLineRotationPID;
 import org.usfirst.frc.team3543.robot.subsystems.Lift;
 import org.usfirst.frc.team3543.robot.subsystems.Wrist;
 
@@ -34,7 +33,6 @@ public class Robot extends TimedRobot {
 	Command autonomousCommand;
 	public DriveLine driveLine;
 	public DriveLineLinearPID driveLineLinearPID;	
-	public DriveLineRotationPID driveLineRotationPID;		
 	public Claw claw;
 	public Lift lift;
 	public Wrist wrist;
@@ -60,7 +58,6 @@ public class Robot extends TimedRobot {
 		
 		// properties should be initialized in the constructor, not later
 		driveLine = new DriveLine();
-		driveLineRotationPID = new DriveLineRotationPID(driveLine);
 		driveLineLinearPID = new DriveLineLinearPID(driveLine);
 		claw = new Claw();
 		wrist = new Wrist();
@@ -85,10 +82,6 @@ public class Robot extends TimedRobot {
 	
 	public DriveLineLinearPID getDriveLineLinearPID() {
 		return driveLineLinearPID;
-	}
-
-	public DriveLineRotationPID getDriveLineRotationPID() {
-		return driveLineRotationPID;
 	}
 
 	/**
