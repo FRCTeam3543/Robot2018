@@ -48,12 +48,12 @@ public class Calibration {
 	public static final double WRIST_TOLERANCE = 0.1;
 	public static final double LIFT_MAX_SPEED			= 1; // 50%, for now
 	public static final double LIFT_MAX_SPEED_UP		= LIFT_MAX_SPEED; // 50%, for now
-	public static final double LIFT_MAX_SPEED_DOWN		= LIFT_MAX_SPEED * 0.35; // 50%, for now
+	public static final double LIFT_MAX_SPEED_DOWN		= LIFT_MAX_SPEED * 0.65; // 50%, for now
 	public static final double LIFT_CLIMB_SPEED		= LIFT_MAX_SPEED; // 50%, for now
 	
-	public static final double LIFT_UP_POS			= 1; // inches
+	public static final double LIFT_UP_POS			= 69; // inches
 	public static final double LIFT_DOWN_POS			= 0; // inches
-	public static final double LIFT_DPP				= 0.1;	// FIXME wrist DPP
+	public static final double LIFT_DPP				= 0.003;	// FIXME wrist DPP
 	public static final double LIFT_OPEN_LOOP_RAMP		= 0.5;	// second
 	
 	public static final double LIFT_PID_P = 0.1;		// FIXME
