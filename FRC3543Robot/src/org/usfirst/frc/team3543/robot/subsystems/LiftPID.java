@@ -5,6 +5,7 @@ import org.usfirst.frc.team3543.robot.Calibration;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class LiftPID extends PIDSubsystem {
 	Victor motorController;
@@ -20,6 +21,8 @@ public class LiftPID extends PIDSubsystem {
 		this.setAbsoluteTolerance(SENSITIVITY);
 		encoder.setDistancePerPulse(Calibration.LIFT_DPP);
 		encoder.reset();
+		LiveWindow.addActuator("Lift","PID", this.getPIDController());
+
 	}
 
 	

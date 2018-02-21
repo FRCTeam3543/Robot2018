@@ -4,6 +4,7 @@ import org.usfirst.frc.team3543.robot.Wiring;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class Claw extends BaseSubsystem {
 	// configuration keys
@@ -21,6 +22,9 @@ public class Claw extends BaseSubsystem {
 		airpusher = new Compressor(Wiring.CLAW_COMPRESSOR_PORT);
 		doubleSolenoid = new DoubleSolenoid(Wiring.CLAW_SOLENOID_1_PORT, Wiring.CLAW_SOLENOID_2_PORT);
 		updateOperatorInterface();
+		LiveWindow.addActuator(getName(), "Compressor", airpusher);
+		LiveWindow.addActuator(getName(), "Double Solenoid", doubleSolenoid);
+		
 	}
 
 	@Override

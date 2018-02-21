@@ -6,6 +6,7 @@ import org.usfirst.frc.team3543.robot.subsystems.Claw;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLineLinearPID;
 import org.usfirst.frc.team3543.robot.subsystems.Lift;
+import org.usfirst.frc.team3543.robot.subsystems.UltrasonicRange;
 import org.usfirst.frc.team3543.robot.subsystems.Wrist;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -36,6 +37,7 @@ public class Robot extends TimedRobot {
 	public Claw claw;
 	public Lift lift;
 	public Wrist wrist;
+	public UltrasonicRange ultrasonicRange;
 	
 	private boolean recording = false;
 	
@@ -62,10 +64,15 @@ public class Robot extends TimedRobot {
 		claw = new Claw();
 		wrist = new Wrist();
 		lift = new Lift();
+		ultrasonicRange = new UltrasonicRange();
 	}
 	
 	public DriveLine getDriveLine() {
 		return this.driveLine;
+	}
+	
+	public UltrasonicRange getRangeFinder() {
+		return this.ultrasonicRange;
 	}
 	
 	public Wrist getWrist() {

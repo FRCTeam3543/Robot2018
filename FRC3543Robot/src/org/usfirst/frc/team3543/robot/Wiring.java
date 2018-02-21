@@ -7,7 +7,7 @@ public class Wiring {
 	public static final int DRIVELINE_MOTOR_RIGHT_FRONT		= 3;
 	public static final int DRIVELINE_MOTOR_RIGHT_BACK		= 4;
 
-	public static final int DRIVELINE_GYRO_PORT				= 1;
+	public static final int DRIVELINE_GYRO_PORT				= 0;
 
 	public static final int DRIVELINE_LEFT_ENCODER_PORT_1	= 0;
 	public static final int DRIVELINE_LEFT_ENCODER_PORT_2	= 1;
@@ -23,9 +23,11 @@ public class Wiring {
 	public static final int WRIST_ENCODER_B 				= 5;
 
 	public static final int LIFT_MOTOR_PORT 				= 1;
+	
 	public static final int LIFT_ENCODER_A 					= 6;
 	public static final int LIFT_ENCODER_B 					= 7;
 	public static final int LIFT_LOW_SWITCH 				= 8;
 	public static final int LIFT_HIGH_SWITCH				= 9;
 	
+	public static final int ULTRASOUND_PORT					= 1;
 }
