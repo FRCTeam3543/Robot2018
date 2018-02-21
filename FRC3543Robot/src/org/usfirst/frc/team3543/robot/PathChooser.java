@@ -16,6 +16,7 @@ class PathChooser {
 		if (robotLocation == GameData.ROBOT_LEFT) {
 			if (middleScale == GameData.PLACE_LEFT) {
 				path = paths[2];
+				middle = true;
 			}
 			else if (nearSwitch == GameData.PLACE_LEFT) {
 				path = paths[0];
@@ -53,7 +54,7 @@ class PathChooser {
 		else if (robotLocation == GameData.ROBOT_RIGHT) {
 			if (middleScale == GameData.PLACE_RIGHT) {
 				path = paths [3];
-		
+				middle = true;
 			}
 			else if (nearSwitch == GameData.PLACE_RIGHT) {
 				path = paths [1];

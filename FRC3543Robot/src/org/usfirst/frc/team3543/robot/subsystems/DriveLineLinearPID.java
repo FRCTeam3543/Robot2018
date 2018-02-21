@@ -16,7 +16,7 @@ public class DriveLineLinearPID extends PIDSubsystem {
 	DriveLine driveLine;
 	
 	public DriveLineLinearPID(DriveLine driveLine) {
-		super("DriveLineLinearPID", Calibration.DRIVELINE_LINEAR_PID_P, Calibration.DRIVELINE_LINEAR_PID_I, Calibration.DRIVELINE_LINEAR_PID_D);
+		super("DriveLine", Calibration.DRIVELINE_LINEAR_PID_P, Calibration.DRIVELINE_LINEAR_PID_I, Calibration.DRIVELINE_LINEAR_PID_D);
 		this.driveLine = driveLine;
 	}
 

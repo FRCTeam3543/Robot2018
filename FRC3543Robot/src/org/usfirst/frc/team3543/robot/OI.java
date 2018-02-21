@@ -48,12 +48,12 @@ public class OI {
 	public static final int BOTTOM_RIGHT_BUTTON			= 9;
 	
 	// Assigned
-	public static final int RECORD_BUTTON 		= SIDE_LEFT_UPPER_BUTTON; 
+	public static final int RECORD_BUTTON 			= SIDE_LEFT_UPPER_BUTTON; 
 	public static final int PLAYBACK_BUTTON 		= SIDE_LEFT_LOWER_BUTTON; 	
-	public static final int LIFT_UP_BUTTON 		= THUMB_UPPER_BUTTON; 
+	public static final int LIFT_UP_BUTTON 			= THUMB_UPPER_BUTTON; 
 	public static final int LIFT_DOWN_BUTTON 		= THUMB_LOWER_BUTTON; 
-	public static final int LIFT_CLIMB_BUTTON 	= BOTTOM_LEFT_BUTTON;	
-	public static final int WRIST_CONTROL_BUTTON = THUMB_RIGHT_BUTTON;	
+	public static final int LIFT_CLIMB_BUTTON 		= BOTTOM_LEFT_BUTTON;	
+	public static final int WRIST_CONTROL_BUTTON 	= THUMB_RIGHT_BUTTON;	
 	public static final int CLAW_BUTTON 			= TRIGGER_BUTTON;
 	
 	public Joystick leftJoystick;
@@ -144,6 +144,16 @@ public class OI {
 			}									
 		};
 		
+		Command resetLiftEncoder = new Command() {
+
+			@Override
+			protected boolean isFinished() {
+				robot.getLift().resetEncoder();
+				return true;
+			}
+			
+		};		
+		
 		JoystickButton liftUp = new JoystickButton(leftJoystick, LIFT_UP_BUTTON);
 		JoystickButton liftDown = new JoystickButton(leftJoystick, LIFT_DOWN_BUTTON);
 		JoystickButton liftClimb = new JoystickButton(leftJoystick, LIFT_CLIMB_BUTTON);		
@@ -159,7 +169,7 @@ public class OI {
 		pathPlaybackChooser = new PathPlaybackSendableChooser();
 		
 		SmartDashboard.putString("LOG", "Log off");
-		SmartDashboard.putString("Recorded Path", "");
+		SmartDashboard.putString("Recorded Path", RecordedPaths.NONE);
 		SmartDashboard.setPersistent("Recorded Path");		
 		SmartDashboard.putData("Playback", pathPlaybackChooser);
 		SmartDashboard.putData("Starting Position", startingPositionSendableChooser);

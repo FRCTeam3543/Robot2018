@@ -44,6 +44,10 @@ public class Lift extends BaseSubsystem {
 		return liftPID;
 	}
 
+	public void resetEncoder() {
+		encoder.reset();
+	}
+	
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub

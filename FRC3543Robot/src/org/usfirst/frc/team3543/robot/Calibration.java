@@ -46,18 +46,21 @@ public class Calibration {
 	public static final double WRIST_PID_I = 0.00000001;		// FIXME
 	public static final double WRIST_PID_D = 0;		// FIXME
 	public static final double WRIST_TOLERANCE = 0.1;
+	
 	public static final double LIFT_MAX_SPEED			= 1; // 50%, for now
 	public static final double LIFT_MAX_SPEED_UP		= LIFT_MAX_SPEED; // 50%, for now
-	public static final double LIFT_MAX_SPEED_DOWN		= LIFT_MAX_SPEED * 0.65; // 50%, for now
-	public static final double LIFT_CLIMB_SPEED		= LIFT_MAX_SPEED; // 50%, for now
+	public static final double LIFT_MAX_SPEED_DOWN		= LIFT_MAX_SPEED * 0.5; // 50%, for now
+	public static final double LIFT_CLIMB_SPEED			= LIFT_MAX_SPEED; // 50%, for now
 	
-	public static final double LIFT_UP_POS			= 69; // inches
+	public static final double LIFT_UP_POS				= 135; // inches
 	public static final double LIFT_DOWN_POS			= 0; // inches
-	public static final double LIFT_DPP				= 0.003;	// FIXME wrist DPP
+	public static final double LIFT_DPP					= 0.00302;	// FIXME wrist DPP
 	public static final double LIFT_OPEN_LOOP_RAMP		= 0.5;	// second
 	
 	public static final double LIFT_PID_P = 0.1;		// FIXME
 	public static final double LIFT_PID_I = 0;		// FIXME
 	public static final double LIFT_PID_D = 0;		// FIXME
 	
+	public static final double ULTRASONIC_CALIBRATION 	= 1.0;
+	public static final double OBJECT_IN_RANGE 			= 0.1; 
 }
