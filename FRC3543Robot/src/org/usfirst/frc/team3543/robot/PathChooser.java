@@ -14,13 +14,15 @@ class PathChooser {
 		boolean dropBlock = true;
 		
 		if (robotLocation == GameData.ROBOT_LEFT) {
-			if (middleScale == GameData.PLACE_LEFT) {
-				path = paths[2];
-				middle = true;
+			if (nearSwitch == GameData.PLACE_LEFT) {
+//				path = paths[0];
+				path = RecordedPaths.DRIVE_OVER_LINE_LEFT;
+
 			}
-			else if (nearSwitch == GameData.PLACE_LEFT) {
-				path = paths[0];
-			}
+			else if (middleScale == GameData.PLACE_LEFT) {
+				path = RecordedPaths.DRIVE_OVER_LINE_LEFT;
+//				middle = true;
+			}			
 			else {
 				path = RecordedPaths.DRIVE_OVER_LINE_LEFT;				
 				dropBlock = false;
@@ -52,22 +54,29 @@ class PathChooser {
 			}
 		}
 		else if (robotLocation == GameData.ROBOT_RIGHT) {
-			if (middleScale == GameData.PLACE_RIGHT) {
-				path = paths [3];
-				middle = true;
-			}
-			else if (nearSwitch == GameData.PLACE_RIGHT) {
-				path = paths [1];
-			}
-			
+			if (nearSwitch == GameData.PLACE_RIGHT) {
+//				path = paths [1];
+				path = RecordedPaths.DRIVE_OVER_LINE_RIGHT;				
+			}			
+			else if (middleScale == GameData.PLACE_RIGHT) {
+				//path = paths [3];
+				path = RecordedPaths.DRIVE_OVER_LINE_RIGHT;
+//				middle = true;
+			}			
 			else {
 				path = RecordedPaths.DRIVE_OVER_LINE_RIGHT;
 				dropBlock = false;
 			}
 		}
 		else {
-			throw new RuntimeException("Weird robotLocation: "+robotLocation);
+//			throw new RuntimeException("Weird robotLocation: "+robotLocation);
+			path = RecordedPaths.DRIVE_OVER_LINE;
 		}
+		// Barrie - never drpo
+		dropBlock = false;
+		middle = false;
+		// Barrie finals, just go fwd
+		path = RecordedPaths.DRIVE_OVER_LINE;
 		return AutonomousTarget.create(path, middle, dropBlock);
 	}
 }
