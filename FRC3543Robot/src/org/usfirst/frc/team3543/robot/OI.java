@@ -36,15 +36,15 @@ public class OI {
 	public static final int RIGHT_JOYSTICK 		= 1;
 	
 	public static final int TRIGGER_BUTTON 				= 1;
-	public static final int THUMB_LOWER_BUTTON 			= 2;
-	public static final int THUMB_UPPER_BUTTON 			= 3;
+	public static final int THUMB_LOWER_BUTTON 			= 3;
+	public static final int THUMB_UPPER_BUTTON 			= 5;
 	public static final int THUMB_LEFT_BUTTON 			= 4;
-	public static final int THUMB_RIGHT_BUTTON 			= 5;
+	public static final int THUMB_RIGHT_BUTTON 			= 2;
 	public static final int SIDE_LEFT_UPPER_BUTTON 		= 6;
 	public static final int SIDE_LEFT_LOWER_BUTTON 		= 7;
 	public static final int SIDE_RIGHT_UPPER_BUTTON 	= 10;
-	public static final int SIDE_RIGHT_LOWER_BUTTON 	= 11;
-	public static final int BOTTOM_LEFT_BUTTON 			= 8;
+	public static final int SIDE_RIGHT_LOWER_BUTTON 	= 8;
+	public static final int BOTTOM_LEFT_BUTTON 			= 11;
 	public static final int BOTTOM_RIGHT_BUTTON			= 9;
 	
 	// Assigned
