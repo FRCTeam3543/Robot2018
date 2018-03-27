@@ -4,14 +4,15 @@ import org.usfirst.frc.team3543.robot.Calibration;
 import org.usfirst.frc.team3543.robot.Robot;
 import org.usfirst.frc.team3543.robot.Wiring;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Wrist extends BaseSubsystem {
-	Victor motorController;
+	WPI_TalonSRX motorController;
 	Encoder encoder;
 	double max_speed = Calibration.WRIST_MAX_SPEED;
 	double SENSITIVITY = Math.toRadians(5);
@@ -20,7 +21,7 @@ public class Wrist extends BaseSubsystem {
 	@SuppressWarnings("deprecation")
 	public Wrist() {
 		super();
-		motorController = new Victor(Wiring.WRIST_MOTOR_PORT);
+		motorController = new WPI_TalonSRX(Wiring.WRIST_MOTOR_PORT);
 		
 		encoder = new Encoder(Wiring.WRIST_ENCODER_A, Wiring.WRIST_ENCODER_B, false, EncodingType.k2X);
 		

@@ -15,9 +15,8 @@ class PathChooser {
 		
 		if (robotLocation == GameData.ROBOT_LEFT) {
 			if (nearSwitch == GameData.PLACE_LEFT) {
-//				path = paths[0];
-				path = RecordedPaths.DRIVE_OVER_LINE_LEFT;
-
+				path = RecordedPaths.PLACE_LEFT_SWITCH_FROM_LEFT;			
+//				path = RecordedPaths.DRIVE_OVER_LINE_LEFT;
 			}
 			else if (middleScale == GameData.PLACE_LEFT) {
 				path = RecordedPaths.DRIVE_OVER_LINE_LEFT;
@@ -56,7 +55,8 @@ class PathChooser {
 		else if (robotLocation == GameData.ROBOT_RIGHT) {
 			if (nearSwitch == GameData.PLACE_RIGHT) {
 //				path = paths [1];
-				path = RecordedPaths.DRIVE_OVER_LINE_RIGHT;				
+				path = RecordedPaths.PLACE_RIGHT_SWITCH_FROM_RIGHT;
+//				path = RecordedPaths.DRIVE_OVER_LINE_RIGHT;				
 			}			
 			else if (middleScale == GameData.PLACE_RIGHT) {
 				//path = paths [3];
@@ -72,11 +72,7 @@ class PathChooser {
 //			throw new RuntimeException("Weird robotLocation: "+robotLocation);
 			path = RecordedPaths.DRIVE_OVER_LINE;
 		}
-		// Barrie - never drpo
-		dropBlock = false;
-		middle = false;
-		// Barrie finals, just go fwd
-		path = RecordedPaths.DRIVE_OVER_LINE;
+		
 		return AutonomousTarget.create(path, middle, dropBlock);
 	}
 }

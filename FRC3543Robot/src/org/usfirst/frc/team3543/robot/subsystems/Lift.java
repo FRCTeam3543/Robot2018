@@ -4,6 +4,9 @@ import org.usfirst.frc.team3543.robot.Calibration;
 import org.usfirst.frc.team3543.robot.Robot;
 import org.usfirst.frc.team3543.robot.Wiring;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -12,8 +15,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Lift extends BaseSubsystem {
-	Victor motorController;
-	Victor otherMotorController;
+	WPI_TalonSRX motorController;
+	WPI_TalonSRX otherMotorController;
 	Encoder encoder;
 	DigitalInput lowSwitch, highSwitch;
 	
@@ -24,8 +27,8 @@ public class Lift extends BaseSubsystem {
 	@SuppressWarnings("deprecation")
 	public Lift() {
 		super();
-		motorController = new Victor(Wiring.LIFT_MOTOR_PORT);
-		otherMotorController = new Victor(Wiring.LIFT_MOTOR_PORT_2);
+		motorController = new WPI_TalonSRX(Wiring.LIFT_MOTOR_PORT);
+		otherMotorController = new WPI_TalonSRX(Wiring.LIFT_MOTOR_PORT_2);
 		encoder = new Encoder(Wiring.LIFT_ENCODER_A, Wiring.LIFT_ENCODER_B, false, EncodingType.k2X);
 		
 		encoder.setDistancePerPulse(Calibration.LIFT_DPP);

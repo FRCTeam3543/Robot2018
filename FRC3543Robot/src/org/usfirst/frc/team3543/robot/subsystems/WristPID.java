@@ -2,20 +2,22 @@ package org.usfirst.frc.team3543.robot.subsystems;
 
 import org.usfirst.frc.team3543.robot.Calibration;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.IMotorController;
+
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class WristPID extends PIDSubsystem {
-	Victor motorController;
+	IMotorController motorController;
 	Encoder encoder;
 	
 	double max_speed = Calibration.WRIST_MAX_SPEED;
 	double SENSITIVITY = Math.toRadians(5);
 	
 	@SuppressWarnings("deprecation")
-	public WristPID(Victor motorController, Encoder encoder) {
+	public WristPID(IMotorController motorController, Encoder encoder) {
 		super(Calibration.WRIST_PID_P, Calibration.WRIST_PID_I, Calibration.WRIST_PID_D);
 		this.motorController = motorController;
 		this.encoder = encoder;
@@ -46,7 +48,7 @@ public class WristPID extends PIDSubsystem {
 
 	@Override
 	protected void usePIDOutput(double output) {
-		motorController.set(output);
+		motorController.set(ControlMode.PercentOutput, output);
 	}
 
 }
