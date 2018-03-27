@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Lift extends BaseSubsystem {
 	Victor motorController;
+	Victor otherMotorController;
 	Encoder encoder;
 	DigitalInput lowSwitch, highSwitch;
 	
@@ -24,6 +25,7 @@ public class Lift extends BaseSubsystem {
 	public Lift() {
 		super();
 		motorController = new Victor(Wiring.LIFT_MOTOR_PORT);
+		otherMotorController = new Victor(Wiring.LIFT_MOTOR_PORT_2);
 		encoder = new Encoder(Wiring.LIFT_ENCODER_A, Wiring.LIFT_ENCODER_B, false, EncodingType.k2X);
 		
 		encoder.setDistancePerPulse(Calibration.LIFT_DPP);
@@ -34,6 +36,7 @@ public class Lift extends BaseSubsystem {
 		
 		LiveWindow.addSensor("Lift", "Encoder", encoder);
 		LiveWindow.addActuator("Lift", "Motor Controller", motorController);
+		LiveWindow.addActuator("Lift", "Other Motor Controller", otherMotorController);		
 		LiveWindow.addSensor("Lift", "High Switch", highSwitch);
 		LiveWindow.addSensor("Lift", "Low Switch", lowSwitch);
 		
@@ -96,6 +99,7 @@ public class Lift extends BaseSubsystem {
 		Robot.LOGGER.info("SET SPEED " + speed);
 		SmartDashboard.putNumber("Lift Motor Speed", speed);
 		motorController.set(speed);
+		otherMotorController.set(speed);
 		SmartDashboard.putNumber("Lift position", encoder.get());
 	}
 	

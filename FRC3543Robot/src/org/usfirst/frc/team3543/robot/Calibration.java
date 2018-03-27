@@ -12,7 +12,7 @@ public class Calibration {
 	public static final double DRIVELINE_GYRO_SENSITIVTY		= 0.007;	 // volts/degree/second
 	public static final double DRIVELINE_GYRO_GAIN			= 35;	// volts per degree per second based on full turn at 15 degrees off	
 	public static final double DRIVELINE_TIMER_DELAY		= 0.01;  // for using the timer delay. Not sure if actually used.
-	public static final double DRIVELINE_OPEN_LOOP_RAMP	= 1.0;	 // seconds.  This is the speed ramp rate. 
+	public static final double DRIVELINE_OPEN_LOOP_RAMP	= 0.6;	 // seconds.  This is the speed ramp rate. 
 	// FIXME PID Controllers need to be tuned
 	public static final double DRIVELINE_LINEAR_PID_P 	= -0.1;	 // hand tuned, proportional feedback gain
 	public static final double DRIVELINE_LINEAR_PID_I 	= 0.000; // hand tuned, integral feedback gain, prob leave at 0
@@ -22,7 +22,7 @@ public class Calibration {
 	public static final double DRIVELINE_ROTATION_PID_D 	= 0.01;
 	
 	public static final double RECORD_MODE_TRIM				= 0.45;
-	public static final double ARCADE_ROTATION_TRIM		= 0.85; //scale the rotation axis in the arcade stick, makes it less twitchy
+	public static final double ARCADE_ROTATION_TRIM		= 0.95; //scale the rotation axis in the arcade stick, makes it less twitchy
 	public static final double MAX_SPEED	= 0.5;
 	public static final double MIN_SPEED	= -0.5;
 	
@@ -40,7 +40,7 @@ public class Calibration {
 //	public static final double WRIST_DPP					= 0.0000681;	// wrist DPP
 	public static final double WRIST_DPP					= 0.007;	// wrist DPP
 	
-	public static final double WRIST_OPEN_LOOP_RAMP		= 0.5;	// second
+	public static final double WRIST_OPEN_LOOP_RAMP		= 0.05;	// second
 	
 	public static final double WRIST_PID_P = -0.6;		// FIXME
 	public static final double WRIST_PID_I = 0.00000001;		// FIXME
@@ -49,7 +49,7 @@ public class Calibration {
 	
 	public static final double LIFT_MAX_SPEED			= 1; // 50%, for now
 	public static final double LIFT_MAX_SPEED_UP		= LIFT_MAX_SPEED; // 50%, for now
-	public static final double LIFT_MAX_SPEED_DOWN		= LIFT_MAX_SPEED * 0.5; // 50%, for now
+	public static final double LIFT_MAX_SPEED_DOWN		= LIFT_MAX_SPEED * 0.8; // 50%, for now
 	public static final double LIFT_CLIMB_SPEED			= LIFT_MAX_SPEED; // 50%, for now
 	
 	public static final double LIFT_UP_POS				= 135; // inches
