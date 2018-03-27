@@ -30,10 +30,10 @@ class PathChooser {
 		else if (robotLocation == GameData.ROBOT_MIDDLE) {
 			// this is if we want to be aggressive from the middle
 //			if (nearSwitch == GameData.PLACE_LEFT) {
-//				path = paths[0];
+//				path = RecordedPaths.PLACE_MIDDLE_LEFT;
 //			}
 //			else if (nearSwitch == GameData.PLACE_RIGHT) {
-//				path = paths[1];
+//				path = RecordedPaths.PLACE_MIDDLE_RIGHT;
 //			}			
 //			else {
 //				path = RecordedPaths.DRIVE_OVER_LINE_MIDDLE_LEFT;

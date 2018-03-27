@@ -152,11 +152,30 @@ public class OI {
 				return true;
 			}
 			
-		};		
+		};	
+		
+		Command stopLiftCommand = new Command() {
+			
+			void stopLift() {
+				robot.getLift().off();
+			}
+			
+			public void execute() {
+				stopLift();
+			}
+			
+			@Override
+			protected boolean isFinished() {
+				stopLift();
+				return true;
+			}
+			
+		};
 		
 		JoystickButton liftUp = new JoystickButton(leftJoystick, LIFT_UP_BUTTON);
 		JoystickButton liftDown = new JoystickButton(leftJoystick, LIFT_DOWN_BUTTON);
 		JoystickButton liftClimb = new JoystickButton(leftJoystick, LIFT_CLIMB_BUTTON);		
+
 		liftUp.whileHeld(liftUpCommand);
 		liftDown.whileHeld(liftDownCommand);
 		liftClimb.whileHeld(liftClimbCommand);
