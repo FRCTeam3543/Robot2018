@@ -34,7 +34,7 @@ public class Calibration {
 	public static final double LINEAR_SENSITIVITY			= 0.75; // inches
 	public static final double ROTATION_SENSITIVITY		= Math.toRadians(0.5);	//degrees
 
-	public static final double WRIST_MAX_SPEED			= 0.75; // 50%, for now
+	public static final double WRIST_MAX_SPEED			= 0.45; // 50%, for now
 	public static final double WRIST_UP_POS				= 0; // degrees
 	public static final double WRIST_DOWN_POS				= 1.17; //1.745; //Math.toRadians(90); // degrees
 //	public static final double WRIST_DPP					= 0.0000681;	// wrist DPP

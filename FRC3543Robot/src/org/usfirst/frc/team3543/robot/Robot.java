@@ -164,6 +164,7 @@ public class Robot extends TimedRobot {
 	 */
 	public void teleopPeriodic() {
 		updateDashboard();    	
+		getOperatorInterface().checkPowerGlove(this);
 		Scheduler.getInstance().run();
 		updateDashboard();
 	}

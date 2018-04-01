@@ -16,14 +16,16 @@ class PathChooser {
 		if (robotLocation == GameData.ROBOT_LEFT) {
 			if (nearSwitch == GameData.PLACE_LEFT) {
 				path = RecordedPaths.PLACE_LEFT_SWITCH_FROM_LEFT;			
+				dropBlock = true;
 //				path = RecordedPaths.DRIVE_OVER_LINE_LEFT;
 			}
 			else if (middleScale == GameData.PLACE_LEFT) {
-				path = RecordedPaths.DRIVE_OVER_LINE_LEFT;
+				path = RecordedPaths.PLACE_LEFT_SWITCH_FROM_LEFT;
+				dropBlock = false;				
 //				middle = true;
 			}			
 			else {
-				path = RecordedPaths.DRIVE_OVER_LINE_LEFT;				
+				path = RecordedPaths.PLACE_LEFT_SWITCH_FROM_LEFT;
 				dropBlock = false;
 				
 			}
@@ -56,15 +58,17 @@ class PathChooser {
 			if (nearSwitch == GameData.PLACE_RIGHT) {
 //				path = paths [1];
 				path = RecordedPaths.PLACE_RIGHT_SWITCH_FROM_RIGHT;
+				dropBlock = true;
 //				path = RecordedPaths.DRIVE_OVER_LINE_RIGHT;				
 			}			
 			else if (middleScale == GameData.PLACE_RIGHT) {
 				//path = paths [3];
-				path = RecordedPaths.DRIVE_OVER_LINE_RIGHT;
+				path = RecordedPaths.PLACE_RIGHT_SWITCH_FROM_RIGHT;
+				dropBlock = false;				
 //				middle = true;
 			}			
 			else {
-				path = RecordedPaths.DRIVE_OVER_LINE_RIGHT;
+				path = RecordedPaths.PLACE_RIGHT_SWITCH_FROM_RIGHT;
 				dropBlock = false;
 			}
 		}

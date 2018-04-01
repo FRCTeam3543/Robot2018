@@ -1,5 +1,7 @@
 package org.usfirst.frc.team3543.robot;
 
+import java.util.function.Consumer;
+
 import org.usfirst.frc.team3543.robot.commands.ArcadeDriveWithJoystick;
 import org.usfirst.frc.team3543.robot.commands.ClawCloseCommand;
 import org.usfirst.frc.team3543.robot.commands.ClawOpenCommand;
@@ -15,6 +17,11 @@ import org.usfirst.frc.team3543.robot.util.DegreesToRadiansNumberProvider;
 import org.usfirst.frc.team3543.robot.util.NumberProvider;
 import org.usfirst.frc.team3543.robot.util.SmartDashboardNumberProvider;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableValue;
+import edu.wpi.first.networktables.TableEntryListener;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
@@ -87,6 +94,7 @@ public class OI {
 		initWrist(robot);
 		initRecordAndPlayback(robot);
 		initLift(robot);
+		initPowerGlove(robot);
 	}
 
 	protected void initDrive(Robot robot) {
@@ -101,6 +109,69 @@ public class OI {
 		SmartDashboard.putData("Drive Forward", new DriveForwardByDistanceUsingPIDCommand(robot, forwardDistanceProvider));
 	}
 
+	NetworkTableInstance powerGloveTable;
+	
+	protected void initPowerGlove(Robot robot) {
+		NetworkTableInstance nti = NetworkTableInstance.getDefault();
+		NetworkTable table = nti.getTable("powerglove");
+		powerGloveTable = table.getInstance();
+		
+		table.addEntryListener("claw", new TableEntryListener() {			
+			
+			@Override
+			public void valueChanged(NetworkTable table, String key, NetworkTableEntry entry, NetworkTableValue value, int flags) {
+				Robot.LOGGER.info("claw network change");				
+				boolean closed = value.getBoolean();
+				if (closed) {
+					robot.getClaw().close();
+				}
+				else {					
+					robot.getClaw().open();
+				}
+			}
+		}, TableEntryListener.kUpdate | TableEntryListener.kNew | TableEntryListener.kFlags);
+
+		
+		table.addEntryListener("wrist", new TableEntryListener() {			
+			@Override
+			public void valueChanged(NetworkTable table, String key, NetworkTableEntry entry, NetworkTableValue value, int flags) {
+				Robot.LOGGER.info("Wrist network change");
+				int val = (int)value.getDouble();
+				if (val < 0) { // wrist down
+					robot.getWrist().go_down();					
+				}
+				else if (val > 0) { // wrist up
+					robot.getWrist().go_up();					
+				}
+				else { // wrist hold
+					robot.getWrist().off();
+				}
+			}
+ 		}, TableEntryListener.kUpdate | TableEntryListener.kNew | TableEntryListener.kFlags);
+		
+	}
+	
+	public void checkPowerGlove(Robot robot) {
+		double wrist = powerGloveTable.getEntry("wrist").getDouble(0.0);
+		boolean claw = powerGloveTable.getEntry("claw").getBoolean(false);
+		Robot.LOGGER.info(String.format("Wrist %f and claw %s", wrist, claw ? "closed" : "open"));
+		if (claw) {
+			robot.getClaw().close();
+		}
+		else {					
+			robot.getClaw().open();
+		}
+		if (wrist < 0) { // wrist down
+			robot.getWrist().go_up();					
+		}
+		else if (wrist > 0) { // wrist up
+			robot.getWrist().go_down();					
+		}
+		else { // wrist hold
+			robot.getWrist().off();
+		}
+	}
+	
 	protected void initClaw(Robot robot) {
 		JoystickButton closeClawButton = new JoystickButton(leftJoystick, CLAW_BUTTON);
 		closeClawButton.whenPressed(new ClawOpenCommand(robot));
@@ -111,17 +182,7 @@ public class OI {
 		// wrist hookup				
 		JoystickButton wristButton = new JoystickButton(leftJoystick, WRIST_CONTROL_BUTTON);		
 		ControlWristCommand controlWrist = new ControlWristCommand(robot, leftJoystick);
-		wristButton.whileHeld(controlWrist);
-		
-		// currently unused - wrist PID control
-//		JoystickButton wristUp = new JoystickButton(leftJoystick, 2);
-//		JoystickButton wristDown = new JoystickButton(leftJoystick, 3);
-//		
-//		wristUp.whileHeld(new SetWristPositionCommand(robot, NumberProvider.fixedValue(Calibration.WRIST_UP_POS), NumberProvider.fixedValue(2000)));
-////		wristDown.whileHeld(new SetWristPositionCommand(robot, NumberProvider.fixedValue(Calibration.WRIST_DOWN_POS)));
-//
-//		wristDown.whileHeld(new SetWristPositionCommand(robot, NumberProvider.fixedValue((Calibration.WRIST_DOWN_POS + Calibration.WRIST_UP_POS)/2), NumberProvider.fixedValue(2000)));
-		
+		wristButton.whileHeld(controlWrist);	
 	}
 			
 	protected void initLift(Robot robot) {
