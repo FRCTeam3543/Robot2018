@@ -1,41 +1,41 @@
 package org.usfirst.frc.team3543.robot.oi;
 
-import org.usfirst.frc.team3543.robot.Path;
-import org.usfirst.frc.team3543.robot.PathProvider;
-import org.usfirst.frc.team3543.robot.RecordedPaths;
+import com.usfirst.frc.team3543.robot.pathrecording.RecordedPath;
+import com.usfirst.frc.team3543.robot.pathrecording.PathProvider;
+import com.usfirst.frc.team3543.robot.pathrecording.RecordedPaths;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 /**
  * This powers the pick list for recorded paths
  * 
- * @see org.usfirst.frc.team3543.robot.RecordedPaths
- * @see org.usfirst.frc.team3543.robot.Path
+ * @see com.usfirst.frc.team3543.robot.pathrecording.RecordedPaths
+ * @see com.usfirst.frc.team3543.robot.pathrecording.RecordedPath
  */
-public class PathPlaybackSendableChooser extends SendableChooser<Path> implements PathProvider {
+public class PathPlaybackSendableChooser extends SendableChooser<RecordedPath> implements PathProvider {
 
 	public PathPlaybackSendableChooser() {
 		super();
-		Path p;
+		RecordedPath p;
 		// all the stored paths
 		String[] starts = { "LEFT", "MIDDLE", "RIGHT" };
 		String[] paths;
-		addDefault("DEFAULT (NONE)", Path.parse("DEFAULT-NONE;0.0,0.0;"));
+		addDefault("DEFAULT (NONE)", RecordedPath.parse("DEFAULT-NONE;0.0,0.0;"));
 		for (int i=0; i<starts.length; i++) {
 			paths = RecordedPaths.AUTONOMOUS[i];
 			for (int j=0; j<paths.length; j++) {
-				p = Path.parse(paths[j]);
+				p = RecordedPath.parse(paths[j]);
 				addObject(starts[i] + ' ' + j + ": " + p.getName(), p);
 			}
 		}
 	}
 
-	public void addPath(Path path) {
+	public void addPath(RecordedPath path) {
 		addObject(path.getName(), path);
 	}
 
 	@Override
-	public Path getPath() {
+	public RecordedPath getPath() {
 		return getSelected();
 	}
 	

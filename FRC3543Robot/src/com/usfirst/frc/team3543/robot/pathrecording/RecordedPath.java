@@ -1,17 +1,17 @@
-package org.usfirst.frc.team3543.robot;
+package com.usfirst.frc.team3543.robot.pathrecording;
 
 import java.util.List;
 import java.util.ArrayList;
 
-public class Path {
+public class RecordedPath {
 	List<Point> points = new ArrayList<>();
 	private String name;
 
-	Path() {
+	RecordedPath() {
 		this("PATH");
 	}
 	
-	Path(String name) {
+	RecordedPath(String name) {
 		this.setName(name);
 	}
 	
@@ -22,25 +22,25 @@ public class Path {
 		this.name = name;
 	}
 	
-	public static Path start() {
-		return new Path();
+	public static RecordedPath start() {
+		return new RecordedPath();
 	}
 	
-	public static Path start(String name) {
-		return new Path(name);
+	public static RecordedPath start(String name) {
+		return new RecordedPath(name);
 	}
 	
 	public List<Point> getPoints() {
 		return this.points;
 	}
 	
-	public Path addAll(Path p) {
+	public RecordedPath addAll(RecordedPath p) {
 		if (p != null)
 			this.points.addAll(p.getPoints());
 		return this;
 	}
 	
-	public Path add(double left, double right) {
+	public RecordedPath add(double left, double right) {
 		this.points.add(new Point(left, right));
 		return this;
 	}
@@ -58,12 +58,12 @@ public class Path {
 		return sb.toString();
 	}
 	
-	public static Path parse(String s) {
+	public static RecordedPath parse(String s) {
 //		Robot.log("PARSE "+s);
 		
 		String[] pairs = s.split(";");
 		String[] lr;
-		Path p = Path.start(pairs[0]);
+		RecordedPath p = RecordedPath.start(pairs[0]);
 		// from 1 to N-1 because of first and last delim
 		for (int i=1; i<pairs.length-1; i++) {
 			lr = pairs[i].split(",");

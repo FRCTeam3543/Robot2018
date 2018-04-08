@@ -1,7 +1,7 @@
 package org.usfirst.frc.team3543.robot.commands;
 
 import org.usfirst.frc.team3543.robot.Robot;
-import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
+import org.usfirst.frc.team3543.robot.subsystems.drive.DriveLine;
 import org.usfirst.frc.team3543.robot.util.NumberProvider;
 
 import edu.wpi.first.wpilibj.command.Command;

@@ -1,6 +1,9 @@
-package org.usfirst.frc.team3543.robot;
+package com.usfirst.frc.team3543.robot.pathrecording;
 
-class PathChooser {
+import org.usfirst.frc.team3543.robot.AutonomousTarget;
+import org.usfirst.frc.team3543.robot.GameData;
+
+public class PathChooser {
 	
 	public static AutonomousTarget chooseAutonomousTarget(Integer startingPosition) {
 		int robotLocation = startingPosition.intValue();

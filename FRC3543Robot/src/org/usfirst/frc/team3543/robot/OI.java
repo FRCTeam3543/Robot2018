@@ -15,6 +15,11 @@ import org.usfirst.frc.team3543.robot.util.DegreesToRadiansNumberProvider;
 import org.usfirst.frc.team3543.robot.util.NumberProvider;
 import org.usfirst.frc.team3543.robot.util.SmartDashboardNumberProvider;
 
+import com.usfirst.frc.team3543.robot.pathrecording.RecordedPath;
+import com.usfirst.frc.team3543.robot.pathrecording.PathChooser;
+import com.usfirst.frc.team3543.robot.pathrecording.PathProvider;
+import com.usfirst.frc.team3543.robot.pathrecording.RecordedPaths;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
@@ -191,7 +196,7 @@ public class OI {
 		
 			void done() {
 				Robot.logging = false;
-				Path p = robot.getDriveLine().stopRecording();
+				RecordedPath p = robot.getDriveLine().stopRecording();
 				if (p == null) {
 					return;
 				}
@@ -220,7 +225,7 @@ public class OI {
 		pathButton.whenPressed(new PlaybackCommand(robot, new PathProvider() {
 
 			@Override
-			public Path getPath() {
+			public RecordedPath getPath() {
 				return getPathPlaybackChooser().getSelected();
 			}
 			
@@ -229,8 +234,8 @@ public class OI {
 		JoystickButton lastPathButton = new JoystickButton(leftJoystick, PLAYBACK_BUTTON);
 		lastPathButton.whenPressed(new PlaybackCommand(robot, new PathProvider() {
 			@Override
-			public Path getPath() {
-				return Path.parse(recordedPath);
+			public RecordedPath getPath() {
+				return RecordedPath.parse(recordedPath);
 			}
 			
 		}));		

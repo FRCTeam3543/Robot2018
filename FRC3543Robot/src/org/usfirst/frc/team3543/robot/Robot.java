@@ -3,16 +3,17 @@ package org.usfirst.frc.team3543.robot;
 import java.util.logging.Logger;
 
 import org.usfirst.frc.team3543.robot.subsystems.Claw;
-import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
 import org.usfirst.frc.team3543.robot.subsystems.DriveLineLinearPID;
 import org.usfirst.frc.team3543.robot.subsystems.Lift;
 import org.usfirst.frc.team3543.robot.subsystems.Wrist;
+import org.usfirst.frc.team3543.robot.subsystems.drive.DriveLine;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import team3543.robot.Bot;
 
 
 /**
@@ -22,7 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends TimedRobot {
+public class Robot extends Bot {
 
 	// to be compatible with the old, dangerous idiom, a static
 	private static Robot _instance = null;
@@ -190,6 +191,12 @@ public class Robot extends TimedRobot {
 	protected void updateDashboard() {
 		// put any extra dashboard update code here
 		SmartDashboard.updateValues();
+	}
+
+	@Override
+	public Command getAutonomousCommand() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

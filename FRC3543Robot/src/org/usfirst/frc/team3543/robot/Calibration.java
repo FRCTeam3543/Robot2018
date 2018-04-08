@@ -60,4 +60,12 @@ public class Calibration {
 	public static final double LIFT_PID_I = 0;		// FIXME
 	public static final double LIFT_PID_D = 0;		// FIXME
 	
+	public static final double DEFAULT_PATH_FOLLOWING_MAX_ACCELERATION = 120.0;
+	
+	public static final double HEADING_PID_P			= 0.0;
+	public static final double HEADING_PID_I			= 0.0;
+	public static final double HEADING_PID_D			= 0.0;
+	public static final double HEADING_PID_F			= 0.0;
+	public static final double HEADING_PID_TOLERANCE	= 0.01;
+	
 }

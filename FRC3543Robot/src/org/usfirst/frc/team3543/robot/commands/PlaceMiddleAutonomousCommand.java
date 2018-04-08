@@ -1,8 +1,9 @@
 package org.usfirst.frc.team3543.robot.commands;
 
 
-import org.usfirst.frc.team3543.robot.PathProvider;
 import org.usfirst.frc.team3543.robot.Robot;
+
+import com.usfirst.frc.team3543.robot.pathrecording.PathProvider;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

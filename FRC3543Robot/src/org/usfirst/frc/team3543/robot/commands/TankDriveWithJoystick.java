@@ -12,7 +12,7 @@
 package org.usfirst.frc.team3543.robot.commands;
 
 import org.usfirst.frc.team3543.robot.Robot;
-import org.usfirst.frc.team3543.robot.subsystems.DriveLine;
+import org.usfirst.frc.team3543.robot.subsystems.drive.DriveLine;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;

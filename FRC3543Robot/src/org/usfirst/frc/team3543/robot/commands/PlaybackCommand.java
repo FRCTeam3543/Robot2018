@@ -1,13 +1,15 @@
 package org.usfirst.frc.team3543.robot.commands;
 
-import org.usfirst.frc.team3543.robot.Path;
-import org.usfirst.frc.team3543.robot.PathProvider;
 import org.usfirst.frc.team3543.robot.Robot;
+
+import com.usfirst.frc.team3543.robot.pathrecording.RecordedPath;
+import com.usfirst.frc.team3543.robot.pathrecording.PathProvider;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 public class PlaybackCommand extends Command {
 
-	Path path;
+	RecordedPath path;
 	PathProvider pathProvider;
 	Robot robot;
 	
@@ -21,7 +23,7 @@ public class PlaybackCommand extends Command {
 	@Override
 	protected void initialize() {
 		Robot.log("PATH IS: "+pathProvider.getPath().export());
-		this.path = Path.start().addAll(pathProvider.getPath());		
+		this.path = RecordedPath.start().addAll(pathProvider.getPath());		
 		Robot.log("INITIALIZE PLAYBACK "+path.export());
 		Robot.log("Path has "+path.getPoints().size() + " points");
 		robot.getDriveLine().resetAll();
@@ -29,7 +31,7 @@ public class PlaybackCommand extends Command {
 
 	public void execute() {
 		if (!path.isDone()) {		
-			Path.Point point = path.shift();
+			RecordedPath.Point point = path.shift();
 			robot.getDriveLine().setLeftRightMotorOutputs(point.left, point.right);			
 		}
 		else {

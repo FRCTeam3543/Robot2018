@@ -1,5 +1,7 @@
 package org.usfirst.frc.team3543.robot;
 
+import com.usfirst.frc.team3543.robot.pathrecording.RecordedPaths;
+
 public class AutonomousTarget {
 	public boolean middle = false;
 	public boolean dropBlock = true;

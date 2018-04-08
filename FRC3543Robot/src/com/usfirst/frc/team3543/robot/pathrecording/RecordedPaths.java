@@ -1,4 +1,6 @@
-package org.usfirst.frc.team3543.robot;
+package com.usfirst.frc.team3543.robot.pathrecording;
+
+import org.usfirst.frc.team3543.robot.AutonomousTarget;
 
 public class RecordedPaths {
 	public static final String NONE = "NONE;0,0;";
