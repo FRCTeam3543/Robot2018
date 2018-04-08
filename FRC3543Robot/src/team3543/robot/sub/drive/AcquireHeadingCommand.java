@@ -78,10 +78,10 @@ public class AcquireHeadingCommand extends DriveModeCommand {
 		DriveLine driveLine;
 		
 		HeadingPIDController(DriveLine driveLine) {
-			super(	DriveLine.headingPID.kP,
-					DriveLine.headingPID.kI,
-					DriveLine.headingPID.kD,
-					DriveLine.headingPID.kF,					
+			super(	DriveLine.headingPIDF.kP,
+					DriveLine.headingPIDF.kI,
+					DriveLine.headingPIDF.kD,
+					DriveLine.headingPIDF.kF,					
 					driveLine.getGyro(),
 					new PIDOutput() {
 						@Override
@@ -90,7 +90,7 @@ public class AcquireHeadingCommand extends DriveModeCommand {
 						}						
 					});
 					
-			this.setAbsoluteTolerance(DriveLine.headingPID.tolerance);
+			this.setAbsoluteTolerance(DriveLine.headingPIDF.tolerance);
 			this.driveLine = driveLine;    			
 		}
 	}    

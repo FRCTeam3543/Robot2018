@@ -70,9 +70,9 @@ import team3543.robot.sub.drive.DriveUtils;
 public class DriveLine extends Subsystem implements DriveLineLog {
 	///////////// Calibration
 	public static double gyroSensitivity 	= 0.007;
-	public static double encoderDPP 			= 0.0131;
+	public static double encoderDPP 		= 0.0131;
 	public static double openLoopRamp 		= 0.5;
-	public static PIDF 	headingPID 			= new PIDF();
+	public static PIDF 	headingPIDF 		= new PIDF();
 	
 	///////////// Wiring
 	public static int leftMasterMotorPort 	= 1;
@@ -80,12 +80,12 @@ public class DriveLine extends Subsystem implements DriveLineLog {
 	public static int rightMasterMotorPort 	= 3;
 	public static int rightSlaveMotorPort 	= 4;
 
-	public static int leftMasterEncoderPort 	= 1;
-	public static int leftSlaveEncoderPort 	= 2;
-	public static int rightMasterEncoderPort 	= 3;
-	public static int rightSlaveEncoderPort 	= 4;
+	public static int leftEncoderPortA 		= 0;
+	public static int leftEncoderPortB 		= 1;
+	public static int rightEncoderPortA 	= 2;
+	public static int rightEncoderPortB 	= 3;
 	
-	public static int gyroPort				= 9;
+	public static int gyroPort				= 1;
 	
 	////////////// Components
 	private WPI_TalonSRX leftMaster;
@@ -131,11 +131,11 @@ public class DriveLine extends Subsystem implements DriveLineLog {
 		analogGyro = new AnalogGyro(gyroPort);
 		analogGyro.setSensitivity(gyroSensitivity);
 						
-		quadratureEncoderLeft = new Encoder(leftMasterEncoderPort, leftSlaveEncoderPort, false, EncodingType.k2X);	    	
+		quadratureEncoderLeft = new Encoder(leftEncoderPortA, leftEncoderPortB, false, EncodingType.k2X);	    	
 		quadratureEncoderLeft.setDistancePerPulse(encoderDPP);
 		quadratureEncoderLeft.setPIDSourceType(PIDSourceType.kRate);
 
-		quadratureEncoderRight = new Encoder(rightMasterEncoderPort, rightSlaveEncoderPort, false, EncodingType.k2X);
+		quadratureEncoderRight = new Encoder(rightEncoderPortA, rightEncoderPortB, false, EncodingType.k2X);
 		quadratureEncoderRight.setDistancePerPulse(encoderDPP);
 		quadratureEncoderRight.setPIDSourceType(PIDSourceType.kRate);		
 		

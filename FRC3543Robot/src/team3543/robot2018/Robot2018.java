@@ -1,7 +1,6 @@
 package team3543.robot2018;
 
 import org.usfirst.frc.team3543.robot.OI;
-import org.usfirst.frc.team3543.robot.subsystems.Lift;
 
 import com.team254.frc2017.RobotState;
 
@@ -12,6 +11,7 @@ import team3543.robot.oi.OIDashboard;
 import team3543.robot.sub.DriveLine;
 import team3543.robot2018.sub.Claw;
 import team3543.robot2018.sub.Wrist;
+import team3543.robot2018.sub.Lift;
 
 public class Robot2018 extends BotWithDriveLine {
 	///////////////// Actuators /////////////
@@ -24,24 +24,58 @@ public class Robot2018 extends BotWithDriveLine {
 	RobotState robotState = new RobotState();
 	
 	////////////// Wiring /////////////////
-	
+	static {
+		DriveLine.leftMasterMotorPort	= 1;
+		DriveLine.leftSlaveMotorPort	= 2;
+		DriveLine.rightMasterMotorPort	= 3;
+		DriveLine.rightSlaveMotorPort	= 4;
+		DriveLine.gyroPort				= 1;
+		DriveLine.leftEncoderPortA		= 0;
+		DriveLine.leftEncoderPortB 		= 1;
+		DriveLine.rightEncoderPortA		= 2;
+		DriveLine.rightEncoderPortB 	= 3;
+		
+		Claw.solenoid1Port				= 0;
+		Claw.solenoid2Port				= 1;
+		Claw.compressorPort				= 0;
+		
+		Wrist.motorPort					= 0;
+		Wrist.encoderPortA				= 4;
+		Wrist.encoderPortB				= 5;
+		
+		Lift.motorPort					= 5;
+		Lift.encoderPortA				= 4;
+		Lift.encoderPortB				= 7;
+		Lift.lowSwitchPort				= 8;
+		Lift.highSwitchPort				= 9;
+	}
 	///////////////// Operator Interface /////
 	OI oi = new OI();
 	
-	///////// PID Controller Tunings ///////
-	PIDF wristPIDF 			= new PIDF(0, 0, 0, 0, 0.01);
-	// More tunings in DriveConstants (for the driveLine)
-	
-	///////// Other Calibration ////////////
+	///////// PID Controller Tunings ///////////
+	static {
+		// PIDFS are kP, kI, kD, kF and percentTolerance
+		DriveLine.headingPIDF 	= new PIDF(0,0,0,0,1);
+		Wrist.pidGains 			= new PIDF(0,0,0,0,1);
+		Lift.pidf				= new PIDF(0,0,0,0,1);		
+	}
+		
+	///////////////// Calibration ////////////
 	double driveEncoderDPP 		= 0;
 	double driveOpenLoopRamp 	= 0.5;
 	double driveGyroSensitivity  = 0.007;
 	
 	static {
-		Wrist.percentTolerance 	= 1;
-		Wrist.encoderDPP 		= 0.02;
+		DriveLine.encoderDPP 		=  0.0284 * 24/17;	// 2018 cal
+		DriveLine.gyroSensitivity 	= 0.007;
+		DriveLine.openLoopRamp		= 0.5;
 		
+		Wrist.downPosition			= 1.17;
+		Wrist.upPosition			= 0;
+		Wrist.encoderDPP			= 0.007;
 		
+		Lift.max_speed				= 1;
+		Lift.encoderDPP				= 0.1;
 	}
 	
 	/////////////////// Wiring /////////////////////

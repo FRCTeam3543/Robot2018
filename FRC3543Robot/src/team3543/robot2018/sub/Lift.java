@@ -26,8 +26,7 @@ public class Lift extends Subsystem {
 	////////////////// Calibration ////////////////////
 	public static double max_speed 				= 1;
 	public static double encoderDPP 			= 0.1;
-	public static double pidPercentTolerance 	= 1;	// percent
-	public PIDF pidf = new PIDF(0,0,0,0,1);	
+	public static PIDF pidf = new PIDF(0,0,0,0,1);	
 	
 	////////////////// Components ///////////////////
 	WPI_TalonSRX motorController;
@@ -48,7 +47,7 @@ public class Lift extends Subsystem {
 				
 		liftPID = new PIDController(pidf.kP, pidf.kI, pidf.kD, pidf.kF, 
 						this.getPIDSource(), this.getPIDOutput());
-		liftPID.setPercentTolerance(pidPercentTolerance);
+		liftPID.setPercentTolerance(pidf.tolerance);
 	}
 
 	@Override

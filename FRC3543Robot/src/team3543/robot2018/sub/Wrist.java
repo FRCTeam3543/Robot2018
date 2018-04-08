@@ -30,7 +30,6 @@ public class Wrist extends Subsystem {
 	
 	////////////////// Calibration ////////////
 	public static double encoderDPP 	= 0.004; // FIXME
-	public static double percentTolerance = 1;	// percent
 	public static double upPosition 	= 1;
 	public static double downPosition 	= -1; // FIXME
 	public static PIDF pidGains	= new PIDF(0,0,0,0, 1);
